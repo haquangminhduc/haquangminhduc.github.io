@@ -48,7 +48,13 @@
         }
         setInterval(createFlower, 300);
 
-        
+        function updateVisitorCount() {
+            let count = localStorage.getItem('visitorCount') || 0;
+            count++;
+            localStorage.setItem('visitorCount', count);
+            document.getElementById('count').innerText = count;
+        }
+        updateVisitorCount();
 </script>
 <video autoplay loop muted id="bg-video">
     <source src="img/video2.mp4" type="video/mp4">
@@ -76,6 +82,6 @@
     document.addEventListener('mousemove', playAudio, { once: true });
     document.addEventListener('keydown', playAudio, { once: true });
 </script>
-
+<div id="visitor-count">Lượt truy cập: <span id="count">0</span></div>
 </body>
 </html>
