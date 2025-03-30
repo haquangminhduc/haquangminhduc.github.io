@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="card">
     <br>
-    <img src="1.jpg" alt="John" style="width: 60%; border-radius: 50%;">
+    <img src="1.jpg" alt="Profile picture of Hà Quang Minh Đức" style="width: 60%; border-radius: 50%;">
 
   <h1 style="animation: colorChange 3s infinite alternate;">Hà Quang Minh Đức</h1>
   <p class="title">Vô danh tiểu tốt</p>
@@ -49,16 +49,21 @@
         setInterval(createFlower, 300);
 
         function updateVisitorCount() {
-            let count = localStorage.getItem('visitorCount') || 0;
-            count++;
-            localStorage.setItem('visitorCount', count);
-            document.getElementById('count').innerText = count;
-        }
+    try {
+        let count = localStorage.getItem('visitorCount') || 0;
+        count++;
+        localStorage.setItem('visitorCount', count);
+        document.getElementById('count').innerText = count;
+    } catch (error) {
+        console.error('localStorage is not available:', error);
+        document.getElementById('count').innerText = 'N/A';
+    }
+}
         updateVisitorCount();
 </script>
-<video autoplay loop muted id="bg-video">
+<video autoplay loop muted id="video">
     <source src="img/video2.mp4" type="video/mp4">
-    Trình duyệt không hỗ trợ video.
+    Your browser does not support the video tag. Please update your browser or try a different one.
 </video>
 
 <script src="hoa.js"></script>

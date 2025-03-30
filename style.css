@@ -37,7 +37,18 @@ body {
     margin: auto;
     text-align: center;
   }
+  .card img {
+    width: 60%;
+    border-radius: 50%;
+}
 
+.card h1 {
+    animation: colorChange 3s infinite alternate;
+}
+
+.card p {
+    font-size: 30px;
+}
   .title {
     color: rgb(236, 232, 232);
     font-size: 18px;
@@ -66,7 +77,7 @@ body {
   button:hover, a:hover {
     opacity: 0.7;
   }
-  #bg-video {
+  video {
     position: fixed;
     top: 0;
     left: 0;
