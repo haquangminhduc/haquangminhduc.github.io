@@ -20,7 +20,7 @@ body {
   position: absolute;
   width: 20px;
   height: 20px;
-  background: url('https://i.imgur.com/FLmQscu.png') no-repeat center/contain;
+
   pointer-events: none;
   animation: fall linear infinite;
 }
