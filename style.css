@@ -25,12 +25,19 @@ body {
   animation: fall linear infinite;
 }
 @keyframes colorChange {
-    0% { color: rgb(255, 0, 0); } /* Đỏ */
-    25% { color: rgb(0, 255, 0); } /* Xanh lá */
-    50% { color: rgb(0, 0, 255); } /* Xanh dương */
-    75% { color: rgb(255, 255, 0); } /* Vàng */
-    100% { color: rgb(255, 0, 255); } /* Hồng */
+  0% { color: rgb(255, 0, 0); } /* Đỏ */
+  10% { color: rgb(255, 165, 0); } /* Cam */
+  20% { color: rgb(255, 255, 0); } /* Vàng */
+  30% { color: rgb(0, 255, 0); } /* Xanh lá */
+  40% { color: rgb(0, 255, 255); } /* Xanh ngọc */
+  50% { color: rgb(0, 0, 255); } /* Xanh dương */
+  60% { color: rgb(75, 0, 130); } /* Chàm */
+  70% { color: rgb(148, 0, 211); } /* Tím */
+  80% { color: rgb(255, 0, 255); } /* Hồng */
+  90% { color: rgb(128, 0, 128); } /* Tím đậm */
+  100% { color: rgb(255, 0, 0); } /* Quay lại Đỏ */
 }
+
 .card {
     box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2);
     max-width: 350px;
@@ -43,17 +50,13 @@ body {
 }
 
 .card h1 {
-    animation: colorChange 3s infinite alternate;
+  animation: colorChange 5s infinite alternate;
 }
 
 .card p {
     font-size: 30px;
 }
-  .title {
-    color: rgb(236, 232, 232);
-    font-size: 18px;
-  }
-  
+
   button {
     border: none;
     outline: 0;

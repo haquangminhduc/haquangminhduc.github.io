@@ -10,25 +10,23 @@
 <body>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="card">
-    <br>
     <img src="1.jpg" alt="Profile picture of Hà Quang Minh Đức" style="width: 60%; border-radius: 50%;">
 
   <h1 style="animation: colorChange 3s infinite alternate;">Hà Quang Minh Đức</h1>
-  <p class="title">Vô danh tiểu tốt</p>
-  <p style="font-size: 30px;" >Vinh University</p>
+  <p style="font-size: 15px; color: rgb(163, 162, 162);">2004</p>
+  <p style="font-size: 20px;" >Vinh University</p>
     <a href="https://www.facebook.com/haquagminhduc"><i class="fa fa-facebook"></i></a>
     <a href="https://github.com/haquangminhduc"><i class="fa fa-github"></i></a>
    <!-- <a href="#"><i class="fa fa-twitter"></i></a>
     <a href="#"><i class="fa fa-linkedin"></i></a>-->
 
-  <p><button>Hello</button></p>
+  <p><button>Chao ni ma</button></p>
 </div>
-
 <div id="time"></div>
 <script>
     ///gio
     function updateTime() {
-        const options = { timeZone: 'Asia/Ho_Chi_Minh', hour12: false,
+        const options = { timeZone: 'Asia/Ho_Chi_Minh', hour24: false,
             year: 'numeric', month: '2-digit', day: '2-digit',
             hour: '2-digit', minute: '2-digit', second: '2-digit' };
         const formatter = new Intl.DateTimeFormat('vi-VN', options);
@@ -48,18 +46,6 @@
         }
         setInterval(createFlower, 300);
 
-        function updateVisitorCount() {
-    try {
-        let count = localStorage.getItem('visitorCount') || 0;
-        count++;
-        localStorage.setItem('visitorCount', count);
-        document.getElementById('count').innerText = count;
-    } catch (error) {
-        console.error('localStorage is not available:', error);
-        document.getElementById('count').innerText = 'N/A';
-    }
-}
-        updateVisitorCount();
 </script>
 <video autoplay loop muted id="video">
     <source src="img/video2.mp4" type="video/mp4">
@@ -87,6 +73,5 @@
     document.addEventListener('mousemove', playAudio, { once: true });
     document.addEventListener('keydown', playAudio, { once: true });
 </script>
-<div id="visitor-count">Lượt truy cập: <span id="count">0</span></div>
 </body>
 </html>
