@@ -1,73 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HA QUANG MINH ĐUC</title>
-    <link rel="shortcut icon" href="icon.jpeg" />
-    <link rel="stylesheet" href="style.css" >
-</head>
-<body>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<div class="card">
-    <img src="1.jpg" alt="Profile picture of Hà Quang Minh Đức" style="width: 60%; border-radius: 50%;">
-
-  <h1 style="animation: colorChange 3s infinite alternate;">Hà Quang Minh Đức</h1>
-  <p style="font-size: 15px; color: rgb(163, 162, 162);">2004</p>
-  <p style="font-size: 20px;" >Vinh University</p>
-    <a href="https://www.facebook.com/haquagminhduc"><i class="fa fa-facebook"></i></a>
-    <a href="https://github.com/haquangminhduc"><i class="fa fa-github"></i></a>
-   <!-- <a href="#"><i class="fa fa-twitter"></i></a>
-    <a href="#"><i class="fa fa-linkedin"></i></a>-->
-
-  <p><button>Chao ni ma</button></p>
-</div>
-<div id="time"></div>
-<script>
-    ///gio
-    function updateTime() {
-        const options = { timeZone: 'Asia/Ho_Chi_Minh', hour24: false,
-            year: 'numeric', month: '2-digit', day: '2-digit',
-            hour: '2-digit', minute: '2-digit', second: '2-digit' };
-        const formatter = new Intl.DateTimeFormat('vi-VN', options);
-        document.getElementById('time').innerText = formatter.format(new Date());
-    }
-    setInterval(updateTime, 1000); // Cập nhật mỗi giây
-    updateTime(); // Gọi ngay khi tải trang
-
-
-    function createFlower() {
-            const flower = document.createElement('div');
-            flower.classList.add('flower');
-            flower.style.left = Math.random() * window.innerWidth + 'px';
-            flower.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            document.body.appendChild(flower);
-            setTimeout(() => { flower.remove(); }, 5000);
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="index.scss">
+    <title>haquangminhduc</title>
+    <style>
+        .more-info-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f9532d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
         }
-        setInterval(createFlower, 300);
+        .more-info-btn:hover {
+            background-color: #d43f1a;
+        }
+    </style>
+</head>
 
-</script>
+<body>
+    <header class="container">
+        <div class="page-header">
+            <div class="logo">
+                <a href="#">hquangminhduc</a>
+            </div>
+            <input type="checkbox" id="click">
 
-<script src="hoa.js"></script>
-<audio id="background-music" autoplay loop>
-    <source src="binhgold.mp3" type="audio/mpeg">
+            <label for="click" class="mainicon">
+                <div class="menu">
+                    <i class='bx bx-menu'></i>
+                </div>
+            </label>
+        </div>
+    </header>
 
-    Trình duyệt của bạn không hỗ trợ phát nhạc.
-</audio>
-
-<script>
-    function playAudio() {
-        let audio = document.getElementById('background-music');
-        audio.play().catch(error => console.log('Autoplay bị chặn:', error));
-    }
-
-    // Phát nhạc khi trang load
-    window.addEventListener('load', playAudio);
-
-    // Nếu bị chặn, phát lại khi người dùng có tương tác
-    document.addEventListener('scroll', playAudio, { once: true });
-    document.addEventListener('mousemove', playAudio, { once: true });
-    document.addEventListener('keydown', playAudio, { once: true });
-</script>
+    <section class="container">
+        <div class="main">
+            <div class="images">
+                <img src="minhduc.png" alt="" class="img-w">
+            </div>
+            <div class="detail">
+                <h3>Hi, I'm</h3>
+                <h1><span style="color:#f9532d;">Hà Quang</span> Minh Đức</h1>   
+                <div class="social">
+                    <a href="https://www.facebook.com/haquagminhduc" style="--socialAni:1"><i class='bx bxl-facebook'></i></a>
+                    <a href="https://www.instagram.com/mduc7500/" style="--socialAni:2"><i class='bx bxl-instagram'></i></a>
+                    <a href="https://github.com/haquangminhduc" style="--socialAni:3"><i class='bx bxl-github'></i></a>
+               
+                </div>
+                 <button class="more-info-btn" onclick="window.location.href='profile.html'">More Info</button>
+            </div>
+        </div>
+    </section>
 </body>
+
 </html>
