@@ -137,7 +137,7 @@ header {
 }
 
 .more-info-btn:hover {
-    background-color: #d43f1a;
+    background-color: #959be9;
 }
 
 /* Footer */
@@ -152,7 +152,7 @@ header {
     text-align: center;
     font-size: 0.9em;
     color: #555;
-    margin-top: 6rem;
+    margin-top: 5rem;
 }
 
 /* Dark Mode */
