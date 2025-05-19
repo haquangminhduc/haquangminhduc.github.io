@@ -269,3 +269,28 @@ li a:hover {
         margin-top: 2rem;
     }
 }
+/* Footer */
+.footer-container {
+    flex-shrink: 0;
+    width: 100%;
+}
+
+.footer {
+    text-align: center;
+    padding: 1rem 0;
+    background-color: #ffffff;
+    color: #000;
+}
+
+.footer p {
+    font-size: 0.9em;
+}
+
+.footer-info {
+    background-color: #f0f0f0;
+    padding: 10px;
+    text-align: center;
+    font-size: 0.9em;
+    color: #555;
+    margin-top: 4rem;
+}
