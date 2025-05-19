@@ -1,73 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="index.css">
-        <link rel="shortcut icon" href="icon.jpeg" />
-
-    <link rel="stylesheet" href="index.scss">
     <title>haquangminhduc</title>
-    <style>
-        .more-info-btn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #f9532d;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-        .more-info-btn:hover {
-            background-color: #d43f1a;
-        }
-    </style>
 </head>
-
 <body>
     <header class="container">
         <div class="page-header">
             <div class="logo">
                 <a href="#">hquangminhduc</a>
             </div>
-            <input type="checkbox" id="click">
-
-            <label for="click" class="mainicon">
-                <div class="menu">
-                    <i class='bx bx-menu'></i>
-                </div>
+            <label class="mode">
+                <input type="checkbox" id="darkModeToggle">
+                <i class='bx bxs-moon'></i>
             </label>
+            
         </div>
     </header>
 
     <section class="container">
         <div class="main">
             <div class="images">
-                <img src="minhduc.png" alt="" class="img-w">
+                <img src="minhduc.png" alt="Profile Image" class="img-w">
             </div>
             <div class="detail">
                 <h3>Hi, I'm</h3>
-                <h1><span style="color:#f9532d;">Hà Quang</span> Minh Đức</h1>   
+                <h1><span style="color: blue;">Hà Quang</span> Minh Đức</h1>
                 <div class="social">
-                    <a href="https://www.facebook.com/haquagminhduc" style="--socialAni:1"><i class='bx bxl-facebook'></i></a>
-                    <a href="https://www.instagram.com/mduc7500/" style="--socialAni:2"><i class='bx bxl-instagram'></i></a>
-                    <a href="https://github.com/haquangminhduc" style="--socialAni:3"><i class='bx bxl-github'></i></a>
-               
+                    <a href="#"><i class='bx bxl-facebook'></i></a>
+                    <a href="#"><i class='bx bxl-instagram'></i></a>
+                    <a href="#"><i class='bx bxl-github'></i></a>
                 </div>
-                 <button class="more-info-btn" onclick="window.location.href='profile.html'">More Info</button>
+                <button class="more-info-btn">More Info</button>
             </div>
         </div>
-         <div class="footer-container">
-        <div class="footer-info">
-            <p>@2025 Developed by Hà Quang Minh Đức</p>
+        <div class="footer-container">
+            <div class="footer-info">
+                <p>@2025 Developed by Hà Quang Minh Đức</p>
+            </div>
         </div>
-    </div>
     </section>
-</body>
 
+    <script>
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+
+        // Kiểm tra trạng thái dark mode từ localStorage
+        const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
+        if (isDarkMode) {
+            body.classList.add('dark-mode');
+            darkModeToggle.checked = true;
+        }
+
+        // Toggle dark mode
+        darkModeToggle.addEventListener('change', () => {
+            if (darkModeToggle.checked) {
+                body.classList.add('dark-mode');
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                body.classList.remove('dark-mode');
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        });
+    </script>
+</body>
 </html>
