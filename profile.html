@@ -119,20 +119,12 @@
         <button class="icon-btn" title="Trang chủ" onclick="location.href='index.html'" aria-label="Trang chủ">
           <i class='bx bx-home-alt-2'></i>
         </button>
-        <button class="icon-btn" id="copyMail" title="Sao chép email" aria-label="Sao chép email">
-          <i class='bx bx-copy'></i>
-        </button>
-        <button class="icon-btn" title="GitHub" onclick="window.open('https://github.com/haquangminhduc', '_blank')" aria-label="GitHub">
-          <i class='bx bxl-github'></i>
-        </button>
       </nav>
     </header>
 
     <main class="hero" role="main">
       <div class="badge"><i class='bx bx-id-card'></i> Hồ sơ</div>
       <h1 class="name">Hà Quang Minh Đức</h1>
-      <p class="subtitle">Sinh viên · Công nghệ thông tin · Vinh, Nghệ An</p>
-
       <section class="card" aria-labelledby="profile-heading">
         <h3 id="profile-heading">Thông tin nhanh</h3>
         <div class="kv">
@@ -147,7 +139,6 @@
         <span class="small">© 2025 · Developed by Hà Quang Minh Đức</span>
         <div class="actions">
           <button class="btn secondary" onclick="history.length ? history.back() : location.href='index.html'">Quay lại</button>
-          <button class="btn" id="toTop"><i class='bx bx-up-arrow-alt'></i> Lên đầu</button>
         </div>
       </div>
     </main>
@@ -168,5 +159,6 @@
     // Smooth scroll to top
     document.getElementById('toTop')?.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
   </script>
+    <script src="hoa.js" defer></script>
 </body>
 </html>
