@@ -1,127 +1,149 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="index.css">
-        <link rel="shortcut icon" href="icon.jpeg" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="description" content="Trang hồ sơ cá nhân của Hà Quang Minh Đức" />
+  <meta property="og:title" content="Hà Quang Minh Đức – Profile" />
+  <meta property="og:description" content="Giới thiệu ngắn gọn, gọn gàng, đẹp mắt." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="icon.jpeg" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <title>Hà Quang Minh Đức · Profile</title>
 
-    <link rel="stylesheet" href="index.scss">
-    <title>haquangminhduc</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #2f343c;
-            color: #fff;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            text-align: center;
-        }
-        .container {
-            max-width: 600px;
-            width: 100%;
-            padding: 60px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .page-header .logo a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .name-header {
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            animation: slideDown 1s ease-out;
-        }
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        .profile-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 350px;
-            text-align: center;
-            margin: 0 auto;
-        }
-        .profile-card h3 {
-            color: #ffffff;
-            font-size: 24px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-        .profile-card p {
-            font-size: 16px;
-            margin: 8px 0;
-            color: #fff;
-            text-align: center;
-        }
-        .back-btn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #0b6cce;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-        .back-btn:hover {
-            background-color: #140def;
-        }
-    </style>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans"; line-height: 1.6; }
+
+    :root {
+      --bg: #f0f2f8; --text: #111827; --muted: #555; --brand: #4da3ff; --brand-2: #8a5cff;
+      --card: rgba(255,255,255,0.7); --outline: rgba(0,0,0,0.06);
+      --shadow: 0 12px 28px rgba(2,6,23,0.08); --radius-xl: 18px;
+    }
+
+    body {
+      color: var(--text);
+      background: linear-gradient(135deg, #e6f0ff, #f9f0ff);
+      display: grid; place-items: center; padding: 32px; overflow-x: hidden;
+      animation: bgShift 15s ease-in-out infinite;
+    }
+    @keyframes bgShift { 0%,100%{background-position:0 0} 50%{background-position:100% 100%} }
+
+    /* Floating glowing blobs */
+    .blob {
+      position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.6;
+      animation: moveBlob 30s ease-in-out infinite alternate;
+      z-index: -1;
+    }
+    .blob1 { width: 400px; height: 400px; background: #4da3ff66; top: -100px; left: -100px; }
+    .blob2 { width: 500px; height: 500px; background: #8a5cff66; bottom: -150px; right: -120px; animation-delay: 5s; }
+    @keyframes moveBlob {
+      0% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(60px, -40px) scale(1.2); }
+      100% { transform: translate(-40px, 20px) scale(1); }
+    }
+
+    .shell { width: min(920px, 100%); position: relative; z-index: 1; }
+
+    .site-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; }
+    .brand i { font-size: 24px; color: var(--brand); }
+    .brand span { font-weight: 700; letter-spacing: .6px; font-size: 18px; }
+
+    .header-actions { display: flex; gap: 10px; }
+    .icon-btn { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: #fff; border: 1px solid var(--outline); box-shadow: var(--shadow); color: var(--text); cursor: pointer; transition: transform .2s ease, box-shadow .2s ease; position: relative; overflow: hidden; }
+    .icon-btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+
+    .hero { padding: 36px 28px; border-radius: var(--radius-xl); background: #fff; border: 1px solid var(--outline); box-shadow: var(--shadow); backdrop-filter: blur(10px); text-align: center; position: relative; overflow: hidden; }
+
+    .badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 999px; font-size: 12px; color: var(--muted); background: rgba(77,163,255,0.12); border: 1px dashed var(--outline); animation: fadeIn 2s ease both; }
+    @keyframes fadeIn { from {opacity:0; transform:translateY(-8px);} to{opacity:1; transform:translateY(0);} }
+
+    .name { font-size: clamp(28px, 4vw, 40px); margin: 14px 0 6px; font-weight: 800; letter-spacing: 1px; background: linear-gradient(90deg, var(--brand), var(--brand-2)); -webkit-background-clip: text; background-clip: text; color: transparent; animation: shine 8s linear infinite; }
+    @keyframes shine { from { background-position: 0% 50%; } to { background-position: 200% 50%; } }
+
+    .subtitle { color: var(--muted); font-size: 15px; margin: 0 0 12px; }
+
+    .card { margin-top: 22px; display: grid; gap: 14px; padding: 22px; border-radius: var(--radius-xl); background: var(--card); border: 1px solid var(--outline); box-shadow: var(--shadow); backdrop-filter: blur(8px); }
+    .card h3 { margin: 0; font-size: 16px; letter-spacing: .6px; color: var(--muted); text-transform: uppercase; }
+    .kv { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    @media (min-width: 520px) { .kv { grid-template-columns: 1fr 1fr; } }
+
+    .row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--outline); background: rgba(255,255,255,0.8); transition: transform .2s ease; }
+    .row:hover { transform: translateY(-2px) scale(1.02); }
+    .row i { font-size: 18px; color: var(--brand); }
+
+    .footer { margin-top: 22px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .small { color: var(--muted); font-size: 13px; }
+
+    .btn { appearance: none; border: none; border-radius: 12px; padding: 10px 14px; font-weight: 600; cursor: pointer; background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: white; box-shadow: var(--shadow); transition: transform .2s ease, filter .2s ease; position: relative; overflow: hidden; }
+    .btn:hover { transform: translateY(-2px) scale(1.03); filter: brightness(1.05); }
+    .btn.secondary { background: #fff; border: 1px solid var(--outline); color: var(--text); }
+    .btn.secondary:hover { border-color: var(--brand); }
+
+    @media (prefers-reduced-motion: reduce) { .icon-btn, .btn, .row { transition: none; } body { animation: none; } }
+  </style>
 </head>
-
 <body>
-    <header class="container">
-        <div class="page-header">
-            <div class="logo">
-                <a href="#">Thông tin về tôi</a>
-            </div>
-        </div>
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+
+  <div class="shell">
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="Trang chủ">
+        <i class='bx bx-user-circle'></i>
+        <span>Thông tin về tôi</span>
+      </a>
+      <nav class="header-actions">
+        <button class="icon-btn" title="Trang chủ" onclick="location.href='index.html'" aria-label="Trang chủ">
+          <i class='bx bx-home-alt-2'></i>
+        </button>
+        <button class="icon-btn" id="copyMail" title="Sao chép email" aria-label="Sao chép email">
+          <i class='bx bx-copy'></i>
+        </button>
+        <button class="icon-btn" title="GitHub" onclick="window.open('https://github.com/haquangminhduc', '_blank')" aria-label="GitHub">
+          <i class='bx bxl-github'></i>
+        </button>
+      </nav>
     </header>
 
-    <section class="container">
-        <h1 class="name-header">Hà Quang Minh Đức</h1>
-        <div class="profile-card">
-            <h3>PROFILE</h3>
-            <p>Name: Hà Quang Minh Đức</p>
-            <p>Birth Year: 7/5/2004</p>
-            <p>Vinh - Nghệ An</p>
-            <p>University: Đại học Vinh</p>
-        </div>
-        <button class="back-btn" onclick="window.location.href='index.html'">Back</button>
-         <div class="footer-container">
-        <div class="footer-info">
-            <p>@2025 Developed by Hà Quang Minh Đức</p>
-        </div>
-    </div>
-    </section>
-     <script src="hoa.js"></script>
-</body>
+    <main class="hero" role="main">
+      <div class="badge"><i class='bx bx-id-card'></i> Hồ sơ</div>
+      <h1 class="name">Hà Quang Minh Đức</h1>
+      <p class="subtitle">Sinh viên · Công nghệ thông tin · Vinh, Nghệ An</p>
 
+      <section class="card" aria-labelledby="profile-heading">
+        <h3 id="profile-heading">Thông tin nhanh</h3>
+        <div class="kv">
+          <div class="row"><i class='bx bx-user'></i> <b>Họ tên:</b>&nbsp; <span>Hà Quang Minh Đức</span></div>
+          <div class="row"><i class='bx bx-cake'></i> <b>Năm sinh:</b>&nbsp; <span>2004</span></div>
+          <div class="row"><i class='bx bx-map'></i> <b>Quê quán:</b>&nbsp; <span>Vinh, Nghệ An</span></div>
+          <div class="row"><i class='bx bx-school'></i> <b>Trường:</b>&nbsp; <span>Đại học Vinh</span></div>
+        </div>
+      </section>
+
+      <div class="footer">
+        <span class="small">© 2025 · Developed by Hà Quang Minh Đức</span>
+        <div class="actions">
+          <button class="btn secondary" onclick="history.length ? history.back() : location.href='index.html'">Quay lại</button>
+          <button class="btn" id="toTop"><i class='bx bx-up-arrow-alt'></i> Lên đầu</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const copyBtn = document.getElementById('copyMail');
+    copyBtn?.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText('example@email.com');
+        copyBtn.title = 'Đã sao chép!';
+        setTimeout(()=>{ copyBtn.title = 'Sao chép email'; }, 1200);
+      } catch(e) { location.href = 'mailto:example@email.com'; }
+    });
+
+    document.getElementById('toTop')?.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
+  </script>
+</body>
 </html>
