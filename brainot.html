@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hội Chứng Brain Rot: Phân Tích & Giải Pháp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+            color: #334155;
+            overflow-x: hidden;
+        }
+        
+        /* Liquid Glass Effects */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border-radius: 16px;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 500px;
+            }
+        }
+        
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s, transform 0.3s;
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #10b981, #059669);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .nav-link.active {
+            color: #059669;
+            font-weight: 600;
+            transform: scale(1.05);
+        }
+        
+        .symptom-card, .solution-item {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .symptom-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .symptom-card:hover::before {
+            left: 100%;
+        }
+        
+        .symptom-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .solution-header {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .solution-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .solution-header:hover::before {
+            left: 100%;
+        }
+        
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .input-field {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+        }
+        
+        .loading-glow {
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .section-glow {
+            position: relative;
+        }
+        
+        .section-glow::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateX(-50%) translateY(0px); }
+            50% { transform: translateX(-50%) translateY(-20px); }
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 8px 20px;
+            display: flex;
+            gap: 20px;
+            z-index: 50;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: liquidFloat 4s ease-in-out infinite;
+            max-width: 90vw;
+        }
+
+        @media screen and (max-width: 768px) {
+            .bottom-nav {
+                width: 100%;
+                left: 0;
+                transform: none;
+                justify-content: space-around;
+                max-width: none;
+                padding: 8px 0;
+                gap: 0;
+                border-radius: 25px;
+                bottom: 10px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .bottom-nav {
+                padding: 6px 0;
+                bottom: 5px;
+                border-radius: 20px;
+            }
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            padding: 8px 4px;
+            flex: 1;
+            border-radius: 12px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .bottom-nav-item {
+                padding: 8px 2px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .bottom-nav-item {
+                padding: 6px 1px;
+                font-size: 10px;
+                gap: 2px;
+            }
+        }
+
+        .bottom-nav-item i {
+            font-size: 20px;
+        }
+
+        @media screen and (max-width: 480px) {
+            .bottom-nav-item i {
+                font-size: 18px;
+            }
+        }
+
+        .bottom-nav-item.active {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+            transform: scale(1.05);
+        }
+
+        .bottom-nav-item:hover {
+            color: #10b981;
+            transform: scale(1.1);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        @keyframes liquidFloat {
+            0%, 100% { transform: translateX(-50%) translateY(0px); }
+            50% { transform: translateX(-50%) translateY(-5px); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="sticky top-0 z-50 glass py-4">
+        <nav class="container mx-auto px-6">
+            <div class="flex items-center justify-between">
+                <div class="text-xl font-bold text-slate-700">Brain Rot</div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#definition" class="nav-link text-slate-600 hover:text-teal-600">Tổng Quan</a>
+                    <a href="#symptoms" class="nav-link text-slate-600 hover:text-teal-600">Dấu Hiệu</a>
+                    <a href="#impact" class="nav-link text-slate-600 hover:text-teal-600">Tác Hại</a>
+                    <a href="#solutions" class="nav-link text-slate-600 hover:text-teal-600">Giải Pháp</a>
+                    <a href="#gemini-tools" class="nav-link text-slate-600 hover:text-teal-600">AI Hỗ Trợ</a>
+                </div>
+                 <div class="md:hidden">
+                    <select id="mobile-nav" class="block w-full rounded-md border border-slate-300 shadow-sm focus:border-teal-300 focus:ring focus:ring-teal-200 focus:ring-opacity-50 glass p-2">
+                        <option value="#definition">Tổng Quan</option>
+                        <option value="#symptoms">Dấu Hiệu</option>
+                        <option value="#impact">Tác Hại</option>
+                        <option value="#solutions">Giải Pháp</option>
+                        <option value="#gemini-tools">AI Hỗ Trợ</option>
+                    </select>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-16">
+
+        <section id="definition" class="text-center min-h-[60vh] flex flex-col items-center justify-center section-glow">
+            <h1 class="text-4xl md:text-6xl font-bold text-slate-800 leading-tight fade-in">
+                Giải Mã Hội Chứng <span class="text-teal-600 bg-gradient-to-r from-teal-500 to-emerald-500 bg-clip-text text-transparent">"Thối Não"</span>
+            </h1>
+            <p class="mt-6 text-lg md:text-xl max-w-3xl text-slate-600 fade-in" style="animation-delay: 0.2s;">
+                Brain Rot là một thuật ngữ mô tả tình trạng suy giảm nhận thức và khả năng tập trung do tiếp xúc quá mức với nội dung giải trí chất lượng thấp, vô nghĩa trên mạng xã hội. Đây là một vấn đề ngày càng phổ biến trong kỷ nguyên số, ảnh hưởng trực tiếp đến sức khỏe tinh thần và hiệu suất của chúng ta.
+            </p>
+        </section>
+
+        <section id="symptoms" class="py-16 md:py-24">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800">Bạn có đang "Thối Não"?</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-slate-600">
+                    Hội chứng này biểu hiện qua nhiều dấu hiệu tinh vi trong cuộc sống hàng ngày. Hãy cùng tìm hiểu các triệu chứng phổ biến để nhận biết sớm. Nhấn vào từng dấu hiệu để xem chi tiết.
+                </p>
+            </div>
+            <div id="symptoms-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            </div>
+            <div id="symptom-details" class="mt-8 p-6 glass-card transition-opacity duration-500 opacity-0 min-h-[100px]">
+                <p class="text-slate-700 font-semibold">Chọn một dấu hiệu để xem mô tả chi tiết.</p>
+            </div>
+        </section>
+
+        <section id="impact" class="py-16 md:py-24 bg-slate-50/30 rounded-2xl glass section-glow">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800">Tác Hại Khôn Lường</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-slate-600">
+                    Brain Rot không chỉ làm giảm khả năng tập trung tạm thời mà còn gây ra nhiều hệ lụy tiêu cực kéo dài, ảnh hưởng đến mọi khía cạnh của cuộc sống từ công việc, học tập đến sức khỏe tinh thần. Biểu đồ dưới đây thể hiện mức độ ảnh hưởng của các tác hại chính.
+                </p>
+            </div>
+            <div class="chart-container">
+                <canvas id="impactChart"></canvas>
+            </div>
+        </section>
+
+        <section id="solutions" class="py-16 md:py-24">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800">Làm Mới Bộ Não Của Bạn</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-slate-600">
+                    May mắn là chúng ta hoàn toàn có thể đảo ngược tình trạng "thối não" bằng cách thay đổi thói quen và áp dụng những phương pháp tích cực. Hãy khám phá các giải pháp dưới đây.
+                </p>
+            </div>
+            <div id="solutions-container" class="max-w-4xl mx-auto space-y-4">
+            </div>
+        </section>
+
+        <section id="gemini-tools" class="py-16 md:py-24 bg-emerald-50/30 rounded-2xl glass section-glow">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-teal-800">✨ Công Cụ Hỗ Trợ Trí Não Gemini ✨</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-slate-700">
+                    Sử dụng trí tuệ nhân tạo để phân tích thói quen và giải mã các hiện tượng Brain Rot phức tạp.
+                </p>
+            </div>
+
+            <!-- Tool 1: Slang Translator -->
+            <div class="max-w-4xl mx-auto p-6 glass-card mb-12">
+                <h3 class="text-2xl font-semibold text-slate-800 mb-4 flex items-center">
+                    🗣️ Giải Mã Tiếng Lóng Mạng Xã Hội
+                </h3>
+                <p class="text-slate-600 mb-4">Nhập một từ/cụm từ tiếng lóng mà bạn gặp trên mạng xã hội để hiểu rõ ý nghĩa và ngữ cảnh của nó.</p>
+                <div class="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3">
+                    <input type="text" id="slang-input" placeholder="Ví dụ: 'trmúa hmúa', 'flex', 'simp'" class="flex-grow p-3 input-field rounded-lg">
+                    <button id="translate-slang-btn" class="flex-shrink-0 btn-primary text-white p-3 rounded-lg font-medium disabled:opacity-50">
+                        ✨ Giải Mã
+                    </button>
+                </div>
+                <div id="loading-spinner-slang" class="hidden text-center mt-4 loading-glow">
+                    <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-teal-600 mx-auto"></div>
+                    <p class="mt-2 text-teal-600">Đang tìm kiếm ý nghĩa...</p>
+                </div>
+                <div id="slang-result" class="mt-4 p-4 glass-card min-h-[50px] text-slate-700 whitespace-pre-wrap">
+                    Kết quả sẽ hiển thị ở đây.
+                </div>
+            </div>
+
+            <!-- Tool 2: Personalized Solution Generator -->
+            <div class="max-w-4xl mx-auto p-6 glass-card">
+                <h3 class="text-2xl font-semibold text-slate-800 mb-4 flex items-center">
+                    🧠 Lập Kế Hoạch "Giải Độc Não" Cá Nhân
+                </h3>
+                <p class="text-slate-600 mb-4">Mô tả thói quen tiếp xúc nội dung số của bạn (ví dụ: "Tôi dành 4 tiếng xem video ngắn mỗi tối, tôi cảm thấy khó đọc sách và thường xuyên dùng từ lóng trên mạng.").</p>
+                <textarea id="habit-input" rows="4" class="w-full p-3 input-field rounded-lg" placeholder="Mô tả thói quen của bạn..."></textarea>
+                <button id="generate-plan-btn" class="w-full btn-secondary text-white p-3 rounded-lg font-medium disabled:opacity-50 mt-3">
+                    ✨ Tạo Kế Hoạch 3 Bước
+                </button>
+                <div id="loading-spinner-plan" class="hidden text-center mt-4">
+                    <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-amber-600 mx-auto"></div>
+                    <p class="mt-2 text-amber-600">Đang tạo kế hoạch...</p>
+                </div>
+                <div id="plan-result" class="mt-4 p-4 glass-card min-h-[50px] text-slate-700">
+                    Kế hoạch hành động cá nhân hóa sẽ xuất hiện tại đây.
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="bottom-nav-item active">
+            <i class='bx bx-home'></i>
+            <span>Home</span>
+        </a>
+        <a href="bra" class="bottom-nav-item">
+            <i class='bx bx-grid-alt'></i>
+            <span>New</span>
+        </a>
+        <a href="#solutions" class="bottom-nav-item">
+            <i class='bx bx-book'></i>
+            <span>Library</span>
+        </a>
+    </nav>
+    
+    <footer class="glass py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-slate-700">Một ứng dụng tương tác về Hội chứng Brain Rot.</p>
+            <p class="text-sm text-slate-500 mt-2">Nội dung được tổng hợp và phân tích cho mục đích giáo dục.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const symptomsData = [
+                { 
+                    id: 'concentration', 
+                    title: 'Khó Tập Trung', 
+                    icon: '🎯', 
+                    description: 'Không thể tập trung vào một nhiệm vụ trong thời gian dài, dễ dàng bị phân tâm bởi những thứ nhỏ nhặt. Cảm giác cần phải liên tục chuyển đổi giữa các hoạt động.' 
+                },
+                { 
+                    id: 'attention', 
+                    title: 'Giảm Chú Ý', 
+                    icon: '⏳', 
+                    description: 'Khoảng chú ý ngày càng ngắn lại. Bạn chỉ có thể tiêu thụ các nội dung ngắn như video TikTok, Reels và cảm thấy "chán" khi xem các video dài hoặc đọc sách.' 
+                },
+                { 
+                    id: 'memory', 
+                    title: 'Suy Giảm Trí Nhớ', 
+                    icon: '🧠', 
+                    description: 'Khó khăn trong việc ghi nhớ thông tin mới hoặc nhớ lại các sự kiện gần đây. Cảm giác đầu óc "sương mù", không minh mẫn.' 
+                },
+                { 
+                    id: 'slang', 
+                    title: 'Lạm Dụng Tiếng Lóng', 
+                    icon: '🗣️', 
+                    description: 'Sử dụng quá nhiều thuật ngữ, meme, hoặc tiếng lóng từ mạng xã hội trong giao tiếp hàng ngày, ngay cả trong những ngữ cảnh không phù hợp.' 
+                },
+                { 
+                    id: 'stimulation', 
+                    title: 'Cần Kích Thích Liên Tục', 
+                    icon: '⚡', 
+                    description: 'Luôn cảm thấy bồn chồn, thôi thúc phải kiểm tra điện thoại hoặc tìm kiếm một loại hình giải trí nào đó để lấp đầy mọi khoảnh khắc rảnh rỗi.' 
+                },
+                { 
+                    id: 'critical_thinking', 
+                    title: 'Lười Suy Nghĩ Sâu', 
+                    icon: '🤔', 
+                    description: 'Ngại đối mặt với các vấn đề phức tạp, có xu hướng tìm kiếm câu trả lời nhanh gọn thay vì tự mình phân tích và tư duy phản biện.' 
+                }
+            ];
+
+            const solutionsData = [
+                {
+                    title: 'Digital Detox - Cai Nghiện Kỹ Thuật Số',
+                    icon: '📵',
+                    content: 'Đặt ra những khoảng thời gian cố định trong ngày không sử dụng thiết bị điện tử. Tắt thông báo không cần thiết và xóa các ứng dụng gây nghiện. Bắt đầu với những khoảng thời gian ngắn và tăng dần lên.'
+                },
+                {
+                    title: 'Tiêu Thụ Nội Dung Chất Lượng',
+                    icon: '📚',
+                    content: 'Chủ động tìm kiếm và theo dõi các kênh, trang web cung cấp kiến thức sâu, đáng tin cậy. Đọc sách, xem phim tài liệu, nghe podcast về các chủ đề bạn quan tâm để kích thích tư duy.'
+                },
+                {
+                    title: 'Rèn Luyện Khả Năng Tập Trung',
+                    icon: '🧘',
+                    content: 'Thực hành các kỹ thuật như thiền, mindfulness (chánh niệm), hoặc kỹ thuật Pomodoro (làm việc tập trung trong 25 phút, nghỉ 5 phút) để dần dần kéo dài khoảng chú ý của bạn.'
+                },
+                {
+                    title: 'Tham Gia Các Hoạt Động Thể Chất',
+                    icon: '🏃',
+                    content: 'Tập thể dục thường xuyên không chỉ tốt cho cơ thể mà còn cải thiện chức năng não bộ, giảm căng thẳng và tăng cường sự minh mẫn. Hãy chọn một môn thể thao bạn yêu thích.'
+                },
+                {
+                    title: 'Kết Nối Với Thế Giới Thực',
+                    icon: '🌳',
+                    content: 'Dành thời gian cho gia đình, bạn bè, đi dạo ngoài trời, và tham gia các hoạt động xã hội. Các tương tác thực tế giúp giảm sự phụ thuộc vào thế giới ảo và mang lại cảm giác kết nối thực sự.'
+                }
+            ];
+
+            const symptomsGrid = document.getElementById('symptoms-grid');
+            const symptomDetails = document.getElementById('symptom-details');
+
+            symptomsData.forEach((symptom, index) => {
+                const card = document.createElement('div');
+                card.className = `symptom-card cursor-pointer p-6 glass-card flex items-center space-x-4 fade-in`;
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.dataset.id = symptom.id;
+                card.innerHTML = `
+                    <div class="text-4xl">${symptom.icon}</div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-slate-800">${symptom.title}</h3>
+                    </div>
+                `;
+                card.addEventListener('click', () => {
+                    const activeCard = symptomsGrid.querySelector('.ring-2');
+                    if (activeCard) {
+                        activeCard.classList.remove('ring-2', 'ring-teal-500');
+                    }
+                    card.classList.add('ring-2', 'ring-teal-500');
+
+                    symptomDetails.classList.remove('opacity-0');
+                    symptomDetails.innerHTML = `
+                        <h4 class="text-xl font-bold text-teal-600 mb-2">${symptom.title}</h4>
+                        <p class="text-slate-700">${symptom.description}</p>
+                    `;
+                });
+                symptomsGrid.appendChild(card);
+            });
+            
+            const impactChartCtx = document.getElementById('impactChart').getContext('2d');
+            const impactChart = new Chart(impactChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Suy giảm nhận thức', 'Mất khả năng tập trung', 'Giảm trí nhớ', 'Ảnh hưởng sức khỏe tâm thần', 'Giảm hiệu suất công việc', 'Xa rời xã hội'],
+                    datasets: [{
+                        label: 'Mức độ ảnh hưởng',
+                        data: [9, 8.5, 8, 7.5, 7, 6],
+                        backgroundColor: [
+                            'rgba(16, 185, 129, 0.7)',
+                            'rgba(5, 150, 105, 0.7)',
+                            'rgba(34, 197, 94, 0.7)',
+                            'rgba(245, 158, 11, 0.7)',
+                            'rgba(217, 119, 6, 0.7)',
+                            'rgba(239, 68, 68, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(5, 150, 105, 1)',
+                            'rgba(34, 197, 94, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(217, 119, 6, 1)',
+                            'rgba(239, 68, 68, 1)'
+                        ],
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#64748b'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Mức độ (trên thang 10)',
+                                color: '#64748b'
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#64748b'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            callbacks: {
+                                label: function(context) {
+                                    return `Mức độ ảnh hưởng: ${context.raw}/10`;
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+            
+            const solutionsContainer = document.getElementById('solutions-container');
+            solutionsData.forEach((solution, index) => {
+                const item = document.createElement('div');
+                item.className = 'solution-item border border-slate-200/50 rounded-lg overflow-hidden glass-card';
+                item.style.animationDelay = `${index * 0.1}s`;
+                item.innerHTML = `
+                    <div class="solution-header cursor-pointer p-4 bg-white/20 hover:bg-white/30 flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <span class="text-2xl">${solution.icon}</span>
+                            <h3 class="font-semibold text-slate-700">${solution.title}</h3>
+                        </div>
+                        <span class="solution-arrow transform transition-transform duration-300 text-teal-600">▼</span>
+                    </div>
+                    <div class="solution-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                        <p class="p-4 bg-white/10 text-slate-600">${solution.content}</p>
+                    </div>
+                `;
+                solutionsContainer.appendChild(item);
+
+                const header = item.querySelector('.solution-header');
+                const content = item.querySelector('.solution-content');
+                const arrow = item.querySelector('.solution-arrow');
+
+                header.addEventListener('click', () => {
+                    const isOpen = content.classList.contains('open');
+                    
+                    document.querySelectorAll('.solution-content.open').forEach(el => {
+                        el.classList.remove('open');
+                        el.style.maxHeight = '0px';
+                        el.parentElement.querySelector('.solution-arrow').style.transform = 'rotate(0deg)';
+                    });
+
+                    if (!isOpen) {
+                        content.classList.add('open');
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        arrow.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            const mobileNav = document.getElementById('mobile-nav');
+            mobileNav.addEventListener('change', (e) => {
+                const targetId = e.target.value;
+                document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+            });
+
+            // --- Gemini API Integration (unchanged) ---
+            const API_KEY = ""; 
+            const API_URL_TEXT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
+            
+            async function exponentialBackoffFetch(url, options, maxRetries = 5) {
+                for (let i = 0; i < maxRetries; i++) {
+                    try {
+                        const response =

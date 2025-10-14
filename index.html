@@ -7,166 +7,652 @@
   <meta name="description" content="Trang chủ · Hà Quang Minh Đức" />
   <link rel="icon" href="icon.jpeg" />
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800&family=Roboto:wght@100;300;400&display=swap" rel="stylesheet" />
   <title>Hà Quang Minh Đức · Home</title>
   <style>
-    *,*::before,*::after{box-sizing:border-box}
-    :root{
-      --bg:#0e1116;--text:#e7ecf3;--muted:#a9b2c1;
-      --brand:#4da3ff;--brand-2:#8a5cff;--card:rgba(255,255,255,.06);--bd:rgba(255,255,255,.12);
-      --shadow:0 10px 30px rgba(0,0,0,.35);--radius:18px
-    }
-    @media (prefers-color-scheme:light){
-      :root{--bg:#f5f7fb;--text:#111827;--muted:#475569;--card:rgba(255,255,255,.7);--bd:rgba(0,0,0,.06);--shadow:0 12px 28px rgba(2,6,23,.08)}
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --bg: #e0e5ec;
+      --text: #333;
+      --muted: #666;
+      --brand: #4da3ff;
+      --brand-2: #8a5cff;
+      --card: #e0e5ec;
+      --bd: #b8c0cc;
+      --shadow-light: rgba(255, 255, 255, 0.6);
+      --shadow-dark: rgba(0, 0, 0, 0.1);
+      --primary-color: #1e00ff;
+      --dark-bg: #2a2a2a;
+      --light-bg: #ffffff;
+      --neumo-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+      --neumo-inset: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
     }
 
-    html,body{height:100%}
-    body{
-      margin:0;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans";
-      color:var(--text);display:flex;flex-direction:column;min-height:100vh;position:relative;overflow-x:hidden;
-      /* nền gradient động giữ kiểu cũ nhưng có animation */
-      background:
-        radial-gradient(1200px 800px at 10% 10%,#12233a 0%, var(--bg) 40%),
-        radial-gradient(1200px 800px at 90% 20%,#1b1230 0%, var(--bg) 45%),
-        var(--bg);
-      animation:bgShift 22s ease-in-out infinite;
-    }
-    @keyframes bgShift{
-      0%{background-position:0 0,0 0,0 0}
-      50%{background-position:-60px -40px, 60px -30px, 0 0}
-      100%{background-position:0 0,0 0,0 0}
-    }
-    /* 2 blob màu mờ mờ bay chậm */
-    body::before, body::after{
-      content:""; position:fixed; inset:auto; width:38vw; height:38vw; border-radius:50%;
-      filter:blur(60px); opacity:.18; z-index:-1; pointer-events:none;
-      transition:opacity .3s ease;
-    }
-    body::before{ background:radial-gradient(circle,#6aa8ff,transparent 60%); top:-10vh; left:-8vw; animation:blob1 30s ease-in-out infinite; }
-    body::after{ background:radial-gradient(circle,#a074ff,transparent 60%); bottom:-12vh; right:-10vw; animation:blob2 36s ease-in-out infinite; }
-    @keyframes blob1{ 0%,100%{transform:translate(0,0)} 50%{transform:translate(6vw,4vh)} }
-    @keyframes blob2{ 0%,100%{transform:translate(0,0)} 50%{transform:translate(-5vw,-3vh)} }
-
-    .container{width:min(1100px,100%);margin:0 auto;padding:0 24px}
-
-    /* Header */
-    header{
-      position:sticky;top:0;z-index:10;
-      background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,0));
-      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)
-    }
-    .page-header{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
-    .logo a{display:inline-flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.6px;color:var(--text);text-decoration:none}
-    .logo i{color:var(--brand);font-size:22px}
-    .mode{display:inline-flex;align-items:center;gap:10px}
-    .icon-btn{
-      display:inline-grid;place-items:center;width:42px;height:42px;border-radius:12px;
-      background:var(--card);border:1px solid var(--bd);box-shadow:var(--shadow);color:var(--text);
-      cursor:pointer;transition:transform .15s ease,border-color .2s ease,filter .2s ease
-    }
-    .icon-btn:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.25); filter:brightness(1.05)}
-
-    /* Main */
-    .main{display:grid;grid-template-columns:1.1fr .9fr;gap:min(6vw,64px);align-items:center;padding:56px 0 24px}
-    @media (max-width:900px){.main{grid-template-columns:1fr;gap:28px;text-align:center}}
-    .images{display:grid;place-items:center}
-
-    /* Avatar với viền conic-gradient chạy vòng tròn */
-    .avatar-wrap{
-      position:relative; display:inline-grid; place-items:center;
-      padding:20px; border-radius:50%;
-    }
-    .avatar-wrap::before{
-      content:""; position:absolute; inset:0; border-radius:50%;
-      padding:2px; background:conic-gradient(from var(--angle), #6aa8ff, #a074ff, #ff6ec7, #6aa8ff);
-      -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor; mask-composite: exclude;
-      animation:spin 6s linear infinite;
-    }
-    @property --angle{syntax:"<angle>";initial-value:0deg;inherits:false}
-    @keyframes spin{ to{ --angle:360deg } }
-
-    .avatar{
-      width:min(320px,80vw);aspect-ratio:1/1;border-radius:50%;object-fit:cover;
-      border:1px solid var(--bd);box-shadow:var(--shadow); display:block;
-      transition:transform .25s ease;
-    }
-    .avatar:hover{ transform:translateY(-2px) }
-
-    .detail h3{margin:0 0 6px;font-size:16px;color:var(--muted)}
-    .detail h1{margin:0 0 10px;font-size:clamp(28px,6vw,48px);line-height:1.15;font-weight:800}
-    /* tên có gradient động trên phần .accent */
-    .detail .accent{
-      background:linear-gradient(90deg,var(--brand),var(--brand-2),#ff6ec7,var(--brand));
-      background-size:200% auto; -webkit-background-clip:text; background-clip:text; color:transparent;
-      animation:shine 8s linear infinite;
-    }
-    @keyframes shine{ 0%{background-position:0% 50%} 100%{background-position:200% 50%} }
-
-    .kicker{margin:0 0 16px;color:var(--muted)}
-
-    .pills{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 22px}
-    .pill{
-      padding:8px 12px;border-radius:999px;border:1px solid var(--bd);
-      background:rgba(255,255,255,.05);font-size:13px;color:var(--muted);
-      transition:transform .15s ease, filter .2s ease
-    }
-    .pill:hover{ transform:translateY(-2px); filter:brightness(1.1) }
-
-    .social{display:flex;gap:12px;margin:14px 0 0}
-    .social a{
-      display:grid;place-items:center;width:44px;height:44px;border-radius:999px;border:1px solid var(--bd);
-      color:var(--text);text-decoration:none;background:var(--card);
-      transition:transform .15s ease,filter .2s ease, background .2s ease
-    }
-    .social a:hover{transform:translateY(-2px);filter:brightness(1.05)}
-    .social a[aria-label="Facebook"]:hover{ background:#1877f2 }
-    .social a[aria-label="Instagram"]:hover{ background:radial-gradient(circle at 30% 30%,#f58529,#dd2a7b,#8134af,#515bd4) }
-    .social a[aria-label="GitHub"]:hover{ background:#0b0f15 }
-
-    .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
-    .btn{
-      appearance:none;border:1px solid transparent;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;
-      background:linear-gradient(135deg,var(--brand),var(--brand-2));color:white;box-shadow:var(--shadow);transition:transform .15s ease,filter .2s ease;
-      position:relative; overflow:hidden;
-    }
-    .btn:hover{transform:translateY(-2px);filter:brightness(1.05)}
-    /* sheen lướt qua nút */
-    .btn::after{
-      content:""; position:absolute; inset:0;
-      background:linear-gradient(120deg,rgba(255,255,255,.25),transparent 30% 70%,rgba(255,255,255,.25));
-      transform:translateX(-100%); transition:transform .55s ease;
-    }
-    .btn:hover::after{ transform:translateX(100%) }
-    .btn.secondary{background:transparent;color:var(--text);border-color:var(--bd)}
-
-    /* footer */
-    .footer-container{margin-top:auto}
-    .footer-info{border-top:1px solid var(--bd);padding:16px 0;text-align:center;color:var(--muted)}
-
-    /* Manual dark override giữ lại tương thích */
-    .dark-mode{
-      background:
-        radial-gradient(1200px 800px at 10% 10%,#0f2849 0%, #0b0f15 45%),
-        radial-gradient(1200px 800px at 90% 20%,#1a0f36 0%, #0b0f15 50%),
-        #0b0f15;
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #e0e5ec;
+        --text: #333;
+        --muted: #666;
+        --card: #e0e5ec;
+        --bd: #b8c0cc;
+        --shadow-light: rgba(255, 255, 255, 0.8);
+        --shadow-dark: rgba(0, 0, 0, 0.15);
+      }
     }
 
-    @media (prefers-reduced-motion:reduce){
-      .icon-btn,.btn,.pill,.avatar{transition:none}
-      body{animation:none}
-      body::before, body::after{animation:none}
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #2a2a2a;
+        --text: #e0e5ec;
+        --muted: #a0a0a0;
+        --card: #2a2a2a;
+        --bd: #404040;
+        --shadow-light: rgba(255, 255, 255, 0.05);
+        --shadow-dark: rgba(0, 0, 0, 0.4);
+        --neumo-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+        --neumo-inset: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+      }
     }
 
-    /* Scroll reveal nhẹ cho cột phải */
-    .reveal{opacity:0; transform:translateY(12px); transition:opacity .5s ease, transform .5s ease}
-    .reveal.in{opacity:1; transform:translateY(0)}
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: 'Outfit', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans";
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      background: var(--bg);
+      scroll-behavior: smooth;
+      padding-bottom: 100px; /* Space for bottom nav */
+    }
+
+    .container {
+      width: min(1100px, 100%);
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      flex: 1;
+    }
+
+    @media screen and (max-width: 768px) {
+      .container { padding: 0 1rem; }
+    }
+
+    @media screen and (max-width: 480px) {
+      .container { padding: 0 0.5rem; }
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--card);
+      box-shadow: var(--neumo-shadow);
+      padding: 1rem 0;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+    }
+
+    @media screen and (max-width: 480px) {
+      .page-header {
+        padding: 0 1rem;
+      }
+    }
+
+    .logo a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: .6px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 1.5rem;
+    }
+
+    @media screen and (max-width: 480px) {
+      .logo a {
+        font-size: 1.2rem;
+      }
+    }
+
+    .logo i { color: var(--brand); font-size: 22px; }
+
+    @media screen and (max-width: 480px) {
+      .logo i { font-size: 18px; }
+    }
+
+    .mode {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon-btn {
+      display: inline-grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--card);
+      box-shadow: var(--neumo-shadow);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+    }
+
+    @media screen and (max-width: 480px) {
+      .icon-btn {
+        width: 48px;
+        height: 48px;
+      }
+    }
+
+    .icon-btn:hover, .icon-btn:active {
+      box-shadow: var(--neumo-inset);
+    }
+
+    .main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      padding: 56px 0 24px;
+    }
+
+    @media (max-width: 900px) {
+      .main { 
+        grid-template-columns: 1fr; 
+        gap: 28px; 
+        text-align: center; 
+      }
+    }
+
+    @media (max-width: 768px) {
+      .main { 
+        grid-template-columns: 1fr; 
+        gap: 28px; 
+        text-align: center; 
+        padding: 40px 0 20px;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .main { 
+        gap: 20px; 
+        padding: 30px 0 20px;
+      }
+    }
+
+    .images {
+      display: grid;
+      place-items: center;
+      margin: 0 auto;
+      width: 300px;
+    }
+
+    @media screen and (max-width: 480px) {
+      .images {
+        width: 250px;
+      }
+    }
+
+    .avatar-wrap {
+      position: relative;
+      display: inline-grid;
+      place-items: center;
+      padding: 20px;
+      border-radius: 50%;
+      background: var(--card);
+      box-shadow: var(--neumo-shadow);
+    }
+
+    @media screen and (max-width: 480px) {
+      .avatar-wrap {
+        padding: 15px;
+      }
+    }
+
+    .avatar-wrap::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      padding: 2px;
+      background: conic-gradient(from var(--angle), #6aa8ff, #a074ff, #ff6ec7, #6aa8ff);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: spin 6s linear infinite;
+    }
+
+    @property --angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+
+    @keyframes spin { to { --angle: 360deg; } }
+
+    .avatar {
+      width: min(300px, 80vw);
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      object-fit: cover;
+      border: none;
+      box-shadow: none;
+      display: block;
+      transition: transform .25s ease;
+    }
+
+    @media screen and (max-width: 480px) {
+      .avatar {
+        width: min(250px, 70vw);
+      }
+    }
+
+    .avatar:hover { transform: translateY(-2px) scale(1.02); }
+
+    .detail {
+      background: var(--card);
+      box-shadow: var(--neumo-shadow);
+      border-radius: 24px;
+      padding: 2.5rem;
+      border: none;
+      max-width: 500px;
+      animation: liquidFloat 4s ease-in-out infinite;
+    }
+
+    @media screen and (max-width: 768px) {
+      .detail {
+        padding: 2rem;
+        max-width: 100%;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .detail {
+        padding: 1.5rem;
+        border-radius: 20px;
+      }
+    }
+
+    @keyframes liquidFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .detail h3 {
+      margin: 0 0 6px;
+      font-size: 1.5rem;
+      color: var(--muted);
+    }
+
+    @media screen and (max-width: 480px) {
+      .detail h3 {
+        font-size: 1.3rem;
+      }
+    }
+
+    .detail h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 6vw, 4rem);
+      line-height: 1.15;
+      font-weight: 800;
+    }
+
+    .detail .accent {
+      background: linear-gradient(90deg, var(--brand), var(--brand-2), #ff6ec7, var(--brand));
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shine 8s linear infinite;
+    }
+
+    @keyframes shine { 
+      0% { background-position: 0% 50%; } 
+      100% { background-position: 200% 50%; } 
+    }
+
+    .kicker {
+      margin: 0 0 16px;
+      color: var(--muted);
+    }
+
+    @media screen and (max-width: 480px) {
+      .kicker {
+        font-size: 1rem;
+        margin-bottom: 12px;
+      }
+    }
+
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 16px 0 22px;
+    }
+
+    @media screen and (max-width: 480px) {
+      .pills {
+        gap: 8px;
+        margin: 12px 0 18px;
+      }
+    }
+
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--card);
+      box-shadow: var(--neumo-shadow);
+      font-size: 13px;
+      color: var(--muted);
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    @media screen and (max-width: 480px) {
+      .pill {
+        padding: 6px 10px;
+        font-size: 12px;
+      }
+    }
+
+    .pill:hover, .pill:active { 
+      box-shadow: var(--neumo-inset);
+    }
+
+    .social {
+      display: flex;
+      gap: 1.4rem;
+      margin: 14px 0 0;
+    }
+
+    @media screen and (max-width: 480px) {
+      .social {
+        gap: 1rem;
+        margin: 12px 0 0;
+        justify-content: center;
+      }
+    }
+
+    .social a {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--card);
+      box-shadow: var(--neumo-shadow);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 1.5rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+    }
+
+    @media screen and (max-width: 480px) {
+      .social a {
+        width: 48px;
+        height: 48px;
+        font-size: 1.6rem;
+      }
+    }
+
+    .social a:hover, .social a:active {
+      box-shadow: var(--neumo-inset);
+      transform: scale(1.1);
+    }
+
+    .cta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    @media screen and (max-width: 480px) {
+      .cta {
+        gap: 10px;
+        justify-content: center;
+        margin-top: 16px;
+      }
+    }
+
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--card);
+      box-shadow: var(--neumo-shadow);
+      color: var(--text);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      min-width: 120px;
+    }
+
+    @media screen and (max-width: 480px) {
+      .btn {
+        padding: 14px 18px;
+        font-size: 16px;
+        min-width: 100px;
+      }
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn:hover, .btn:active {
+      box-shadow: var(--neumo-inset);
+      transform: translateY(2px);
+    }
+
+    .btn.secondary {
+      background: var(--card);
+      color: var(--muted);
+    }
+
+    .more-info-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: var(--card);
+      box-shadow: var(--neumo-shadow);
+      color: var(--text);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      min-width: 100px;
+    }
+
+    @media screen and (max-width: 480px) {
+      .more-info-btn {
+        padding: 12px 24px;
+        font-size: 16px;
+      }
+    }
+
+    .more-info-btn:hover, .more-info-btn:active {
+      box-shadow: var(--neumo-inset);
+      transform: translateY(2px);
+    }
+
+    /* Bottom Navigation - Neumorphism Style */
+    .bottom-nav {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--card);
+      box-shadow: var(--neumo-shadow);
+      border-radius: 50px;
+      padding: 8px 20px;
+      display: flex;
+      gap: 20px;
+      z-index: 50;
+      animation: liquidFloat 4s ease-in-out infinite;
+      max-width: 90vw;
+    }
+
+    @media screen and (max-width: 768px) {
+      .bottom-nav {
+        width: 100%;
+        left: 0;
+        transform: none;
+        justify-content: space-around;
+        max-width: none;
+        padding: 8px 0;
+        gap: 0;
+        border-radius: 25px;
+        bottom: 10px;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .bottom-nav {
+        padding: 6px 0;
+        bottom: 5px;
+        border-radius: 20px;
+      }
+    }
+
+    .bottom-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12px;
+      transition: all 0.3s ease;
+      padding: 8px 4px;
+      flex: 1;
+      border-radius: 12px;
+    }
+
+    @media screen and (max-width: 768px) {
+      .bottom-nav-item {
+        padding: 8px 2px;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .bottom-nav-item {
+        padding: 6px 1px;
+        font-size: 10px;
+        gap: 2px;
+      }
+    }
+
+    .bottom-nav-item i {
+      font-size: 20px;
+    }
+
+    @media screen and (max-width: 480px) {
+      .bottom-nav-item i {
+        font-size: 18px;
+      }
+    }
+
+    .bottom-nav-item.active {
+      color: var(--brand);
+      box-shadow: var(--neumo-inset);
+      transform: scale(1.05);
+    }
+
+    .bottom-nav-item:hover {
+      color: var(--brand);
+      box-shadow: var(--neumo-inset);
+      transform: scale(1.1);
+    }
+
+    .footer-container {
+      margin-top: auto;
+      flex-shrink: 0;
+      width: 100%;
+      background: var(--card);
+      box-shadow: var(--neumo-shadow);
+      padding: 1rem 0;
+      text-align: center;
+    }
+
+    .footer-info {
+      color: var(--muted);
+      font-size: 0.9em;
+    }
+
+    .dark-mode .footer-info {
+      color: var(--text);
+    }
+
+    .dark-mode {
+      --bg: #2a2a2a;
+      --text: #e0e5ec;
+      --muted: #a0a0a0;
+      --card: #2a2a2a;
+      --bd: #404040;
+      --shadow-light: rgba(255, 255, 255, 0.05);
+      --shadow-dark: rgba(0, 0, 0, 0.4);
+    }
+
+    .dark-mode .detail h3, .dark-mode .detail h1 { color: var(--text); }
+    .dark-mode header { box-shadow: var(--neumo-shadow); }
+    .dark-mode .avatar { box-shadow: none; }
+    .dark-mode .detail {
+      box-shadow: var(--neumo-shadow);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .icon-btn, .btn, .pill, .avatar, .more-info-btn, body::before, body::after, .detail, .bottom-nav { 
+        transition: none; 
+        animation: none; 
+      }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity .5s ease, transform .5s ease;
+    }
+
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
 </head>
 <body>
   <header>
-    <div class="container page-header">
+    <div class="page-header">
       <div class="logo">
-        <a href="#"><i class='bx bx-user-circle'></i><span>hquangminhduc</span></a>
+        <a href="#home"><i class='bx bx-user-circle'></i><span>hquangminhduc</span></a>
       </div>
       <div class="mode">
         <button class="icon-btn" id="darkModeToggle" title="Chuyển chế độ sáng/tối" aria-label="Dark mode toggle">
@@ -176,41 +662,88 @@
     </div>
   </header>
 
-  <main class="container main">
+  <main class="container main" id="home">
     <div class="images">
       <span class="avatar-wrap">
-        <img src="md.jpg" alt="Ảnh chân dung Minh Đức" class="avatar" loading="lazy"/>
+        <img src="md.jpg" alt="Ảnh chân dung Minh Đức" class="avatar" loading="lazy" />
       </span>
     </div>
     <div class="detail reveal" id="revealCol">
       <h3>Xin chào, tôi là</h3>
       <h1><span class="accent">Hà Quang</span> Minh Đức</h1>
-      <p class="kicker">Sinh viên CNTT · Vinh, Nghệ An</p>
-    
-      <div class="social" aria-label="Mạng xã hội">
-        <a href="https://www.facebook.com/haquagminhduc" target="_blank" rel="noopener" aria-label="Facebook"><i class='bx bxl-facebook'></i></a>
-        <a href="https://www.instagram.com/mduc7500/" target="_blank" rel="noopener" aria-label="Instagram"><i class='bx bxl-instagram'></i></a>
-        <a href="https://github.com/haquangminhduc" target="_blank" rel="noopener" aria-label="GitHub"><i class='bx bxl-github'></i></a>
+      <p class="kicker">Vinh, Nghệ An</p>
+      <div class="pills">
+        <span class="pill">Nghèo</span>
+        <span class="pill">Bần</span>
+        <span class="pill">Hèn</span>
       </div>
-   
+      <div class="social" aria-label="Mạng xã hội">
+        <a href="https://www.facebook.com/haquagminhduc" target="_blank" rel="noopener" aria-label="Facebook">
+          <i class='bx bxl-facebook'></i>
+        </a>
+        <a href="https://www.instagram.com/mduc7500/" target="_blank" rel="noopener" aria-label="Instagram">
+          <i class='bx bxl-instagram'></i>
+        </a>
+        <a href="https://github.com/haquangminhduc" target="_blank" rel="noopener" aria-label="GitHub">
+          <i class='bx bxl-github'></i>
+        </a>
+      </div>
+      <div class="cta">
+        <button class="btn">Contact Me</button>
+        <button class="btn secondary">View Projects</button>
+      </div>
     </div>
   </main>
 
-  <footer class="container footer-container">
-    <div class="footer-info">© 2025 · Developed by Hà Quang Minh Đức</div>
-  </footer>
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="bottom-nav-item active">
+      <i class='bx bx-home'></i>
+      <span>Home</span>
+    </a>
+    <a href="brainot.html" class="bottom-nav-item">
+      <i class='bx bx-grid-alt'></i>
+      <span>BrainRot</span>
+    </a>
+    <a href="#contact" class="bottom-nav-item">
+      <i class='bx bx-book'></i>
+      <span>Library</span>
+    </a>
+  </nav>
 
   <script>
-    // Dark mode: ưu tiên hệ thống, sau đó ghi đè bằng localStorage
+    // Bottom Nav Active State
+    document.querySelectorAll('.bottom-nav-item').forEach(item => {
+      item.addEventListener('click', function(e) {
+        e.preventDefault();
+        // Remove active from all
+        document.querySelectorAll('.bottom-nav-item').forEach(i => i.classList.remove('active'));
+        // Add active to clicked
+        this.classList.add('active');
+        // Smooth scroll to target
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Dark Mode Toggle
     const body = document.body;
     const toggle = document.getElementById('darkModeToggle');
     const icon = document.getElementById('modeIcon');
 
     const stored = localStorage.getItem('darkMode');
-    if(stored === 'enabled'){ body.classList.add('dark-mode'); icon.classList.replace('bxs-moon','bxs-sun'); }
-    if(stored === 'disabled'){ body.classList.remove('dark-mode'); icon.classList.replace('bxs-sun','bxs-moon'); }
+    if (stored === 'enabled') { 
+      body.classList.add('dark-mode'); 
+      icon.classList.replace('bxs-moon', 'bxs-sun'); 
+    }
+    if (stored === 'disabled') { 
+      body.classList.remove('dark-mode'); 
+      icon.classList.replace('bxs-sun', 'bxs-moon'); 
+    }
 
-    toggle.addEventListener('click',()=>{
+    toggle.addEventListener('click', () => {
       const enabled = !body.classList.contains('dark-mode');
       body.classList.toggle('dark-mode', enabled);
       icon.classList.toggle('bxs-sun', enabled);
@@ -218,11 +751,14 @@
       localStorage.setItem('darkMode', enabled ? 'enabled' : 'disabled');
     });
 
-    // Scroll reveal nhẹ cho cột phải
+    // Scroll Reveal
     const el = document.getElementById('revealCol');
-    const io = new IntersectionObserver(([e])=>{
-      if(e.isIntersecting){ el.classList.add('in'); io.disconnect(); }
-    }, {threshold:.2});
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { 
+        el.classList.add('in'); 
+        io.disconnect(); 
+      }
+    }, { threshold: .2 });
     io.observe(el);
   </script>
   <script src="hoa.js" defer></script>
