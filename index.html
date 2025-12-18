@@ -18,13 +18,13 @@
       --bg: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
       --text: #334155;
       --muted: #64748b;
-      --brand: #10b981;
-      --brand-2: #059669;
-      --card: rgba(255, 255, 255, 0.05);
+      --brand: #e0e0e0;
+      --brand-2: #1146ca;
+      --card: rgba(213, 19, 19, 0.05);
       --bd: rgba(255, 255, 255, 0.1);
       --shadow-light: rgba(255, 255, 255, 0.2);
       --shadow-dark: rgba(0, 0, 0, 0.1);
-      --primary-color: #10b981;
+      --primary-color: #29c506;
       --dark-bg: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
       --light-bg: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
       --neumo-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -33,7 +33,7 @@
 
     @media (prefers-color-scheme: light) {
       :root {
-        --bg: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+        --bg: linear-gradient(135deg, #b8d4f0 0%, #b3cce8 100%);
         --text: #334155;
         --muted: #64748b;
         --card: rgba(255, 255, 255, 0.05);
@@ -243,7 +243,7 @@
       inset: 0;
       border-radius: 50%;
       padding: 2px;
-      background: conic-gradient(from var(--angle), #10b981, #059669, #10b981);
+      background: conic-gradient(from var(--angle), #0d4dc4, #0d41c7, #09226e);
       -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
       -webkit-mask-composite: xor;
       mask-composite: exclude;
@@ -336,7 +336,7 @@
     }
 
     .detail .accent {
-      background: linear-gradient(90deg, var(--brand), var(--brand-2), #10b981, var(--brand));
+      background: linear-gradient(90deg, var(--brand), var(--brand-2), #0a60d0, var(--brand));
       background-size: 200% auto;
       -webkit-background-clip: text;
       background-clip: text;
@@ -464,7 +464,7 @@
       font-weight: 700;
       cursor: pointer;
       background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+      box-shadow: 0 4px 15px rgba(0, 203, 128, 0.3);
       color: white;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
@@ -487,7 +487,7 @@
       left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      background: linear-gradient(90deg, transparent, rgba(158, 145, 145, 0.2), transparent);
       transition: left 0.5s;
     }
 
@@ -507,14 +507,14 @@
     }
 
     .btn.secondary:hover, .btn.secondary:active {
-      box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+      box-shadow: 0 8px 25px rgba(187, 185, 183, 0.4);
     }
 
     .more-info-btn {
       margin-top: 20px;
       padding: 10px 20px;
       background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+      box-shadow: 0 4px 15px rgba(178, 176, 169, 0.3);
       color: white;
       border: none;
       border-radius: 8px;
@@ -534,7 +534,7 @@
 
     .more-info-btn:hover, .more-info-btn:active {
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+      box-shadow: 0 8px 25px rgba(7, 150, 233, 0.4);
     }
 
     /* Bottom Navigation - Glass Style (Cập nhật để items luôn ở giữa) */
@@ -545,7 +545,7 @@
       transform: translateX(-50%);
       width: auto;
       -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 5px solid rgba(11, 59, 254, 0.2);
       border-radius: 50px;
       padding: 8px 20px;
       display: flex;
@@ -622,13 +622,13 @@
 
     .bottom-nav-item.active {
       color: var(--brand);
-      background: rgba(16, 185, 129, 0.1);
+      background: rgba(51, 51, 51, 0.1);
       transform: scale(1.05);
     }
 
     .bottom-nav-item:hover {
       color: var(--brand);
-      background: rgba(16, 185, 129, 0.05);
+      background: rgba(62, 62, 62, 0.05);
       transform: scale(1.1);
     }
 
@@ -716,7 +716,7 @@
   <header>
     <div class="page-header">
       <div class="logo">
-        <a href="#home"><i class='bx bx-user-circle'></i><span>hquangminhduc</span></a>
+      
       </div>
       <div class="mode">
         <button class="icon-btn" id="darkModeToggle" title="Chuyển chế độ sáng/tối" aria-label="Dark mode toggle">
@@ -733,14 +733,9 @@
       </span>
     </div>
     <div class="detail reveal fade-in" id="revealCol">
-      <h3>Xin chào, tôi là</h3>
-      <h1><span class="accent">Hà Quang</span> Minh Đức</h1>
+      <h1><span class="accent">Hà Quang Minh Đức</span></h1>
       <p class="kicker">Vinh, Nghệ An</p>
-      <div class="pills">
-        <span class="pill">Nghèo</span>
-        <span class="pill">Bần</span>
-        <span class="pill">Hèn</span>
-      </div>
+      
       <div class="social" aria-label="Mạng xã hội">
         <a href="https://www.facebook.com/haquagminhduc" target="_blank" rel="noopener" aria-label="Facebook">
           <i class='bx bxl-facebook'></i>
@@ -769,13 +764,15 @@
       <i class='bx bx-grid-alt'></i>
       <span>BrainRot</span>
     </a>
-    <a href="#contact" class="bottom-nav-item">
+    <a href="Pornography.html" class="bottom-nav-item">
       <i class='bx bx-book'></i>
-      <span>Library</span>
+      <span>Pornography</span>
+    </a>
+     <a href="DeepDive.html" class="bottom-nav-item">
+      <i class='bx bx-book'></i>
+      <span>DeepDive</span>
     </a>
   </nav>
-
- 
 
   <script>
     // Bottom Nav Active State (Cập nhật để xử lý cả scroll và navigation)
@@ -832,6 +829,5 @@
     }, { threshold: .2 });
     io.observe(el);
   </script>
-  <script src="hoa.js" defer></script>
 </body>
 </html>

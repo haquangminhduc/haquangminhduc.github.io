@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo Tác động: Tiêu thụ Nội dung Khiêu dâm & Trợ lý AI Đa năng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #fdfbf7; color: #1f2937; }
+        .chart-container { 
+            position: relative; 
+            width: 100%; 
+            max-width: 600px; 
+            margin: 0 auto; 
+            height: 300px; 
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container { height: 350px; }
+        }
+        .active-tab { border-bottom: 2px solid #ea580c; color: #ea580c; font-weight: 600; }
+        .inactive-tab { color: #6b7280; }
+        .inactive-tab:hover { color: #374151; }
+        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .ai-glow { box-shadow: 0 0 20px rgba(234, 88, 12, 0.15); border: 1px solid rgba(234, 88, 12, 0.2); }
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #ea580c;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .speech-bubble { position: relative; background: #fff; border-radius: .4em; }
+        .speech-bubble:after { content: ''; position: absolute; left: 0; top: 50%; width: 0; height: 0; border: 10px solid transparent; border-right-color: #fff; border-left: 0; border-top: 0; margin-top: -5px; margin-left: -10px; }
+    /*------------------------------------*/
+         @media (prefers-reduced-motion: reduce) {
+      .icon-btn, .btn, .pill, .avatar, .more-info-btn, body::before, body::after, .detail, .bottom-nav, .avatar-wrap { 
+        transition: none; 
+        animation: none; 
+      }
+    }
+     @media screen and (max-width: 480px) {
+      .bottom-nav-item i {
+        font-size: 18px;
+      }
+    }
+
+    .bottom-nav-item.active {
+      color: var(--brand);
+      background: rgba(16, 185, 129, 0.1);
+      transform: scale(1.05);
+    }
+
+    .bottom-nav-item:hover {
+      color: var(--brand);
+      background: rgba(16, 185, 129, 0.05);
+      transform: scale(1.1);
+    }
+     @media screen and (max-width: 768px) {
+      .bottom-nav-item {
+        padding: 8px 2px;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .bottom-nav-item {
+        padding: 6px 1px;
+        font-size: 10px;
+        gap: 2px;
+        min-width: 50px;
+      }
+    }
+
+    .bottom-nav-item i {
+      font-size: 21px;
+    }
+      /* Bottom Navigation - Glass Style (Cập nhật để items luôn ở giữa) */
+    .bottom-nav {
+      position: fixed;
+      bottom: 20px;
+      left: 40%;
+      transform: translateX(-50%);
+      width: auto;
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50px;
+      padding: 8px 20px;
+      display: flex;
+      gap: 20px;
+      justify-content: center; /* Thêm để items ở giữa container */
+      z-index: 50;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      animation: liquidFloat 4s ease-in-out infinite;
+      max-width: 90vw;
+    }
+
+    @media screen and (max-width: 768px) {
+      .bottom-nav {
+        width: 50%;
+        left: 10%;
+        transform: none;
+        justify-content: center; /* Thay space-around bằng center để items ở giữa màn hình mobile */
+        max-width: none;
+        padding: 8px 0;
+        gap: 10px; /* Giảm gap trên mobile để vừa màn hình */
+        border-radius: 25px;
+        bottom: 10px;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .bottom-nav {
+        padding: 6px 0;
+        bottom: 5px;
+        border-radius: 20px;
+        gap: 5px; /* Giảm thêm gap cho màn hình nhỏ */
+      }
+    }
+
+    .bottom-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12px;
+      transition: all 0.3s ease;
+      padding: 8px 4px;
+      flex: 1;
+      border-radius: 12px;
+      min-width: 60px; /* Đảm bảo mỗi item có chiều rộng tối thiểu để cân bằng */
+    }
+
+    @media screen and (max-width: 768px) {
+      .bottom-nav-item {
+        padding: 8px 2px;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .bottom-nav-item {
+        padding: 6px 1px;
+        font-size: 10px;
+        gap: 2px;
+        min-width: 50px;
+      }
+    }
+
+    .bottom-nav-item i {
+      font-size: 21px;
+    }
+
+    @media screen and (max-width: 480px) {
+      .bottom-nav-item i {
+        font-size: 18px;
+      }
+    }
+
+    .bottom-nav-item.active {
+      color: var(--brand);
+      background: rgba(16, 185, 129, 0.1);
+      transform: scale(1.05);
+    }
+
+    .bottom-nav-item:hover {
+      color: var(--brand);
+      background: rgba(16, 185, 129, 0.05);
+      transform: scale(1.1);
+    }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals & Alert Orange (Background: #fdfbf7, Text: #1f2937, Accent/Alert: #ea580c) -->
+    <!-- Application Structure Plan: We have enhanced the Dashboard with multi-modal AI capabilities. 
+         1. Main Research Sections: Static but enriched with "Listen ✨" buttons (TTS).
+         2. AI Hub (New): A unified interface for Chat, Deep Analysis (Google Search), and Mood Check-ins.
+         3. Dynamic Recovery Plan: Improved AI logic for better personalization.
+         The UI uses a sidebar-like grid on desktop for the AI Hub to keep interactions secondary to the content. -->
+    <!-- Visualization & Content Choices: 
+         - Line Charts & Radar Charts: For data visualization.
+         - Gemini 2.5 Flash: For core logic and search-grounded research.
+         - Gemini TTS: For audio accessibility.
+         CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. 
+    -->
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-gray-800 tracking-tight">Neuro<span class="text-orange-600">Impact</span></span>
+                    <span class="hidden md:block ml-4 text-sm text-gray-500 border-l pl-4 border-gray-300">Nghiên cứu & Trợ lý AI Đa năng</span>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <button onclick="switchTab('overview')" id="nav-overview" class="active-tab px-1 pt-1 text-sm font-medium transition-all">Tổng quan</button>
+                    <button onclick="switchTab('brain')" id="nav-brain" class="inactive-tab px-1 pt-1 text-sm font-medium transition-all">Não bộ</button>
+                    <button onclick="switchTab('mind')" id="nav-mind" class="inactive-tab px-1 pt-1 text-sm font-medium transition-all">Tâm lý</button>
+                    <button onclick="switchTab('social')" id="nav-social" class="inactive-tab px-1 pt-1 text-sm font-medium transition-all">Mối quan hệ</button>
+                    <button onclick="switchTab('ai-hub')" id="nav-ai-hub" class="inactive-tab px-1 pt-1 text-sm font-medium transition-all flex items-center bg-orange-50 px-3 rounded-full py-1">Trung tâm AI ✨</button>
+                </nav>
+                <div class="md:hidden">
+                    <select onchange="switchTab(this.value)" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md bg-gray-50 text-gray-900">
+                        <option value="overview">Tổng quan</option>
+                        <option value="brain">Não bộ & Thần kinh</option>
+                        <option value="mind">Sức khỏe Tâm thần</option>
+                        <option value="social">Mối quan hệ & Xã hội</option>
+                        <option value="ai-hub">Trung tâm AI ✨</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow bg-[#fdfbf7] p-4 sm:p-6 lg:p-8">
+        <div class="max-w-6xl mx-auto">
+
+            <!-- VIEW: OVERVIEW -->
+            <section id="view-overview" class="space-y-8">
+                <div class="text-center py-12 bg-white rounded-3xl shadow-sm border border-gray-100 mb-8">
+                    <h1 class="text-4xl font-extrabold text-gray-900 mb-4 px-4">Giải mã Tác động của Phim Khiêu dâm</h1>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto px-6">
+                        Khám phá khoa học đằng sau sự hưng phấn nhân tạo và nhận sự hỗ trợ thông minh từ AI để khôi phục lại sự cân bằng tự nhiên.
+                    </p>
+                    <div class="mt-6 flex justify-center space-x-4">
+                        <button onclick="playSectionTTS('view-overview-text')" class="flex items-center space-x-2 text-orange-600 border border-orange-200 px-4 py-2 rounded-full hover:bg-orange-50 transition-all text-sm font-medium">
+                            <span>Nghe tóm tắt ✨</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="view-overview-text" class="hidden">Đây là báo cáo nghiên cứu về ảnh hưởng của phim khiêu dâm đến não bộ, tâm lý và các mối quan hệ xã hội. Báo cáo cung cấp kiến thức khoa học và giải pháp phục hồi thông qua trợ lý AI.</div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 card-hover">
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Sương mù não</h3>
+                        <p class="text-gray-600 text-sm">Cảm giác mệt mỏi tinh thần và giảm trí nhớ sau khi xem quá độ.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 card-hover">
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Mất nhạy cảm</h3>
+                        <p class="text-gray-600 text-sm">Não bộ cần những kích thích mạnh hơn để cảm thấy thỏa mãn.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 card-hover">
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">PIED</h3>
+                        <p class="text-gray-600 text-sm">Rối loạn chức năng do sự lệ thuộc vào hình ảnh nhân tạo.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: BRAIN (Enhanced with TTS) -->
+            <section id="view-brain" class="hidden space-y-8 animate-fade-in">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+                    <div class="flex justify-between items-start mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900">1. Tác động đến Não bộ</h2>
+                        <button onclick="playSectionTTS('brain-content-text')" class="text-orange-600 text-sm flex items-center bg-orange-50 px-3 py-1 rounded-full font-medium">
+                            <span>Nghe nội dung ✨</span>
+                        </button>
+                    </div>
+                    <div id="brain-content-text" class="text-gray-600 mb-8 leading-relaxed">
+                        Phim khiêu dâm kích thích hệ thống phần thưởng tiết ra Dopamine ở mức cực đại. Việc lặp lại này khiến não bộ "tự vệ" bằng cách giảm số lượng thụ thể, dẫn đến hiện tượng giảm nhạy cảm. Bạn sẽ thấy mình khó tập trung vào những việc đòi hỏi sự kiên nhẫn và ít cảm nhận được niềm vui từ những sở thích bình thường.
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2 bg-gray-50 rounded-xl p-4">
+                            <div class="chart-container">
+                                <canvas id="dopamineChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-orange-50 rounded-xl border border-orange-100">
+                                <h4 class="font-bold text-orange-800 text-sm mb-1">Thùy trán bị ảnh hưởng</h4>
+                                <p class="text-xs text-gray-700">Khả năng kiểm soát xung động giảm sút, khiến việc "nói không" trở nên khó khăn hơn.</p>
+                            </div>
+                            <div class="p-4 bg-gray-100 rounded-xl">
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">Neuroplasticity</h4>
+                                <p class="text-xs text-gray-700">Não bộ có thể tự chữa lành nếu được nghỉ ngơi (Dopamine Reboot) trong ít nhất 30-90 ngày.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: MIND -->
+            <section id="view-mind" class="hidden space-y-8 animate-fade-in">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4 border-b pb-2">2. Sức khỏe Tâm thần</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                        <div class="p-4 border rounded-lg hover:bg-orange-50 transition-colors">
+                            <h4 class="font-bold text-gray-800">Sương mù não (Brain Fog)</h4>
+                            <p class="text-sm text-gray-600">Cảm giác mệt mỏi, khó tập trung và suy giảm trí nhớ ngắn hạn sau khi tiêu thụ quá độ.</p>
+                        </div>
+                        <div class="p-4 border rounded-lg hover:bg-orange-50 transition-colors">
+                            <h4 class="font-bold text-gray-800">Rối loạn hành vi</h4>
+                            <p class="text-sm text-gray-600">Sự lệ thuộc khiến bạn lơ là công việc và các trách nhiệm xã hội quan trọng.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: SOCIAL -->
+            <section id="view-social" class="hidden space-y-8 animate-fade-in">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4 border-b pb-2">3. Mối quan hệ & Xã hội</h2>
+                    <div class="flex flex-col md:flex-row gap-8 items-center mt-4">
+                        <div class="w-full md:w-1/2">
+                            <div class="chart-container">
+                                <canvas id="relationshipRadar"></canvas>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/2 space-y-3 text-sm text-gray-600">
+                            <p>Phim khiêu dâm làm lệch lạc nhận thức về tình yêu và tình dục thực tế, dẫn đến sự thiếu thỏa mãn và xa cách với bạn đời.</p>
+                            <p class="bg-red-50 p-3 rounded border-l-4 border-red-500">Người xem thường có xu hướng tự cô lập và cảm thấy xấu hổ trong giao tiếp xã hội.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: AI HUB (New Unified View) -->
+            <section id="view-ai-hub" class="hidden space-y-6 animate-fade-in">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    
+                    <!-- LEFT SIDE: Interaction Tools -->
+                    <div class="lg:col-span-4 space-y-6">
+                        <!-- Mood Check-in -->
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-orange-100 ai-glow">
+                            <h3 class="font-bold text-gray-900 mb-3 flex items-center">
+                                <span class="mr-2 text-xl">🌈</span> Kiểm tra Tâm trạng ✨
+                            </h3>
+                            <div class="space-y-3">
+                                <p class="text-xs text-gray-500">Bạn đang cảm thấy thế nào ngay bây giờ?</p>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <button onclick="moodCheck('stress')" class="p-2 bg-gray-50 rounded-lg text-xs hover:bg-orange-50 border border-transparent hover:border-orange-200 transition-all">Căng thẳng</button>
+                                    <button onclick="moodCheck('sad')" class="p-2 bg-gray-50 rounded-lg text-xs hover:bg-orange-50 border border-transparent hover:border-orange-200 transition-all">Buồn bã</button>
+                                    <button onclick="moodCheck('urge')" class="p-2 bg-gray-50 rounded-lg text-xs hover:bg-red-50 border border-transparent hover:border-red-200 transition-all">Bị thôi thúc</button>
+                                </div>
+                                <div id="mood-feedback" class="hidden text-xs p-3 bg-blue-50 text-blue-800 rounded-lg italic"></div>
+                            </div>
+                        </div>
+
+                        <!-- Chat & Research Tabs -->
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-200">
+                            <div class="flex space-x-2 mb-4 border-b pb-2">
+                                <button onclick="switchAiMode('chat')" id="tab-chat" class="text-sm font-bold text-orange-600 border-b-2 border-orange-600 pb-1">Trò chuyện ✨</button>
+                                <button onclick="switchAiMode('search')" id="tab-search" class="text-sm font-medium text-gray-400 pb-1">Nghiên cứu sâu ✨</button>
+                            </div>
+
+                            <div id="ai-input-area" class="space-y-4">
+                                <textarea id="ai-query" rows="4" class="w-full p-3 text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:outline-none transition-all" placeholder="Đặt câu hỏi hoặc chủ đề bạn muốn nghiên cứu..."></textarea>
+                                <button id="btn-ai-submit" onclick="handleAiSubmit()" class="w-full bg-orange-600 text-white py-3 rounded-xl hover:bg-orange-700 transition-all font-bold flex justify-center items-center shadow-md">
+                                    <span id="btn-ai-text">Gửi yêu cầu ✨</span>
+                                    <div id="loader-ai" class="loading-spinner hidden ml-2"></div>
+                                </button>
+                                <button onclick="generatePlan()" class="w-full bg-white border border-orange-200 text-orange-600 py-2 rounded-xl text-xs font-bold hover:bg-orange-50">Lập kế hoạch phục hồi 30 ngày ✨</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT SIDE: AI Results -->
+                    <div class="lg:col-span-8 space-y-4">
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 h-full min-h-[500px] flex flex-col">
+                            <div class="p-4 border-b flex justify-between items-center bg-gray-50 rounded-t-2xl">
+                                <span id="ai-status-label" class="text-xs font-bold text-gray-500 uppercase tracking-widest">Phản hồi từ Gemini AI</span>
+                                <div id="ai-audio-controls" class="hidden flex items-center space-x-2">
+                                    <button onclick="playResponseTTS()" class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded-full font-bold">Nghe ✨</button>
+                                </div>
+                            </div>
+                            <div id="ai-response-container" class="p-6 flex-grow overflow-y-auto">
+                                <div id="ai-empty-state" class="h-full flex flex-col items-center justify-center text-center space-y-4 opacity-50">
+                                    <div class="text-5xl">✨</div>
+                                    <p class="text-sm text-gray-500 max-w-xs italic">Hãy đặt câu hỏi hoặc chọn một công cụ bên trái để bắt đầu tương tác với trí tuệ nhân tạo.</p>
+                                </div>
+                                <div id="ai-text-output" class="hidden prose prose-sm max-w-none text-gray-700 leading-relaxed whitespace-pre-wrap"></div>
+                                <div id="ai-sources" class="hidden mt-6 pt-4 border-t border-gray-100">
+                                    <h4 class="text-xs font-bold text-gray-400 mb-2 uppercase tracking-tighter">Nguồn tham khảo khoa học:</h4>
+                                    <ul id="source-list" class="space-y-1 text-xs text-blue-600"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+ <!-- Bottom Navigation -->
+ <nav class="bottom-nav">
+    <a href="index.html" class="bottom-nav-item active">
+      <i class='bx bx-home'></i>
+      <span>Home</span>
+    </a>
+    <a href="brainot.html" class="bottom-nav-item">
+      <i class='bx bx-grid-alt'></i>
+      <span>BrainRot</span>
+    </a>
+    <a href="Pornography.html" class="bottom-nav-item">
+      <i class='bx bx-book'></i>
+      <span>Pornography</span>
+    </a>
+     <a href="DeepDive.html" class="bottom-nav-item">
+      <i class='bx bx-book'></i>
+      <span>DeepDive</span>
+    </a>
+  </nav>
+ 
+
+    <script>
+        const apiKey = ""; // Runtime provides key
+        const state = { 
+            currentTab: 'overview',
+            aiMode: 'chat', // 'chat' or 'search'
+            lastAiResponse: ""
+        };
+
+        // Navigation
+        function switchTab(tabId) {
+            // Safety: include all possible sections
+            const sectionIds = ['overview', 'brain', 'mind', 'social', 'ai-hub'];
+            
+            sectionIds.forEach(id => {
+                const el = document.getElementById(`view-${id}`);
+                if (el) el.classList.add('hidden');
+            });
+            
+            const activeSection = document.getElementById(`view-${tabId}`);
+            if (activeSection) activeSection.classList.remove('hidden');
+            
+            // UI classes update
+            sectionIds.forEach(id => {
+                const btn = document.getElementById(`nav-${id}`);
+                if (btn) {
+                    if (id === tabId) {
+                        btn.classList.replace('inactive-tab', 'active-tab');
+                    } else {
+                        btn.classList.replace('active-tab', 'inactive-tab');
+                    }
+                }
+            });
+
+            state.currentTab = tabId;
+            if (tabId === 'brain') initCharts();
+        }
+
+        function switchAiMode(mode) {
+            state.aiMode = mode;
+            const tabChat = document.getElementById('tab-chat');
+            const tabSearch = document.getElementById('tab-search');
+            const placeholder = mode === 'chat' ? "Hỏi bất cứ điều gì về não bộ và phục hồi..." : "Nhập chủ đề khoa học cần tìm kiếm chi tiết (với Google Search)...";
+            document.getElementById('ai-query').placeholder = placeholder;
+
+            if (mode === 'chat') {
+                tabChat.className = "text-sm font-bold text-orange-600 border-b-2 border-orange-600 pb-1";
+                tabSearch.className = "text-sm font-medium text-gray-400 pb-1";
+            } else {
+                tabSearch.className = "text-sm font-bold text-orange-600 border-b-2 border-orange-600 pb-1";
+                tabChat.className = "text-sm font-medium text-gray-400 pb-1";
+            }
+        }
+
+        // --- GEMINI CORE LOGIC ---
+
+        async function handleAiSubmit() {
+            const query = document.getElementById('ai-query').value.trim();
+            if (!query) return;
+
+            setAiLoading(true);
+            
+            const systemPrompt = "Bạn là chuyên gia về Neurobiology và tâm lý học cai nghiện. Trả lời bằng tiếng Việt, khoa học, thực tế và đồng cảm. Nếu trong chế độ Nghiên cứu, hãy sử dụng thông tin từ Google Search để cung cấp dữ liệu mới nhất.";
+            
+            const payload = {
+                contents: [{ parts: [{ text: query }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] }
+            };
+
+            if (state.aiMode === 'search') {
+                payload.tools = [{ "google_search": {} }];
+            }
+
+            try {
+                const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, payload);
+                const data = await response.json();
+                
+                const textOutput = data.candidates?.[0]?.content?.parts?.[0]?.text || "Không tìm thấy câu trả lời.";
+                const sources = data.candidates?.[0]?.groundingMetadata?.groundingAttributions || [];
+
+                displayAiResponse(textOutput, sources);
+            } catch (error) {
+                displayAiResponse("Đã xảy ra lỗi khi kết nối với AI. Vui lòng thử lại sau.");
+            } finally {
+                setAiLoading(false);
+            }
+        }
+
+        async function moodCheck(type) {
+            const feedback = document.getElementById('mood-feedback');
+            feedback.innerHTML = "AI đang suy nghĩ lời khuyên cho bạn... ✨";
+            feedback.classList.remove('hidden');
+
+            const prompts = {
+                stress: "Tôi đang cảm thấy rất căng thẳng. Hãy cho tôi 1 lời khuyên ngắn gọn để bình tĩnh lại.",
+                sad: "Tôi đang cảm thấy buồn bã và trống rỗng. Hãy cho tôi 1 lời khuyên khích lệ tinh thần.",
+                urge: "Tôi đang bị thôi thúc mãnh liệt muốn xem phim sex. Hãy giúp tôi thoát khỏi cảm giác này ngay lập tức với kỹ thuật tâm lý."
+            };
+
+            const payload = {
+                contents: [{ parts: [{ text: prompts[type] }] }],
+                systemInstruction: { parts: [{ text: "Trả lời cực kỳ ngắn gọn, tối đa 2 câu, giọng văn hỗ trợ và khẩn cấp nếu cần." }] }
+            };
+
+            try {
+                const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, payload);
+                const data = await response.json();
+                feedback.innerHTML = `✨ ${data.candidates?.[0]?.content?.parts?.[0]?.text}`;
+            } catch (e) {
+                feedback.innerHTML = "Hãy hít thở sâu và rời xa thiết bị điện tử ngay nhé!";
+            }
+        }
+
+        async function generatePlan() {
+            document.getElementById('ai-query').value = "Hãy lập cho tôi kế hoạch phục hồi não bộ 30 ngày chi tiết nhất.";
+            handleAiSubmit();
+        }
+
+        // --- TTS (TEXT TO SPEECH) ---
+
+        async function playSectionTTS(sectionId) {
+            const el = document.getElementById(sectionId);
+            if (!el) return;
+            const text = el.innerText;
+            await callGeminiTTS(text);
+        }
+
+        async function playResponseTTS() {
+            if (state.lastAiResponse) {
+                await callGeminiTTS(state.lastAiResponse);
+            }
+        }
+
+        async function callGeminiTTS(text) {
+            const payload = {
+                contents: [{ parts: [{ text: `Đọc văn bản sau một cách rõ ràng và truyền cảm: ${text.substring(0, 1000)}` }] }],
+                generationConfig: { 
+                    responseModalities: ["AUDIO"],
+                    speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Aoede" } } }
+                }
+            };
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+                const pcmData = data.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+                if (pcmData) {
+                    const audioBlob = pcmToWav(pcmData, 24000); // 24kHz default for Gemini TTS
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    const audio = new Audio(audioUrl);
+                    audio.play();
+                }
+            } catch (e) {
+                console.error("TTS Error:", e);
+            }
+        }
+
+        // Helper: PCM to WAV
+        function pcmToWav(base64Pcm, sampleRate) {
+            const binaryString = window.atob(base64Pcm);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) bytes[i] = binaryString.charCodeAt(i);
+            const buffer = new ArrayBuffer(44 + bytes.length);
+            const view = new DataView(buffer);
+            const writeString = (offset, string) => { for (let i = 0; i < string.length; i++) view.setUint8(offset + i, string.charCodeAt(i)); };
+            writeString(0, 'RIFF');
+            view.setUint32(4, 36 + bytes.length, true);
+            writeString(8, 'WAVE');
+            writeString(12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, 1, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * 2, true);
+            view.setUint16(32, 2, true);
+            view.setUint16(34, 16, true);
+            writeString(36, 'data');
+            view.setUint32(40, bytes.length, true);
+            for (let i = 0; i < bytes.length; i++) view.setUint8(44 + i, bytes[i]);
+            return new Blob([buffer], { type: 'audio/wav' });
+        }
+
+        // --- UTILS ---
+
+        async function fetchWithRetry(url, payload, retries = 5, delay = 1000) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (response.ok) return response;
+                } catch (e) {}
+                await new Promise(r => setTimeout(r, delay * Math.pow(2, i)));
+            }
+            throw new Error('All retries failed');
+        }
+
+        function setAiLoading(isLoading) {
+            const loader = document.getElementById('loader-ai');
+            const btnText = document.getElementById('btn-ai-text');
+            const btn = document.getElementById('btn-ai-submit');
+            
+            if (isLoading) {
+                loader.classList.remove('hidden');
+                btnText.classList.add('opacity-50');
+                btn.disabled = true;
+                document.getElementById('ai-empty-state').classList.add('hidden');
+                document.getElementById('ai-text-output').classList.add('hidden');
+                document.getElementById('ai-audio-controls').classList.add('hidden');
+                document.getElementById('ai-sources').classList.add('hidden');
+            } else {
+                loader.classList.add('hidden');
+                btnText.classList.remove('opacity-50');
+                btn.disabled = false;
+            }
+        }
+
+        function displayAiResponse(text, sources = []) {
+            const output = document.getElementById('ai-text-output');
+            const sourceContainer = document.getElementById('ai-sources');
+            const sourceList = document.getElementById('source-list');
+            const audioControls = document.getElementById('ai-audio-controls');
+
+            state.lastAiResponse = text;
+            output.innerText = text;
+            output.classList.remove('hidden');
+            audioControls.classList.remove('hidden');
+
+            if (sources.length > 0) {
+                sourceList.innerHTML = sources.map(s => `<li><a href="${s.web?.uri}" target="_blank" class="hover:underline">🔗 ${s.web?.title || s.web?.uri}</a></li>`).join('');
+                sourceContainer.classList.remove('hidden');
+            } else {
+                sourceContainer.classList.add('hidden');
+            }
+        }
+
+        // --- CHARTS ---
+        function initCharts() {
+            const canvas = document.getElementById('dopamineChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (window.myChart) window.myChart.destroy();
+            window.myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Sáng', 'Trưa', 'Xế', 'Tối', 'Khuya'],
+                    datasets: [{
+                        label: 'Dopamine Tự nhiên',
+                        data: [100, 120, 110, 130, 90],
+                        borderColor: '#10b981',
+                        tension: 0.4
+                    }, {
+                        label: 'Kích thích Phim sex',
+                        data: [100, 100, 450, 80, 50],
+                        borderColor: '#ea580c',
+                        tension: 0.1
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        window.onload = () => {
+            // Initial view
+            switchTab('overview');
+            
+            // Initialize Radar Chart (Static)
+            const radarCanvas = document.getElementById('relationshipRadar');
+            if (radarCanvas) {
+                const ctxRadar = radarCanvas.getContext('2d');
+                new Chart(ctxRadar, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Kết nối', 'Thỏa mãn', 'Nhận thức', 'Tự tin', 'Giao tiếp'],
+                        datasets: [
+                            { label: 'Lành mạnh', data: [90, 85, 95, 90, 88], backgroundColor: 'rgba(16, 185, 129, 0.2)', borderColor: '#10b981' },
+                            { label: 'Lạm dụng', data: [35, 45, 25, 40, 30], backgroundColor: 'rgba(239, 68, 68, 0.2)', borderColor: '#ef4444' }
+                        ]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
