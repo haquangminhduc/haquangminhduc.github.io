@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark light" />
   <meta name="description" content="Trang chủ · Hà Quang Minh Đức" />
+  <!-- Font Concert One -->
+<link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
           <script src="common.js"></script>
 
   <link rel="icon" href="icon.jpeg" />
@@ -714,14 +716,47 @@
         transform: translateY(0);
       }
     }
+    /* FPS DISPLAY - Kiểu wusteam.com */
+.fps-display {
+  margin-right: 15px;
+  padding: 8px 15px;
+  border-radius: 12px;
+  background: var(--card);
+  box-shadow: var(--neumo-shadow);
+  font-family: 'Concert One', cursive;
+  color: rgb(27, 0, 255);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#fps {
+  font-weight: bold;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+/* Animation nhẹ */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Màu sắc theo FPS */
+.fps-excellent { color: #1b00ff !important; text-shadow: 0 0 10px rgba(27, 0, 255, 0.3); }
+.fps-good { color: #ff9800 !important; text-shadow: 0 0 10px rgba(255, 152, 0, 0.3); }
+.fps-poor { color: #ff0000 !important; text-shadow: 0 0 10px rgba(255, 0, 0, 0.3); }
   </style>
 </head>
 <body>
   <header>
+    
     <div class="page-header">
-      <div class="logo">
-      
-      </div>
+      <!-- Thêm FPS display vào đây -->
+  <div class="fps-display">
+    <span id="fps">--</span> FPS
+  </div>
       <div class="mode">
         <button class="icon-btn" id="darkModeToggle" title="Chuyển chế độ sáng/tối" aria-label="Dark mode toggle">
           <i class='bx bxs-moon' id="modeIcon"></i>
@@ -832,6 +867,55 @@
       }
     }, { threshold: .2 });
     io.observe(el);
+    // FPS COUNTER - Kiểu wusteam.com
+let fps = 0;
+let frameCount = 0;
+let lastTime = performance.now();
+let fpsElement = null;
+
+function initFPS() {
+  // Tạo element nếu chưa có
+  if (!document.getElementById('fps')) {
+    const fpsDiv = document.createElement('div');
+    fpsDiv.className = 'fps-display';
+    fpsDiv.innerHTML = '<span id="fps">--</span> FPS';
+    document.querySelector('header').prepend(fpsDiv);
+  }
+  
+  fpsElement = document.getElementById('fps');
+  updateFPS();
+}
+
+function updateFPS() {
+  frameCount++;
+  const currentTime = performance.now();
+  
+  if (currentTime - lastTime >= 500) { // Cập nhật mỗi 0.5s cho mượt
+    fps = Math.round((frameCount * 1000) / (currentTime - lastTime) * 10) / 10;
+    frameCount = 0;
+    lastTime = currentTime;
+    
+    if (fpsElement) {
+      fpsElement.textContent = fps;
+      
+      // Đổi màu theo FPS
+      if (fps >= 50) {
+        fpsElement.className = 'fps-excellent';
+      } else if (fps >= 30) {
+        fpsElement.className = 'fps-good';
+      } else {
+        fpsElement.className = 'fps-poor';
+      }
+    }
+  }
+  
+  requestAnimationFrame(updateFPS);
+}
+
+// Khởi tạo FPS khi trang load
+window.addEventListener('DOMContentLoaded', () => {
+  initFPS();
+});
   </script>
 </body>
 </html>
