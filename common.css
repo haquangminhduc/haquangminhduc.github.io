@@ -1,0 +1,180 @@
+/* common.css - Áp dụng cho tất cả trang */
+:root {
+    /* Màu chính thống nhất (lấy từ brainot.html) */
+    --primary: #10b981;
+    --primary-dark: #059669;
+    --secondary: #f59e0b;
+    --secondary-dark: #d97706;
+    --text-primary: #334155;
+    --text-secondary: #64748b;
+    --bg-gradient: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+}
+
+/* Reset và base styles chung */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Be Vietnam Pro', 'Inter', 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg-gradient);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Glassmorphism chung */
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 16px;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Button styles chung */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Bottom Navigation chung */
+.bottom-nav {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    padding: 8px 20px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    z-index: 50;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    animation: liquidFloat 4s ease-in-out infinite;
+    max-width: 90vw;
+}
+
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    padding: 8px 12px;
+    border-radius: 12px;
+    min-width: 60px;
+}
+
+.bottom-nav-item.active {
+    color: var(--primary);
+    background: rgba(16, 185, 129, 0.1);
+    transform: scale(1.05);
+}
+
+/* Animation chung */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes liquidFloat {
+    0%, 100% { transform: translateX(-50%) translateY(0px); }
+    50% { transform: translateX(-50%) translateY(-5px); }
+}
+
+/* Responsive chung */
+@media (max-width: 768px) {
+    .bottom-nav {
+        width: auto;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 8px 15px;
+        gap: 15px;
+    }
+    
+    .bottom-nav-item {
+        padding: 8px 10px;
+        min-width: 55px;
+    }
+    
+    h1 { font-size: 2rem !important; }
+    h2 { font-size: 1.75rem !important; }
+    h3 { font-size: 1.25rem !important; }
+}
+
+@media (max-width: 480px) {
+    .bottom-nav {
+        padding: 6px 10px;
+        gap: 8px;
+        bottom: 10px;
+    }
+    
+    .bottom-nav-item {
+        padding: 6px 8px;
+        font-size: 10px;
+        min-width: 50px;
+    }
+    
+    .bottom-nav-item i {
+        font-size: 18px;
+    }
+}
