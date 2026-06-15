@@ -1,921 +1,101 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="dark light" />
-  <meta name="description" content="Trang chủ · Hà Quang Minh Đức" />
-  <!-- Font Concert One -->
-<link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
-          <script src="common.js"></script>
-
-  <link rel="icon" href="icon.jpeg" />
-  <!-- Thêm vào sau các link font -->
-<link rel="stylesheet" href="common.css">
-  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800&family=Roboto:wght@100;300;400&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <title>Hà Quang Minh Đức · Home</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; }
-
-    :root {
-      --bg: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
-      --text: #334155;
-      --muted: #64748b;
-      --brand: #e0e0e0;
-      --brand-2: #1146ca;
-      --card: rgba(213, 19, 19, 0.05);
-      --bd: rgba(255, 255, 255, 0.1);
-      --shadow-light: rgba(255, 255, 255, 0.2);
-      --shadow-dark: rgba(0, 0, 0, 0.1);
-      --primary-color: #29c506;
-      --dark-bg: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-      --light-bg: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
-      --neumo-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      --neumo-inset: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-
-    @media (prefers-color-scheme: light) {
-      :root {
-        --bg: linear-gradient(135deg, #b8d4f0 0%, #b3cce8 100%);
-        --text: #334155;
-        --muted: #64748b;
-        --card: rgba(255, 255, 255, 0.05);
-        --bd: rgba(255, 255, 255, 0.1);
-        --shadow-light: rgba(255, 255, 255, 0.2);
-        --shadow-dark: rgba(0, 0, 0, 0.1);
-      }
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-        --text: #e2e8f0;
-        --muted: #94a3b8;
-        --card: rgba(255, 255, 255, 0.05);
-        --bd: rgba(255, 255, 255, 0.1);
-        --shadow-light: rgba(255, 255, 255, 0.05);
-        --shadow-dark: rgba(0, 0, 0, 0.4);
-        --neumo-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-        --neumo-inset: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-      }
-    }
-
-    html, body { height: 100%; }
-
-    body {
-      margin: 0;
-      font-family: 'Be Vietnam Pro', 'Outfit', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans";
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      position: relative;
-      overflow-x: hidden;
-      background: var(--bg);
-      scroll-behavior: smooth;
-      padding-bottom: 100px; /* Space for bottom nav */
-    }
-
-    .container {
-      width: min(1100px, 100%);
-      margin: 0 auto;
-      padding: 0 2rem;
-      display: flex;
-      flex: 1;
-    }
-
-    @media screen and (max-width: 768px) {
-      .container { padding: 0 1rem; }
-    }
-
-    @media screen and (max-width: 480px) {
-      .container { padding: 0 0.5rem; }
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-      padding: 1rem 0;
-    }
-
-    .page-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 2rem;
-    }
-
-    @media screen and (max-width: 480px) {
-      .page-header {
-        padding: 0 1rem;
-      }
-    }
-
-    .logo a {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 800;
-      letter-spacing: .6px;
-      color: var(--text);
-      text-decoration: none;
-      font-size: 1.5rem;
-    }
-
-    @media screen and (max-width: 480px) {
-      .logo a {
-        font-size: 1.2rem;
-      }
-    }
-
-    .logo i { color: var(--brand); font-size: 22px; }
-
-    @media screen and (max-width: 480px) {
-      .logo i { font-size: 18px; }
-    }
-
-    .mode {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .icon-btn {
-      display: inline-grid;
-      place-items: center;
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--text);
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      border: none;
-    }
-
-    @media screen and (max-width: 480px) {
-      .icon-btn {
-        width: 48px;
-        height: 48px;
-      }
-    }
-
-    .icon-btn:hover, .icon-btn:active {
-      background: rgba(255, 255, 255, 0.08);
-      transform: translateY(-2px);
-    }
-
-    .main {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: center;
-      padding: 56px 0 24px;
-    }
-
-    @media (max-width: 900px) {
-      .main { 
-        grid-template-columns: 1fr; 
-        gap: 28px; 
-        text-align: center; 
-      }
-    }
-
-    @media (max-width: 768px) {
-      .main { 
-        grid-template-columns: 1fr; 
-        gap: 28px; 
-        text-align: center; 
-        padding: 40px 0 20px;
-      }
-    }
-
-    @media screen and (max-width: 480px) {
-      .main { 
-        gap: 20px; 
-        padding: 30px 0 20px;
-      }
-    }
-
-    .images {
-      display: grid;
-      place-items: center;
-      margin: 0 auto;
-      width: 300px;
-    }
-
-    @media screen and (max-width: 480px) {
-      .images {
-        width: 250px;
-      }
-    }
-
-    .avatar-wrap {
-      position: relative;
-      display: inline-grid;
-      place-items: center;
-      padding: 20px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    @media screen and (max-width: 480px) {
-      .avatar-wrap {
-        padding: 15px;
-      }
-    }
-
-    .avatar-wrap::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      padding: 2px;
-      background: conic-gradient(from var(--angle), #0d4dc4, #0d41c7, #09226e);
-      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      animation: spin 6s linear infinite;
-    }
-
-    @property --angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
-
-    @keyframes spin { to { --angle: 360deg; } }
-
-    .avatar {
-      width: min(300px, 80vw);
-      aspect-ratio: 1/1;
-      border-radius: 50%;
-      object-fit: cover;
-      border: none;
-      box-shadow: none;
-      display: block;
-      transition: transform .25s ease;
-    }
-
-    @media screen and (max-width: 480px) {
-      .avatar {
-        width: min(250px, 70vw);
-      }
-    }
-
-    .avatar:hover { transform: translateY(-2px) scale(1.02); }
-
-    .avatar-wrap:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .detail {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      border-radius: 12px;
-      padding: 2.5rem;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      animation: liquidFloat 4s ease-in-out infinite;
-    }
-
-    @media screen and (max-width: 768px) {
-      .detail {
-        padding: 2rem;
-        max-width: 100%;
-      }
-    }
-
-    @media screen and (max-width: 480px) {
-      .detail {
-        padding: 1.5rem;
-        border-radius: 12px;
-      }
-    }
-
-    @keyframes liquidFloat {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-    }
-
-    .detail:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .detail h3 {
-      margin: 0 0 6px;
-      font-size: 1.5rem;
-      color: var(--muted);
-    }
-
-    @media screen and (max-width: 480px) {
-      .detail h3 {
-        font-size: 1.3rem;
-      }
-    }
-
-    .detail h1 {
-      margin: 0 0 10px;
-      font-size: clamp(28px, 6vw, 4rem);
-      line-height: 1.15;
-      font-weight: 800;
-    }
-
-    .detail .accent {
-      background: linear-gradient(90deg, var(--brand), var(--brand-2), #0a60d0, var(--brand));
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      animation: shine 8s linear infinite;
-    }
-
-    @keyframes shine { 
-      0% { background-position: 0% 50%; } 
-      100% { background-position: 200% 50%; } 
-    }
-
-    .kicker {
-      margin: 0 0 16px;
-      color: var(--muted);
-    }
-
-    @media screen and (max-width: 480px) {
-      .kicker {
-        font-size: 1rem;
-        margin-bottom: 12px;
-      }
-    }
-
-    .pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 16px 0 22px;
-    }
-
-    @media screen and (max-width: 480px) {
-      .pills {
-        gap: 8px;
-        margin: 12px 0 18px;
-      }
-    }
-
-    .pill {
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      font-size: 13px;
-      color: var(--muted);
-      transition: all 0.3s ease;
-    }
-
-    @media screen and (max-width: 480px) {
-      .pill {
-        padding: 6px 10px;
-        font-size: 12px;
-      }
-    }
-
-    .pill:hover, .pill:active { 
-      background: rgba(255, 255, 255, 0.08);
-      transform: translateY(-2px);
-    }
-
-    .social {
-      display: flex;
-      gap: 1.4rem;
-      margin: 14px 0 0;
-    }
-
-    @media screen and (max-width: 480px) {
-      .social {
-        gap: 1rem;
-        margin: 12px 0 0;
-        justify-content: center;
-      }
-    }
-
-    .social a {
-      display: grid;
-      place-items: center;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--text);
-      text-decoration: none;
-      font-size: 1.5rem;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    @media screen and (max-width: 480px) {
-      .social a {
-        width: 48px;
-        height: 48px;
-        font-size: 1.6rem;
-      }
-    }
-
-    .social a:hover, .social a:active {
-      background: rgba(255, 255, 255, 0.08);
-      transform: scale(1.1) translateY(-2px);
-    }
-
-    .cta {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 18px;
-    }
-
-    @media screen and (max-width: 480px) {
-      .cta {
-        gap: 10px;
-        justify-content: center;
-        margin-top: 16px;
-      }
-    }
-
-    .btn {
-      border: none;
-      border-radius: 12px;
-      padding: 12px 16px;
-      font-weight: 700;
-      cursor: pointer;
-      background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      box-shadow: 0 4px 15px rgba(0, 203, 128, 0.3);
-      color: white;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-      min-width: 120px;
-    }
-
-    @media screen and (max-width: 480px) {
-      .btn {
-        padding: 14px 18px;
-        font-size: 16px;
-        min-width: 100px;
-      }
-    }
-
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(158, 145, 145, 0.2), transparent);
-      transition: left 0.5s;
-    }
-
-    .btn:hover::before {
-      left: 100%;
-    }
-
-    .btn:hover, .btn:active {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
-    }
-
-    .btn.secondary {
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
-      color: white;
-    }
-
-    .btn.secondary:hover, .btn.secondary:active {
-      box-shadow: 0 8px 25px rgba(187, 185, 183, 0.4);
-    }
-
-    .more-info-btn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      box-shadow: 0 4px 15px rgba(178, 176, 169, 0.3);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      min-width: 100px;
-    }
-
-    @media screen and (max-width: 480px) {
-      .more-info-btn {
-        padding: 12px 24px;
-        font-size: 16px;
-      }
-    }
-
-    .more-info-btn:hover, .more-info-btn:active {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(7, 150, 233, 0.4);
-    }
-
-    /* Bottom Navigation - Glass Style (Cập nhật để items luôn ở giữa) */
-    .bottom-nav {
-      position: fixed;
-      bottom: 20px;
-      left: 40%;
-      transform: translateX(-50%);
-      width: auto;
-      -webkit-backdrop-filter: blur(20px);
-      border: 5px solid rgba(11, 59, 254, 0.2);
-      border-radius: 50px;
-      padding: 8px 20px;
-      display: flex;
-      gap: 20px;
-      justify-content: center; /* Thêm để items ở giữa container */
-      z-index: 50;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      animation: liquidFloat 4s ease-in-out infinite;
-      max-width: 90vw;
-    }
-
-    @media screen and (max-width: 768px) {
-      .bottom-nav {
-        width: 50%;
-        left: 10%;
-        transform: none;
-        justify-content: center; /* Thay space-around bằng center để items ở giữa màn hình mobile */
-        max-width: none;
-        padding: 8px 0;
-        gap: 10px; /* Giảm gap trên mobile để vừa màn hình */
-        border-radius: 25px;
-        bottom: 10px;
-      }
-    }
-
-    @media screen and (max-width: 480px) {
-      .bottom-nav {
-        padding: 6px 0;
-        bottom: 5px;
-        border-radius: 20px;
-        gap: 5px; /* Giảm thêm gap cho màn hình nhỏ */
-      }
-    }
-
-    .bottom-nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 12px;
-      transition: all 0.3s ease;
-      padding: 8px 4px;
-      flex: 1;
-      border-radius: 12px;
-      min-width: 60px; /* Đảm bảo mỗi item có chiều rộng tối thiểu để cân bằng */
-    }
-
-    @media screen and (max-width: 768px) {
-      .bottom-nav-item {
-        padding: 8px 2px;
-      }
-    }
-
-    @media screen and (max-width: 480px) {
-      .bottom-nav-item {
-        padding: 6px 1px;
-        font-size: 10px;
-        gap: 2px;
-        min-width: 50px;
-      }
-    }
-
-    .bottom-nav-item i {
-      font-size: 21px;
-    }
-
-    @media screen and (max-width: 480px) {
-      .bottom-nav-item i {
-        font-size: 18px;
-      }
-    }
-
-    .bottom-nav-item.active {
-      color: var(--brand);
-      background: rgba(51, 51, 51, 0.1);
-      transform: scale(1.05);
-    }
-
-    .bottom-nav-item:hover {
-      color: var(--brand);
-      background: rgba(62, 62, 62, 0.05);
-      transform: scale(1.1);
-    }
-
-    .footer-container {
-      margin-top: auto;
-      flex-shrink: 0;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-      border-radius: 16px;
-      padding: 1rem 0;
-      text-align: center;
-      margin: 2rem auto 0;
-      max-width: min(1100px, 100%);
-      padding: 1rem 2rem;
-    }
-
-    .footer-info {
-      color: var(--muted);
-      font-size: 0.9em;
-    }
-
-    .dark-mode .footer-info {
-      color: var(--text);
-    }
-
-    .dark-mode {
-      --bg: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-      --text: #e2e8f0;
-      --muted: #94a3b8;
-      --card: rgba(255, 255, 255, 0.05);
-      --bd: rgba(255, 255, 255, 0.1);
-      --shadow-light: rgba(255, 255, 255, 0.05);
-      --shadow-dark: rgba(0, 0, 0, 0.4);
-    }
-
-    .dark-mode header { 
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .dark-mode .avatar { box-shadow: none; }
-    .dark-mode .detail {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .dark-mode .detail h3, .dark-mode .detail h1 { color: var(--text); }
-
-    @media (prefers-reduced-motion: reduce) {
-      .icon-btn, .btn, .pill, .avatar, .more-info-btn, body::before, body::after, .detail, .bottom-nav, .avatar-wrap { 
-        transition: none; 
-        animation: none; 
-      }
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(12px);
-      transition: opacity .5s ease, transform .5s ease;
-    }
-
-    .reveal.in {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Fade-in animation from brainot */
-    .fade-in {
-      animation: fadeInUp 0.8s ease-out forwards;
-      opacity: 0;
-      transform: translateY(30px);
-    }
-
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    /* FPS DISPLAY - Kiểu wusteam.com */
-.fps-display {
-  margin-right: 15px;
-  padding: 8px 15px;
-  border-radius: 12px;
-  background: var(--card);
-  box-shadow: var(--neumo-shadow);
-  font-family: 'Concert One', cursive;
-  color: rgb(27, 0, 255);
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-#fps {
-  font-weight: bold;
-  font-size: 1.1rem;
-  transition: color 0.3s ease;
-}
-
-/* Animation nhẹ */
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-
-/* Màu sắc theo FPS */
-.fps-excellent { color: #1b00ff !important; text-shadow: 0 0 10px rgba(27, 0, 255, 0.3); }
-.fps-good { color: #ff9800 !important; text-shadow: 0 0 10px rgba(255, 152, 0, 0.3); }
-.fps-poor { color: #ff0000 !important; text-shadow: 0 0 10px rgba(255, 0, 0, 0.3); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TAO LÀ CHÓ ĐIÊN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Impact:wght@400;700&display=swap');
+        
+        body {
+            background: linear-gradient(45deg, #000000, #1a0000, #330000);
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            touch-action: manipulation;
+        }
+
+        .main-text {
+            font-family: 'Impact', sans-serif;
+            font-size: clamp(2.8rem, 12vw, 6.5rem);
+            font-weight: 900;
+            color: #ff0000;
+            text-align: center;
+            text-shadow: 
+                0 0 20px #ff0000,
+                0 0 40px #ffff00,
+                6px 6px 0 #ffff00,
+                -6px -6px 0 #ffff00;
+            animation: shake 0.4s infinite alternate;
+            letter-spacing: 4px;
+            line-height: 1.05;
+        }
+
+        @keyframes shake {
+            from { transform: rotate(-6deg) scale(1.03); }
+            to { transform: rotate(6deg) scale(0.97); }
+        }
+
+        .dog {
+            font-size: clamp(100px, 35vw, 180px);
+            animation: bounce 0.8s infinite;
+        }
+
+        .sub {
+            font-size: clamp(1.4rem, 5vw, 2.5rem);
+            color: #ffff00;
+            text-shadow: 0 0 15px #ff0000;
+            margin-top: 10px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            font-size: 1rem;
+            color: #ffaa00;
+        }
+    </style>
 </head>
 <body>
-  <header>
+    <div class="text-center px-4 w-full">
+        <div class="dog">🐕‍🦺</div>
+        <h1 class="main-text">TAO LÀ<br>CHÓ ĐIÊN</h1>
+        <p class="sub">🦴 GÂU GÂU GÂU 🦴</p>
+    </div>
+
     
-    <div class="page-header">
-      <!-- Thêm FPS display vào đây -->
-  <div class="fps-display">
-    <span id="fps">--</span> FPS
-  </div>
-      <div class="mode">
-        <button class="icon-btn" id="darkModeToggle" title="Chuyển chế độ sáng/tối" aria-label="Dark mode toggle">
-          <i class='bx bxs-moon' id="modeIcon"></i>
-        </button>
-      </div>
-    </div>
-  </header>
 
-  <main class="container main" id="home">
-    <div class="images">
-      <span class="avatar-wrap fade-in">
-        <img src="md.jpg" alt="Ảnh chân dung Minh Đức" class="avatar" loading="lazy" />
-      </span>
-    </div>
-    <div class="detail reveal fade-in" id="revealCol">
-      <h1><span class="accent">Hà Quang Minh Đức</span></h1>
-      <p class="kicker">Vinh, Nghệ An</p>
-      
-      <div class="social" aria-label="Mạng xã hội">
-        <a href="https://www.facebook.com/haquagminhduc" target="_blank" rel="noopener" aria-label="Facebook">
-          <i class='bx bxl-facebook'></i>
-        </a>
-        <a href="https://www.instagram.com/mduc7500/" target="_blank" rel="noopener" aria-label="Instagram">
-          <i class='bx bxl-instagram'></i>
-        </a>
-        <a href="https://github.com/haquangminhduc" target="_blank" rel="noopener" aria-label="GitHub">
-          <i class='bx bxl-github'></i>
-        </a>
-      </div>
-      <div class="cta">
-        <button class="btn">Contact Me</button>
-        <button class="btn secondary">View Projects</button>
-      </div>
-    </div>
-  </main>
-
-  <!-- Bottom Navigation -->
-  <nav class="bottom-nav">
-    <a href="index.html" class="bottom-nav-item active">
-      <i class='bx bx-home'></i>
-      <span>Home</span>
-    </a>
-    <a href="brainot.html" class="bottom-nav-item">
-      <i class='bx bx-grid-alt'></i>
-      <span>BrainRot</span>
-    </a>
-    <a href="Pornography.html" class="bottom-nav-item">
-      <i class='bx bx-book'></i>
-      <span>Pornography</span>
-    </a>
-     <a href="DeepDive.html" class="bottom-nav-item">
-      <i class='bx bx-book'></i>
-      <span>DeepDive</span>
-    </a>
-  </nav>
-
-  <script>
-    // Bottom Nav Active State (Cập nhật để xử lý cả scroll và navigation)
-    document.querySelectorAll('.bottom-nav-item').forEach(item => {
-      item.addEventListener('click', function(e) {
-        e.preventDefault();
-        // Remove active from all
-        document.querySelectorAll('.bottom-nav-item').forEach(i => i.classList.remove('active'));
-        // Add active to clicked
-        this.classList.add('active');
-        // Smooth scroll to target or navigate
-        const href = this.getAttribute('href');
-        if (href.startsWith('#')) {
-          const target = document.querySelector(href);
-          if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        } else {
-          window.location.href = href;
+    <script>
+        function crazyEffect() {
+            const text = document.querySelector('.main-text');
+            const colors = ['#ff0000', '#00ff00', '#ffff00', '#00ffff', '#ff00ff'];
+            text.style.color = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Rung mạnh
+            document.body.style.transition = 'transform 0.1s';
+            document.body.style.transform = 'rotate(8deg) scale(1.05)';
+            setTimeout(() => {
+                document.body.style.transform = 'rotate(-8deg) scale(0.95)';
+            }, 100);
+            setTimeout(() => {
+                document.body.style.transform = 'rotate(0deg) scale(1)';
+            }, 300);
         }
-      });
-    });
 
-    // Dark Mode Toggle
-    const body = document.body;
-    const toggle = document.getElementById('darkModeToggle');
-    const icon = document.getElementById('modeIcon');
+        // Nhấn màn hình (rất quan trọng cho mobile)
+        document.addEventListener('touchstart', crazyEffect);
+        document.addEventListener('click', crazyEffect);
+        document.addEventListener('keydown', crazyEffect);
 
-    const stored = localStorage.getItem('darkMode');
-    if (stored === 'enabled') { 
-      body.classList.add('dark-mode'); 
-      icon.classList.replace('bxs-moon', 'bxs-sun'); 
-    }
-    if (stored === 'disabled') { 
-      body.classList.remove('dark-mode'); 
-      icon.classList.replace('bxs-sun', 'bxs-moon'); 
-    }
-
-    toggle.addEventListener('click', () => {
-      const enabled = !body.classList.contains('dark-mode');
-      body.classList.toggle('dark-mode', enabled);
-      icon.classList.toggle('bxs-sun', enabled);
-      icon.classList.toggle('bxs-moon', !enabled);
-      localStorage.setItem('darkMode', enabled ? 'enabled' : 'disabled');
-    });
-
-    // Scroll Reveal
-    const el = document.getElementById('revealCol');
-    const io = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { 
-        el.classList.add('in'); 
-        io.disconnect(); 
-      }
-    }, { threshold: .2 });
-    io.observe(el);
-    // FPS COUNTER - Kiểu wusteam.com
-let fps = 0;
-let frameCount = 0;
-let lastTime = performance.now();
-let fpsElement = null;
-
-function initFPS() {
-  // Tạo element nếu chưa có
-  if (!document.getElementById('fps')) {
-    const fpsDiv = document.createElement('div');
-    fpsDiv.className = 'fps-display';
-    fpsDiv.innerHTML = '<span id="fps">--</span> FPS';
-    document.querySelector('header').prepend(fpsDiv);
-  }
-  
-  fpsElement = document.getElementById('fps');
-  updateFPS();
-}
-
-function updateFPS() {
-  frameCount++;
-  const currentTime = performance.now();
-  
-  if (currentTime - lastTime >= 500) { // Cập nhật mỗi 0.5s cho mượt
-    fps = Math.round((frameCount * 1000) / (currentTime - lastTime) * 10) / 10;
-    frameCount = 0;
-    lastTime = currentTime;
-    
-    if (fpsElement) {
-      fpsElement.textContent = fps;
-      
-      // Đổi màu theo FPS
-      if (fps >= 50) {
-        fpsElement.className = 'fps-excellent';
-      } else if (fps >= 30) {
-        fpsElement.className = 'fps-good';
-      } else {
-        fpsElement.className = 'fps-poor';
-      }
-    }
-  }
-  
-  requestAnimationFrame(updateFPS);
-}
-
-// Khởi tạo FPS khi trang load
-window.addEventListener('DOMContentLoaded', () => {
-  initFPS();
-});
-  </script>
+        // Tự động rung theo nhịp
+        setInterval(() => {
+            if (Math.random() > 0.6) crazyEffect();
+        }, 2200);
+    </script>
 </body>
 </html>
