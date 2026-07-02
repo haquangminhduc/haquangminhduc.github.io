@@ -2,100 +2,633 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TAO LÀ CHÓ ĐIÊN</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haquangminhduc ✨</title>
+    <link rel="icon" href="avt.jpg" type="image/x-icon">
+    <!-- Font chữ Nunito cực kỳ dễ thương và bo tròn -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Cấu hình Animation và Font cho Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Nunito', 'sans-serif'] },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Impact:wght@400;700&display=swap');
-        
-        body {
-            background: linear-gradient(45deg, #000000, #1a0000, #330000);
-            height: 100vh;
-            margin: 0;
+        /* Hiệu ứng kính mờ (Glassmorphism) đáng yêu */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 2px solid rgba(255, 255, 255, 0.85);
+            box-shadow: 0 28px 60px rgba(219, 39, 119, 0.12);
+            animation: floatUp 0.9s ease-out both;
+        }
+
+        .bg-cute {
+            background: linear-gradient(135deg, #1f2338 0%, #2f3047 45%, #181a28 100%);
+            background-image: radial-gradient(circle at 20% 20%, rgba(102, 112, 149, 0.25) 0, transparent 35%),
+                              radial-gradient(circle at 80% 15%, rgba(66, 79, 126, 0.22) 0, transparent 30%),
+                              radial-gradient(circle at 50% 85%, rgba(41, 47, 77, 0.35) 0, transparent 30%);
+        }
+
+        .shine-button {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shine-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 120%;
+            height: 100%;
+            background: linear-gradient(120deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0.25) 100%);
+            transform: skewX(-20deg);
+            animation: shimmer 2.6s ease-in-out infinite;
+        }
+
+        .shine-button:hover::before {
+            animation-duration: 1.8s;
+        }
+
+        .floating-icon {
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .avatar-container {
+            position: relative;
+            width: 230px;
+            height: 230px;
+            margin: 0 auto 1.75rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+        }
+
+        .avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 9999px;
+            object-fit: cover;
             position: relative;
-            touch-action: manipulation;
+            z-index: 2;
+            border: 4px solid rgba(255,255,255,0.9);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
         }
 
-        .main-text {
-            font-family: 'Impact', sans-serif;
-            font-size: clamp(2.8rem, 12vw, 6.5rem);
-            font-weight: 900;
-            color: #ff0000;
-            text-align: center;
-            text-shadow: 
-                0 0 20px #ff0000,
-                0 0 40px #ffff00,
-                6px 6px 0 #ffff00,
-                -6px -6px 0 #ffff00;
-            animation: shake 0.4s infinite alternate;
-            letter-spacing: 4px;
-            line-height: 1.05;
-        }
-
-        @keyframes shake {
-            from { transform: rotate(-6deg) scale(1.03); }
-            to { transform: rotate(6deg) scale(0.97); }
-        }
-
-        .dog {
-            font-size: clamp(100px, 35vw, 180px);
-            animation: bounce 0.8s infinite;
-        }
-
-        .sub {
-            font-size: clamp(1.4rem, 5vw, 2.5rem);
-            color: #ffff00;
-            text-shadow: 0 0 15px #ff0000;
-            margin-top: 10px;
-        }
-
-        .footer {
+        .avatar-icon {
             position: absolute;
-            bottom: 20px;
-            font-size: 1rem;
-            color: #ffaa00;
+            top: 10px;
+            right: 10px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+            color: #334155;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            transform-origin: center;
+            animation: rotateIcon 4s linear infinite reverse;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            z-index: 4;
+        }
+
+        .avatar-icon:hover {
+            transform: scale(1.08);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.16);
+        }
+
+        .spinning-border {
+            position: absolute;
+            inset: 0;
+            border-radius: 9999px;
+            background: conic-gradient(from 0deg, rgba(255,113,192,0.8), rgba(129,140,248,0.8), rgba(139,92,255,0.8), rgba(255,113,192,0.8));
+            filter: blur(9px);
+            animation: spin 5s linear infinite;
+        }
+
+        .spinning-border::before {
+            content: '';
+            position: absolute;
+            inset: 12px;
+            border-radius: 9999px;
+            background: rgba(255,255,255,0.75);
+            z-index: 1;
+        }
+
+        .detail-title {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.95), rgba(168, 85, 247, 0.95), rgba(239, 68, 68, 0.95), rgba(34, 211, 238, 0.95));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rgbShift 6s linear infinite;
+        }
+
+        @keyframes rgbShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .season-panel {
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+
+        .season-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .season-btn {
+            padding: 0.8rem 1rem;
+            border-radius: 9999px;
+            border: none;
+            background: rgba(255,255,255,0.75);
+            box-shadow: 0 12px 25px rgba(255,255,255,0.6);
+            color: #334155;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+        }
+
+        .season-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 30px rgba(139,92,255,0.18);
+            background: rgba(255,255,255,0.95);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes rotateIcon {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes floatUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shimmer {
+            0% { left: -120%; }
+            100% { left: 120%; }
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .bg-circle-1,
+        .bg-circle-2,
+        .bg-circle-3 {
+            transition: width 0.3s ease, height 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .dynamic-island {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 70;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 180px;
+            max-width: 260px;
+            padding: 0.65rem 1rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(148, 163, 184, 0.28);
+            box-shadow: 0 16px 30px rgba(15, 23, 42, 0.18);
+            backdrop-filter: blur(6px);
+            animation: islandPulse 8s ease-in-out infinite alternate;
+            gap: 0.5rem;
+        }
+
+        .island-status {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            color: #0f172a;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .island-badge {
+            width: 0.72rem;
+            height: 0.72rem;
+            border-radius: 999px;
+            background: radial-gradient(circle at 30% 30%, #7dd3fc, #0ea5e9 65%);
+            box-shadow: 0 0 12px rgba(14, 165, 233, 0.45);
+        }
+
+        .island-text {
+            display: block;
+            line-height: 1.1;
+            color: #000000;
+        }
+
+        .island-text strong {
+            color: #000000;
+        }
+
+        .island-caption {
+            color: rgba(226, 232, 240, 0.78);
+            font-size: 0.75rem;
+            letter-spacing: 0.01em;
+        }
+
+        @keyframes islandPulse {
+            0% { transform: translateX(-50%) scale(1); }
+            100% { transform: translateX(-50%) scale(1.02); }
+        }
+
+        .fps-display {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 60;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 96px;
+            padding: 0.6rem 1rem;
+            border-radius: 1rem;
+            background: rgba(15, 23, 42, 0.88);
+            color: #f8fafc;
+            font-size: 0.9rem;
+            font-weight: 700;
+            box-shadow: 0 16px 35px rgba(15, 23, 42, 0.35);
+            backdrop-filter: blur(12px);
+            cursor: default;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .fps-display:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.45);
+        }
+
+        .fps-label {
+            margin-left: 0.35rem;
+            opacity: 0.75;
+            font-size: 0.8rem;
+        }
+
+        .fps-tooltip {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(12px);
+            background: rgba(15, 23, 42, 0.92);
+            color: #f8fafc;
+            padding: 0.75rem;
+            border-radius: 0.9rem;
+            font-size: 0.78rem;
+            min-width: 140px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+            pointer-events: none;
+            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.35);
+        }
+
+        .fps-display:hover .fps-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(6px);
+        }
+
+        .fps-graph {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 36px;
+            margin-bottom: 0.5rem;
+            padding-bottom: 2px;
+            border-bottom: 1px solid rgba(38, 38, 38, 0.16);
+        }
+
+        .graph-bar {
+            width: 5px;
+            border-radius: 2px;
+            transition: height 0.25s ease;
+        }
+
+        .fps-avg {
+            text-align: center;
+            font-family: monospace;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .fps-excellent { color: #1b00ff !important; text-shadow: 0 0 10px rgba(27, 0, 255, 0.3); }
+        .fps-good { color: #ff9800 !important; text-shadow: 0 0 10px rgba(255, 152, 0, 0.3); }
+        .fps-poor { color: #ff0000 !important; text-shadow: 0 0 10px rgba(255, 0, 0, 0.3); }
+
+
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+
+            .glass-card {
+                max-width: 95vw;
+                padding: 1.25rem;
+                border-radius: 2rem;
+            }
+
+            .bg-circle-1 {
+                width: 10rem;
+                height: 10rem;
+                top: 1rem;
+                left: 0.75rem;
+                opacity: 0.35;
+            }
+
+            .bg-circle-2 {
+                width: 11rem;
+                height: 11rem;
+                bottom: 1rem;
+                right: 0.75rem;
+                opacity: 0.35;
+            }
+
+            .bg-circle-3 {
+                width: 7rem;
+                height: 7rem;
+                bottom: 10rem;
+                left: 0.75rem;
+                opacity: 0.35;
+            }
+        }
+
+        .social-panel {
+            margin-top: 1rem;
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.75rem;
+        }
+
+        .link-button {
+            width: 100%;
+            border: none;
+            border-radius: 1.25rem;
+            padding: 0.85rem 0.9rem;
+            background: rgba(59, 130, 246, 0.14);
+            color: #0f172a;
+            font-weight: 700;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+            transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+        }
+
+        .link-button:hover {
+            transform: translateY(-1px);
+            background: rgba(59, 130, 246, 0.22);
+            box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+        }
+
+        .popup-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(6px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .popup-content {
+            width: min(95vw, 420px);
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 1.5rem;
+            box-shadow: 0 28px 70px rgba(15, 23, 42, 0.22);
+            padding: 1.5rem;
+            text-align: center;
+            color: #0f172a;
+        }
+
+        .popup-content h2 {
+            margin-bottom: 0.75rem;
+            font-size: 1.15rem;
+        }
+
+        .popup-desc {
+            margin-bottom: 1rem;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .popup-action {
+            display: inline-block;
+            margin-bottom: 0.75rem;
+            padding: 0.9rem 1.25rem;
+            border-radius: 999px;
+            background: #2563eb;
+            color: #fff;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background 0.2s ease;
+        }
+
+        .popup-action:hover {
+            background: #1d4ed8;
+        }
+
+        .popup-close {
+            border: none;
+            background: transparent;
+            color: #475569;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .floating-icon:nth-of-type(5) {
+            bottom: 2.5rem;
+            left: 1rem;
+        }
+
+        .floating-icon:nth-of-type(6) {
+            top: 12rem;
+            left: 1.25rem;
         }
     </style>
 </head>
-<body>
-    <div class="text-center px-4 w-full">
-        <div class="dog">🐕‍🦺</div>
-        <h1 class="main-text">TAO LÀ<br>CHÓ ĐIÊN</h1>
-        <p class="sub">🦴 GÂU GÂU GÂU 🦴</p>
+<body class="bg-cute min-h-screen flex items-center justify-center p-4 relative overflow-hidden text-slate-800">
+    <div class="dynamic-island">
+        <span class="island-badge"></span>
+        <span class="island-text">FPS <strong id="fps-island-value">--</strong></span>
+    </div>
+    <audio id="bgMusic" loop preload="none">
+        <source src="xuongrong.mp3" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_1115217b5b.mp3?filename=sunny-ukulele-14777.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Các hình tròn màu sắc mờ ảo ở background (Trang trí) -->
+    <div class="bg-circle-1 absolute top-10 left-10 w-48 h-48 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-pulse-slow"></div>
+    <div class="bg-circle-2 absolute bottom-10 right-10 w-64 h-64 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-pulse-slow" style="animation-delay: 2s;"></div>
+    <div class="bg-circle-3 absolute bottom-40 left-20 w-32 h-32 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-pulse-slow" style="animation-delay: 1s;"></div>
+
+    <!-- Khối nổi lơ lửng trang trí -->
+    <div class="absolute top-20 right-20 text-5xl select-none pointer-events-none drop-shadow-md floating-icon">✨</div>
+    <div class="absolute bottom-32 left-10 text-5xl select-none pointer-events-none drop-shadow-md floating-icon">🌸</div>
+    <div class="absolute top-40 left-16 text-4xl select-none pointer-events-none drop-shadow-md floating-icon">💖</div>
+
+    <!-- Main Container -->
+    <div class="glass-card rounded-[2.5rem] p-6 sm:p-8 w-full max-w-[420px] sm:max-w-md relative z-10 mx-auto">
+        
+        <!-- Avatar/Logo Cute -->
+        <div class="avatar-container">
+            <div class="spinning-border"></div>
+            <img src="avt.jpg" alt="Avatar" class="avatar">
+            <button class="avatar-icon" aria-label="icon">🌀</button>
+        </div>
+
+        <!-- Tiêu đề -->
+        <h1 class="detail-title text-3xl font-black mb-4 text-center">
+            Hà Quang Minh Đức
+        </h1>
+
+        <div class="social-panel mb-2">
+            <div class="social-grid">
+                <button type="button" class="link-button" data-title="Facebook" data-desc="Facebook" data-url="https://www.facebook.com/haquagminhduc" onclick="showLinkInfo(this)">Facebook</button>
+                <button type="button" class="link-button" data-title="Instagram" data-desc="Instagram" data-url="https://www.instagram.com/mduc7504/" onclick="showLinkInfo(this)">Instagram</button>
+                <button type="button" class="link-button" data-title="TikTok" data-desc="TikTok" data-url="https://www.tiktok.com/@mduc7504" onclick="showLinkInfo(this)">TikTok</button>
+                <button type="button" class="link-button" data-title="Locket" data-desc="Locket" data-url="https://locket.cam/haquangminhduc" onclick="showLinkInfo(this)">Locket</button>
+            </div>
+        </div>
     </div>
 
-    
+    <div id="linkPopup" class="popup-overlay" onclick="closeLinkPopup(event)">
+        <div class="popup-content" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+            <h2 id="popup-title">Thông tin</h2>
+            <p id="popup-desc" class="popup-desc"></p>
+            <a id="popup-link" href="#" target="_blank" rel="noopener noreferrer" class="popup-action">Mở liên kết</a>
+            <button type="button" class="popup-close" onclick="closeLinkPopup(event)">Đóng</button>
+        </div>
+    </div>
 
     <script>
-        function crazyEffect() {
-            const text = document.querySelector('.main-text');
-            const colors = ['#ff0000', '#00ff00', '#ffff00', '#00ffff', '#ff00ff'];
-            text.style.color = colors[Math.floor(Math.random() * colors.length)];
-            
-            // Rung mạnh
-            document.body.style.transition = 'transform 0.1s';
-            document.body.style.transform = 'rotate(8deg) scale(1.05)';
-            setTimeout(() => {
-                document.body.style.transform = 'rotate(-8deg) scale(0.95)';
-            }, 100);
-            setTimeout(() => {
-                document.body.style.transform = 'rotate(0deg) scale(1)';
-            }, 300);
+        (function() {
+            const fpsValue = document.getElementById('fps-island-value');
+            const fpsAvg = document.getElementById('fps-avg');
+            const fpsGraph = document.getElementById('fps-graph');
+            const bgMusic = document.getElementById('bgMusic');
+            let frameCount = 0;
+            let lastTime = performance.now();
+            let musicStarted = false;
+            const fpsHistory = [];
+            const maxHistory = 12;
+
+            function update(now) {
+                frameCount++;
+                const delta = now - lastTime;
+                if (delta >= 500) {
+                    const fps = Math.round((frameCount * 1000) / delta);
+                    frameCount = 0;
+                    lastTime = now;
+                    fpsHistory.push(fps);
+                    if (fpsHistory.length > maxHistory) fpsHistory.shift();
+                    updateDisplay(fps);
+                }
+                requestAnimationFrame(update);
+            }
+
+            function updateDisplay(fps) {
+                if (!fpsValue) return;
+
+                fpsValue.textContent = fps;
+                fpsValue.className = '';
+                if (fps >= 55) fpsValue.classList.add('fps-excellent');
+                else if (fps >= 30) fpsValue.classList.add('fps-good');
+                else fpsValue.classList.add('fps-poor');
+
+                if (fpsAvg && fpsGraph) {
+                    const avg = Math.round((fpsHistory.reduce((sum, value) => sum + value, 0) / fpsHistory.length) * 10) / 10;
+                    fpsAvg.textContent = avg;
+                    fpsGraph.innerHTML = '';
+                    const maxFps = Math.max(...fpsHistory, 60);
+                    fpsHistory.forEach(value => {
+                        const bar = document.createElement('div');
+                        bar.className = 'graph-bar';
+                        bar.style.height = `${Math.max(4, (value / maxFps) * 36)}px`;
+                        bar.style.backgroundColor = value >= 50 ? '#1b00ff' : value >= 30 ? '#ff9800' : '#ff0000';
+                        fpsGraph.appendChild(bar);
+                    });
+                }
+            }
+
+            function startMusic() {
+                if (musicStarted) return;
+                musicStarted = true;
+                bgMusic.load();
+                bgMusic.play().catch(() => {
+                    const fallbackUrl = 'https://cdn.pixabay.com/download/audio/2021/08/04/audio_1115217b5b.mp3?filename=sunny-ukulele-14777.mp3';
+                    if (!bgMusic.src.includes(fallbackUrl)) {
+                        bgMusic.src = fallbackUrl;
+                        bgMusic.load();
+                        bgMusic.play().catch(() => {});
+                    }
+                });
+            }
+
+            document.addEventListener('pointerdown', startMusic, { once: true, passive: true });
+            document.addEventListener('touchstart', startMusic, { once: true, passive: true });
+
+            requestAnimationFrame(update);
+        })();
+
+        function showLinkInfo(button) {
+            var title = button.getAttribute('data-title');
+            var desc = button.getAttribute('data-desc');
+            var url = button.getAttribute('data-url');
+            document.getElementById('popup-title').textContent = title;
+            document.getElementById('popup-desc').textContent = desc;
+            document.getElementById('popup-link').href = url;
+            document.getElementById('linkPopup').style.display = 'flex';
         }
 
-        // Nhấn màn hình (rất quan trọng cho mobile)
-        document.addEventListener('touchstart', crazyEffect);
-        document.addEventListener('click', crazyEffect);
-        document.addEventListener('keydown', crazyEffect);
-
-        // Tự động rung theo nhịp
-        setInterval(() => {
-            if (Math.random() > 0.6) crazyEffect();
-        }, 2200);
+        function closeLinkPopup(event) {
+            if (event.target.id === 'linkPopup' || event.target.classList.contains('popup-close')) {
+                document.getElementById('linkPopup').style.display = 'none';
+            }
+            event.stopPropagation();
+        }
     </script>
 </body>
 </html>
