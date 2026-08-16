@@ -26,7 +26,7 @@
             }
         }
     </script>
-
+  <script src="https://unpkg.com/senangwebs-loading@latest/dist/swl.js" defer></script>
     <style>
         /* Hiệu ứng kính mờ (Glassmorphism) đáng yêu */
         .glass-card {
@@ -356,6 +356,63 @@
         .fps-good { color: #ff9800 !important; text-shadow: 0 0 10px rgba(255, 152, 0, 0.3); }
         .fps-poor { color: #ff0000 !important; text-shadow: 0 0 10px rgba(255, 0, 0, 0.3); }
 
+        #page-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(31, 35, 56, 0.96), rgba(47, 48, 71, 0.96));
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: opacity 0.7s ease, visibility 0.7s ease;
+        }
+
+        #page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loader-ring {
+            position: relative;
+            width: 96px;
+            height: 96px;
+            border-radius: 9999px;
+            background: conic-gradient(from 0deg, #f9a8d4, #a5b4fc, #67e8f9, #f9a8d4);
+            animation: spin 1.2s linear infinite;
+            box-shadow: 0 0 35px rgba(168, 85, 247, 0.4);
+        }
+
+        .loader-ring::before {
+            content: "";
+            position: absolute;
+            inset: 12px;
+            border-radius: 9999px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 2px solid rgba(255,255,255,0.18);
+        }
+
+        .loader-core {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            font-size: 1.5rem;
+            z-index: 1;
+        }
+
+        .loader-text {
+            margin-top: 1rem;
+            text-align: center;
+            color: #f8fafc;
+            font-size: 0.95rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 800;
+            opacity: 0.9;
+        }
 
         @media (max-width: 640px) {
             body {
@@ -490,6 +547,15 @@
     </style>
 </head>
 <body class="bg-cute min-h-screen flex items-center justify-center p-4 relative overflow-hidden text-slate-800">
+    <div id="page-loader" aria-live="polite" aria-label="Loading">
+        <div>
+            <div class="loader-ring">
+                <div class="loader-core">💖</div>
+            </div>
+            <div class="loader-text">Loading...</div>
+        </div>
+    </div>
+
     <div class="dynamic-island">
         <span class="island-badge"></span>
         <span class="island-text">🇻🇳<strong id="fps-island-value">--</strong></span>
@@ -629,6 +695,16 @@
             }
             event.stopPropagation();
         }
+
+        window.addEventListener('load', function () {
+            const loader = document.getElementById('page-loader');
+            if (!loader) return;
+
+            setTimeout(() => {
+                loader.classList.add('hidden');
+            }, 500);
+        });
+
     </script>
 </body>
 </html>
