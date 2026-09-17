@@ -1,1994 +1,486 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>haquangminhduc 🩵 | iPhone 16 Pro Max</title>
-    <link rel="icon" href="avt.jpg" type="image/x-icon">
-    
-    <!-- Google Fonts: SF Pro & Plus Jakarta Sans -->
+    <title>Hà Quang Minh Đức — Profile</title>
+    <link rel="icon" href="icon.jpeg" type="image/jpeg">
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Grand+Hotel&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome 6 Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
                         sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-                        insta: ['"Grand Hotel"', 'cursive', 'sans-serif'],
+                        mono: ['"Space Grotesk"', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            gold: 'var(--brand-accent, #6366f1)',
+                            surface: 'rgba(15, 18, 28, 0.7)',
+                            border: 'rgba(255, 255, 255, 0.1)',
+                        }
                     }
                 }
             }
         }
     </script>
 
-    <!-- Canvas Confetti -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-
     <style>
+        :root {
+            --brand-accent: #6366f1;
+            --brand-glow: rgba(99, 102, 241, 0.25);
+            --gradient-1: #4f46e5;
+            --gradient-2: #06b6d4;
+        }
+
+        [data-theme="gold"] {
+            --brand-accent: #f59e0b;
+            --brand-glow: rgba(245, 158, 11, 0.25);
+            --gradient-1: #d97706;
+            --gradient-2: #fbbf24;
+        }
+
+        [data-theme="emerald"] {
+            --brand-accent: #10b981;
+            --brand-glow: rgba(16, 185, 129, 0.25);
+            --gradient-1: #059669;
+            --gradient-2: #34d399;
+        }
+
+        [data-theme="rose"] {
+            --brand-accent: #f43f5e;
+            --brand-glow: rgba(244, 63, 94, 0.25);
+            --gradient-1: #e11d48;
+            --gradient-2: #fb7185;
+        }
+
         * {
             -webkit-tap-highlight-color: transparent;
-            user-select: none;
             box-sizing: border-box;
-            scrollbar-width: none !important;
-            -ms-overflow-style: none !important;
-        }
-        *::-webkit-scrollbar {
-            display: none !important;
-            width: 0 !important;
-            height: 0 !important;
-        }
-
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
         }
 
         body {
-            background: radial-gradient(circle at 50% 20%, #1e1b4b 0%, #0c0f1d 50%, #030712 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #06080e;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            overflow-x: hidden;
         }
 
-        .iphone-scale-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
+        /* Ambient glowing orbs */
+        .ambient-glow {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.55;
+            transition: all 1s ease;
         }
 
-        /* Khung Titan iPhone 16 Pro Max */
-        .iphone-frame {
-            width: 390px;
-            height: 844px;
-            border-radius: 54px;
-            background: #090a0f;
-            padding: 10px;
-            position: relative;
+        /* Glassmorphism card */
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%), rgba(13, 16, 26, 0.72);
+            backdrop-filter: blur(36px);
+            -webkit-backdrop-filter: blur(36px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             box-shadow: 
-                0 0 0 4px #2d3142,
-                0 0 0 8px #181a24,
-                0 30px 80px rgba(0, 0, 0, 0.9),
-                0 0 50px rgba(99, 102, 241, 0.25);
-            transform: scale(min(1, calc((100vh - 36px) / 844)));
-            transform-origin: center center;
-            flex-shrink: 0;
-            transition: transform 0.2s ease;
+                0 30px 60px -12px rgba(0, 0, 0, 0.7),
+                0 0 0 1px rgba(255, 255, 255, 0.06),
+                0 0 40px var(--brand-glow);
         }
 
-        /* Nút vật lý bấm thật */
-        .phone-btn {
-            position: absolute;
-            background: #3b3e4f;
-            cursor: pointer;
-            transition: transform 0.1s ease, filter 0.1s;
-            z-index: 10;
-        }
-        .phone-btn:active {
-            transform: scale(0.92);
-            filter: brightness(1.3);
-        }
-
-        .btn-action { left: -10px; top: 110px; width: 4px; height: 30px; border-radius: 4px 0 0 4px; }
-        .btn-vol-up { left: -10px; top: 158px; width: 4px; height: 52px; border-radius: 4px 0 0 4px; }
-        .btn-vol-down { left: -10px; top: 224px; width: 4px; height: 52px; border-radius: 4px 0 0 4px; }
-        .btn-power { right: -10px; top: 172px; width: 4px; height: 75px; border-radius: 0 4px 4px 0; }
-
-        /* Màn hình Super Retina XDR bên trong */
-        .iphone-screen {
-            width: 100%;
-            height: 100%;
-            border-radius: 44px;
-            overflow: hidden;
-            position: relative;
-            background-size: cover;
-            background-position: center;
-        }
-
-        /* Bộ hình nền iOS 18 rực rỡ */
-        .wp-cyber {
-            background: 
-                radial-gradient(circle at 80% 15%, rgba(99, 102, 241, 0.65) 0%, transparent 50%),
-                radial-gradient(circle at 20% 85%, rgba(236, 72, 153, 0.55) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.35) 0%, transparent 60%),
-                linear-gradient(180deg, #0f142e 0%, #1e1747 50%, #0a0b16 100%);
-        }
-        .wp-sakura {
-            background: 
-                radial-gradient(circle at 80% 20%, rgba(244, 114, 182, 0.75) 0%, transparent 50%),
-                radial-gradient(circle at 20% 80%, rgba(192, 132, 252, 0.65) 0%, transparent 50%),
-                linear-gradient(180deg, #380d32 0%, #6b21a8 50%, #241442 100%);
-        }
-        .wp-deepsea {
-            background: 
-                radial-gradient(circle at 30% 20%, rgba(6, 182, 212, 0.65) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(59, 130, 246, 0.55) 0%, transparent 50%),
-                linear-gradient(180deg, #023654 0%, #0f2746 50%, #030a17 100%);
-        }
-
-        /* Screen Sleep / Off overlay */
-        #screenOffOverlay {
-            position: absolute;
-            inset: 0;
-            background: #000000;
-            z-index: 150;
-            display: none;
-            border-radius: 44px;
-        }
-
-        /* ==================== 1. MÀN HÌNH KHÓA (LOCK SCREEN) ==================== */
-        #lockScreen {
-            position: absolute;
-            inset: 0;
-            z-index: 90;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 50px 24px 24px 24px;
-            color: #ffffff;
-            overflow: hidden;
-            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
-        }
-        #lockScreen.slide-up {
-            transform: translateY(-100%);
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .face-id-pill {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            font-size: 11.5px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.85);
-            margin-top: 6px;
-        }
-
-        .lock-clock {
-            font-size: 78px;
-            font-weight: 800;
-            line-height: 1;
-            letter-spacing: -2px;
-            text-align: center;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-            margin-top: 4px;
-        }
-        .lock-date {
-            font-size: 15px;
-            font-weight: 700;
-            text-align: center;
-            opacity: 0.95;
-            letter-spacing: -0.2px;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-        }
-
-        .lock-bottom-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            color: #fff;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-            transition: transform 0.15s, background 0.15s;
-        }
-        .lock-bottom-btn:active {
-            transform: scale(0.9);
-            background: rgba(255, 255, 255, 0.9);
-            color: #000;
-        }
-
-        .swipe-hint {
-            font-size: 12.5px;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.95);
-            text-align: center;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
-            animation: pulseHint 2s infinite;
-            cursor: pointer;
-        }
-        @keyframes pulseHint {
-            0%, 100% { opacity: 0.6; transform: translateY(0); }
-            50% { opacity: 1; transform: translateY(-3px); }
-        }
-
-        /* ==================== 2. MÀN HÌNH NHẬP MẬT MÃ (PASSCODE SCREEN) ==================== */
-        #passcodeScreen {
-            position: absolute;
-            inset: 0;
-            z-index: 95;
-            background: rgba(15, 23, 42, 0.88);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 55px 28px 24px 28px;
-            color: #ffffff;
-            overflow: hidden;
-            transform: translateY(100%);
-            opacity: 0;
-            pointer-events: none;
-            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
-        }
-        #passcodeScreen.active {
-            transform: translateY(0);
-            opacity: 1;
-            pointer-events: auto;
-        }
-        #passcodeScreen.unlocked {
-            transform: translateY(-100%);
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .passcode-dots {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin: 16px 0 20px 0;
-        }
-        .passcode-dot {
-            width: 13px;
-            height: 13px;
-            border-radius: 50%;
-            border: 1.5px solid #ffffff;
-            background: transparent;
-            transition: background 0.15s ease, transform 0.15s ease;
-        }
-        .passcode-dot.filled {
-            background: #ffffff;
-            transform: scale(1.15);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-        }
-
-        .keypad-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 14px 20px;
-            max-width: 270px;
-            margin: 0 auto;
-        }
-        .key-btn {
-            width: 68px;
-            height: 68px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.15);
+        .glass-pill {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            cursor: pointer;
-            transition: transform 0.1s ease, background 0.1s;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .key-btn:active {
-            background: rgba(255, 255, 255, 0.45);
-            transform: scale(0.92);
-        }
-        .key-number {
-            font-size: 26px;
-            font-weight: 500;
-            line-height: 1;
-        }
-        .key-letters {
-            font-size: 8.5px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            opacity: 0.7;
-            margin-top: 2px;
+        .glass-pill:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1.5px);
         }
 
-        /* ==================== 3. DYNAMIC ISLAND & STATUS BAR ==================== */
-        .dynamic-island {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #000;
-            color: #fff;
-            border-radius: 24px;
-            z-index: 100;
-            transition: all 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-        }
-
-        .dynamic-island.compact {
-            width: 125px;
-            height: 32px;
-            padding: 0 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .dynamic-island.expanded {
-            width: 345px;
-            height: 165px;
-            border-radius: 36px;
-            padding: 16px 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.85);
-        }
-
-        .dynamic-island.charging-mode {
-            width: 280px;
-            height: 50px;
-            border-radius: 28px;
-            padding: 0 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 0 25px rgba(34, 197, 94, 0.5);
-            border: 1px solid rgba(34, 197, 94, 0.4);
-        }
-
-        .equalizer {
-            display: flex;
-            align-items: flex-end;
-            gap: 2px;
-            height: 14px;
-        }
-        .eq-bar {
-            width: 3px;
-            background: #38bdf8;
-            border-radius: 2px;
-            animation: eqAnim 0.8s ease-in-out infinite alternate;
-        }
-        .eq-bar:nth-child(1) { height: 6px; animation-delay: 0.1s; }
-        .eq-bar:nth-child(2) { height: 14px; animation-delay: 0.3s; }
-        .eq-bar:nth-child(3) { height: 9px; animation-delay: 0.15s; }
-        .eq-bar:nth-child(4) { height: 12px; animation-delay: 0.45s; }
-
-        @keyframes eqAnim {
-            0% { height: 4px; }
-            100% { height: 14px; }
-        }
-
-        /* MagSafe Charging Ring Overlay */
-        #magsafeCircle {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.6);
-            width: 230px;
-            height: 230px;
-            border-radius: 50%;
-            border: 6px solid #22c55e;
-            box-shadow: 0 0 50px rgba(34, 197, 94, 0.8), inset 0 0 30px rgba(34, 197, 94, 0.5);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            z-index: 130;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            background: rgba(0, 0, 0, 0.45);
-            backdrop-filter: blur(10px);
-        }
-        #magsafeCircle.active {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        /* ==================== 4. SIRI AI ASSISTANT ==================== */
-        #siriOverlay {
-            position: absolute;
+        /* Subtle Noise Overlay */
+        .noise-bg {
+            position: fixed;
             inset: 0;
-            z-index: 125;
             pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.35s ease;
-        }
-        #siriOverlay.active {
-            opacity: 1;
-            pointer-events: auto;
+            z-index: 1;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
 
-        .siri-glow-border {
-            position: absolute;
-            inset: 0;
-            border-radius: 44px;
-            box-shadow: 
-                inset 0 0 35px 8px rgba(236, 72, 153, 0.8),
-                inset 0 0 60px 15px rgba(99, 102, 241, 0.8),
-                inset 0 0 90px 25px rgba(6, 182, 212, 0.7);
-            animation: siriGlowPulse 2.5s infinite alternate;
-            pointer-events: none;
-        }
-        @keyframes siriGlowPulse {
-            0% { filter: hue-rotate(0deg) brightness(1); }
-            100% { filter: hue-rotate(90deg) brightness(1.3); }
+        /* 3D Dynamic Tilt */
+        .tilt-box {
+            transform-style: preserve-3d;
+            perspective: 1200px;
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .siri-modal {
-            position: absolute;
-            bottom: 24px;
-            left: 16px;
-            right: 16px;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(35px);
-            -webkit-backdrop-filter: blur(35px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 28px;
-            padding: 16px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
-            transform: translateY(20px);
-            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        #siriOverlay.active .siri-modal {
-            transform: translateY(0);
+        .accent-gradient {
+            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 100%);
         }
 
-        /* ==================== 5. CONTROL CENTER ==================== */
-        #controlCenter {
-            position: absolute;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.82);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            z-index: 105;
-            padding: 55px 18px 24px 18px;
-            transform: translateY(-100%);
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        #controlCenter.active {
-            transform: translateY(0);
-            opacity: 1;
-            pointer-events: auto;
-        }
+        /* Equalizer Sound Wave Animation */
+        @keyframes eqDance1 { 0%, 100% { height: 4px; } 50% { height: 14px; } }
+        @keyframes eqDance2 { 0%, 100% { height: 12px; } 50% { height: 4px; } }
+        @keyframes eqDance3 { 0%, 100% { height: 6px; } 50% { height: 15px; } }
 
-        .cc-card {
-            background: rgba(30, 41, 59, 0.65);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 20px;
-            padding: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-        }
-
-        /* ==================== 6. HOME SCREEN CONTAINER (ABSOLUTE INSET 0) ==================== */
-        #homeScreenContainer {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 56px 16px 10px 16px;
-            overflow: hidden;
-            z-index: 10;
-        }
-
-        .ios-widget {
-            background: rgba(255, 255, 255, 0.18);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.28);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            border-radius: 24px;
-        }
-
-        .app-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-            transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .app-item:hover { transform: translateY(-2px) scale(1.04); }
-        .app-item:active { transform: scale(0.9); }
-
-        .icon-box {
-            width: 58px;
-            height: 58px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            font-size: 1.65rem;
-            color: #ffffff;
-            flex-shrink: 0;
-        }
-        .icon-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 50%;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.05) 100%);
-            border-radius: 16px 16px 0 0;
-            pointer-events: none;
-        }
-        .icon-box::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 16px;
-            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
-            pointer-events: none;
-        }
-
-        .icon-fb { background: linear-gradient(135deg, #1877f2 0%, #0052cc 100%); box-shadow: 0 8px 20px rgba(24, 119, 242, 0.4); }
-        .icon-insta { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); box-shadow: 0 8px 20px rgba(220, 39, 67, 0.4); }
-        .icon-tiktok { background: linear-gradient(135deg, #121212 0%, #242424 100%); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.15); }
-        .icon-locket { background: linear-gradient(135deg, #ffcc00 0%, #ff9500 100%); box-shadow: 0 8px 20px rgba(255, 149, 0, 0.4); }
-        .icon-photos { background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%); box-shadow: 0 8px 20px rgba(255, 255, 255, 0.35); }
-        .icon-music { background: linear-gradient(135deg, #ff2d55 0%, #d62246 100%); box-shadow: 0 8px 20px rgba(255, 45, 85, 0.4); }
-        .icon-game { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4); }
-        .icon-siri { background: radial-gradient(circle at 50% 50%, #f472b6, #6366f1 70%, #06b6d4); box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5); }
-        .icon-settings { background: linear-gradient(135deg, #64748b 0%, #334155 100%); box-shadow: 0 8px 20px rgba(71, 85, 105, 0.4); }
-        .icon-phone { background: linear-gradient(135deg, #34c759 0%, #248a3d 100%); box-shadow: 0 8px 18px rgba(52, 199, 89, 0.4); }
-        .icon-safari { background: linear-gradient(135deg, #007aff 0%, #004ecc 100%); box-shadow: 0 8px 18px rgba(0, 122, 255, 0.4); }
-        .icon-messages { background: linear-gradient(135deg, #30d158 0%, #1ea641 100%); box-shadow: 0 8px 18px rgba(48, 209, 88, 0.4); }
-
-        .app-title {
-            font-size: 11.5px;
-            font-weight: 600;
-            color: #ffffff;
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
-            letter-spacing: -0.01em;
-        }
-
-        .ios-dock {
-            background: rgba(255, 255, 255, 0.22);
-            backdrop-filter: blur(35px);
-            -webkit-backdrop-filter: blur(35px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 34px;
-            padding: 9px 12px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin: 0 2px 6px 2px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-        }
-
-        /* ==================== 7. APP TOÀN MÀN HÌNH ==================== */
-        .app-window {
-            position: absolute;
-            inset: 0;
-            background: #000;
-            z-index: 80;
-            border-radius: 44px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transform: scale(0.7);
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .app-window.active {
-            transform: scale(1);
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .home-bar {
-            width: 135px;
-            height: 5px;
-            background: #ffffff;
-            border-radius: 10px;
-            margin: 0 auto 2px auto;
-            opacity: 0.85;
-            cursor: pointer;
-            transition: transform 0.15s, background 0.15s;
-            z-index: 110;
-        }
-        .home-bar:active { transform: scale(0.9) translateY(-2px); opacity: 1; }
-
-        #volumeHUD {
-            position: absolute;
-            left: 6px;
-            top: 180px;
-            width: 5px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-            z-index: 120;
-            overflow: hidden;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        #volumeHUD.show { opacity: 1; }
-        #volumeHUDLevel {
-            width: 100%;
-            background: #ffffff;
-            position: absolute;
-            bottom: 0;
-            height: 70%;
-            transition: height 0.1s;
-        }
-
-        #gameCanvas {
-            background: linear-gradient(180deg, #4dc9ff 0%, #87ceeb 60%, #ded895 100%);
-            width: 100%;
-            height: 480px;
-            display: block;
-        }
-
-        /* Double tap heart animation */
-        .insta-heart-anim {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            color: #ff2d55;
-            font-size: 80px;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-shadow: 0 10px 30px rgba(0,0,0,0.6);
-        }
-        .insta-heart-anim.show {
-            transform: translate(-50%, -50%) scale(1.2);
-            opacity: 1;
-        }
-
-        /* TikTok vinyl spin */
-        .tiktok-disc {
-            animation: spinDisc 3s linear infinite;
-        }
-        @keyframes spinDisc {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 640px) {
-            body { background: #000; padding: 0 !important; }
-            .iphone-frame { width: 100vw; height: 100vh; border-radius: 0; padding: 0; box-shadow: none; transform: none !important; }
-            .iphone-screen, .app-window, #controlCenter, #screenOffOverlay, #passcodeScreen, #lockScreen, #siriOverlay, .siri-glow-border { border-radius: 0 !important; }
-            .phone-btn { display: none !important; }
-        }
+        .animate-equalizer .eq-bar:nth-child(1) { animation: eqDance1 0.75s ease-in-out infinite; }
+        .animate-equalizer .eq-bar:nth-child(2) { animation: eqDance2 0.55s ease-in-out infinite; }
+        .animate-equalizer .eq-bar:nth-child(3) { animation: eqDance3 0.85s ease-in-out infinite; }
     </style>
 </head>
-<body>
 
-    <!-- SCALE WRAPPER -->
-    <div class="iphone-scale-wrapper">
+<body class="min-h-screen flex items-center justify-center p-4 sm:p-6 text-slate-100 relative selection:bg-indigo-500 selection:text-white" data-theme="indigo">
 
-        <!-- KHUNG ĐIỆN THOẠI IPHONE 16 PRO MAX -->
-        <div class="iphone-frame" id="iphoneFrame">
-            <!-- Nút vật lý tương tác thật có âm thanh -->
-            <div class="phone-btn btn-action" onclick="triggerSiri()" title="Action Button: Gọi Siri"></div>
-            <div class="phone-btn btn-vol-up" onclick="changeVolume(0.1)" title="Tăng âm lượng"></div>
-            <div class="phone-btn btn-vol-down" onclick="changeVolume(-0.1)" title="Giảm âm lượng"></div>
-            <div class="phone-btn btn-power" onclick="togglePower()" title="Nút nguồn"></div>
+    <!-- Noise Texture & Ambient Lighting -->
+    <div class="noise-bg"></div>
+    
+    <div class="ambient-glow w-96 h-96 -top-20 -left-20 bg-indigo-600/30 animate-pulse" id="glow-1"></div>
+    <div class="ambient-glow w-[30rem] h-[30rem] -bottom-32 -right-20 bg-cyan-600/25" id="glow-2"></div>
+    <div class="ambient-glow w-64 h-64 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-purple-600/15"></div>
 
-            <!-- MÀN HÌNH CHÍNH (SCREEN) -->
-            <div class="iphone-screen wp-cyber" id="iphoneScreen">
+    <!-- Background Audio Element -->
+    <audio id="bg-audio" loop preload="auto" src="nhacnen.mp3"></audio>
 
-                <!-- HUD ÂM LƯỢNG -->
-                <div id="volumeHUD"><div id="volumeHUDLevel"></div></div>
+    <!-- Main Container -->
+    <main class="relative z-10 w-full max-w-lg mx-auto">
 
-                <!-- OVERLAY TẮT MÀN HÌNH -->
-                <div id="screenOffOverlay" onclick="togglePower()"></div>
+        <!-- Top Bar: Live Clock & Controls (Color Palette) -->
+        <div class="flex items-center justify-between px-3 mb-4">
+            <div class="flex items-center gap-2 text-[11px] font-mono text-slate-400">
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>VIETNAM (ICT) <span id="live-clock" class="text-slate-200 font-semibold">--:--:--</span></span>
+            </div>
+
+            <!-- Color Palette Selector -->
+            <div class="flex items-center gap-1.5 p-1 rounded-full glass-pill">
+                <button onclick="setTheme('indigo')" class="w-3.5 h-3.5 rounded-full bg-indigo-500 hover:scale-125 transition-transform" title="Indigo"></button>
+                <button onclick="setTheme('gold')" class="w-3.5 h-3.5 rounded-full bg-amber-500 hover:scale-125 transition-transform" title="Gold"></button>
+                <button onclick="setTheme('emerald')" class="w-3.5 h-3.5 rounded-full bg-emerald-500 hover:scale-125 transition-transform" title="Emerald"></button>
+                <button onclick="setTheme('rose')" class="w-3.5 h-3.5 rounded-full bg-rose-500 hover:scale-125 transition-transform" title="Rose"></button>
+            </div>
+        </div>
+
+        <!-- Sleek Profile Card -->
+        <div id="card-element" class="tilt-box glass-card rounded-[2.5rem] p-7 sm:p-9 relative overflow-hidden">
+
+            <!-- Subtle Card Top Highlight -->
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+
+            <!-- Header Profile Area -->
+            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
                 
-                <!-- SIRI OVERLAY (IOS 18 GLOWING BORDER) -->
-                <div id="siriOverlay">
-                    <div class="siri-glow-border"></div>
-                    <div class="siri-modal">
-                        <div class="flex items-center justify-between mb-2">
-                            <div class="flex items-center gap-2">
-                                <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-pink-500 via-indigo-500 to-cyan-400 flex items-center justify-center text-xs animate-spin">
-                                    ✨
-                                </div>
-                                <span class="font-extrabold text-sm text-white">Siri Minh Đức</span>
-                            </div>
-                            <button onclick="closeSiri()" class="text-white/60 hover:text-white font-bold text-xs">Đóng</button>
-                        </div>
-                        
-                        <p id="siriResponseText" class="text-xs text-sky-200 font-medium my-2.5 leading-relaxed bg-white/10 p-2.5 rounded-2xl">
-                            "Chào bạn! Mình có thể giúp gì cho bạn về Hà Quang Minh Đức?"
-                        </p>
-
-                        <div class="flex flex-wrap gap-1.5 my-2">
-                            <button onclick="askSiri('Minh Đức là ai?')" class="px-2.5 py-1 bg-white/15 hover:bg-white/25 rounded-full text-[10px] font-bold">Minh Đức là ai? 🙋‍♂️</button>
-                            <button onclick="askSiri('Gu người yêu?')" class="px-2.5 py-1 bg-white/15 hover:bg-white/25 rounded-full text-[10px] font-bold">Gu người yêu? 💖</button>
-                            <button onclick="askSiri('Có người yêu chưa?')" class="px-2.5 py-1 bg-white/15 hover:bg-white/25 rounded-full text-[10px] font-bold">Có bồ chưa? 👀</button>
-                            <button onclick="askSiri('Sở thích của Đức?')" class="px-2.5 py-1 bg-white/15 hover:bg-white/25 rounded-full text-[10px] font-bold">Sở thích? 🎧</button>
-                        </div>
-
-                        <div class="flex items-center gap-2 mt-2 bg-slate-900/80 p-2 rounded-2xl border border-white/10">
-                            <input id="siriInput" type="text" placeholder="Hỏi Siri điều gì đó..." class="bg-transparent text-xs text-white flex-1 outline-none px-1" onkeypress="if(event.key==='Enter') sendCustomSiri()">
-                            <button onclick="sendCustomSiri()" class="w-7 h-7 bg-indigo-600 rounded-full flex items-center justify-center text-xs text-white"><i class="fa-solid fa-arrow-up"></i></button>
+                <!-- Avatar with Glowing Border -->
+                <div class="relative group cursor-pointer" onclick="previewAvatar()">
+                    <div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-3xl overflow-hidden p-[2px] bg-gradient-to-tr from-white/30 via-white/10 to-transparent shadow-xl">
+                        <img src="avt.jpg" alt="Hà Quang Minh Đức" class="w-full h-full object-cover rounded-[22px] group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <!-- Verified Status Pill -->
+                    <div class="absolute -bottom-2 -right-2 bg-[#06080e] p-1 rounded-full border border-white/10 shadow-lg flex items-center justify-center">
+                        <div class="w-5 h-5 rounded-full accent-gradient flex items-center justify-center text-white text-[10px]">
+                            <i class="fa-solid fa-check"></i>
                         </div>
                     </div>
                 </div>
 
-                <!-- 1. STATUS BAR & DYNAMIC ISLAND -->
-                <div class="pt-3 px-6 flex justify-between items-center text-white text-xs font-semibold z-50 relative">
-                    <!-- Đồng hồ góc trái -->
-                    <span id="iosClock" class="tracking-tight text-[13px] font-bold cursor-pointer" onclick="toggleControlCenter()">21:50</span>
-                    
-                    <!-- DYNAMIC ISLAND THÔNG MINH -->
-                    <div class="dynamic-island compact" id="dynamicIsland" onclick="toggleDynamicIsland(event)">
-                        <div id="islandCompactView" class="w-full flex items-center justify-between">
-                            <div class="flex items-center gap-1.5">
-                                <span class="text-[11px]">🇻🇳</span>
-                                <span class="text-[10px] text-sky-400 font-mono font-bold" id="fpsIsland">60 FPS</span>
-                            </div>
-                            <div class="equalizer">
-                                <div class="eq-bar"></div>
-                                <div class="eq-bar"></div>
-                                <div class="eq-bar"></div>
-                                <div class="eq-bar"></div>
-                            </div>
-                        </div>
-
-                        <div id="islandExpandedView" class="w-full hidden flex-col justify-between h-full">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <img src="avt.jpg" style="width: 44px; height: 44px; border-radius: 12px; object-fit: cover; border: 1px solid rgba(255,255,255,0.2);">
-                                    <div>
-                                        <h4 class="text-xs font-bold text-white truncate max-w-[140px]" id="trackTitle">Xương Rồng 🌵</h4>
-                                        <p class="text-[10px] text-slate-400">Hà Quang Minh Đức Chill</p>
-                                    </div>
-                                </div>
-                                <div class="equalizer">
-                                    <div class="eq-bar"></div>
-                                    <div class="eq-bar"></div>
-                                    <div class="eq-bar"></div>
-                                    <div class="eq-bar"></div>
-                                </div>
-                            </div>
-
-                            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden my-1">
-                                <div id="musicProgressBar" class="bg-sky-400 h-full w-1/3 rounded-full transition-all"></div>
-                            </div>
-
-                            <div class="flex justify-between items-center text-sm px-2 text-white">
-                                <button onclick="event.stopPropagation(); prevTrack();" class="hover:text-sky-400"><i class="fa-solid fa-backward-step"></i></button>
-                                <button onclick="event.stopPropagation(); togglePlayMusic();" class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center text-xs shadow hover:scale-105 active:scale-95 transition">
-                                    <i id="playIconIsland" class="fa-solid fa-play"></i>
-                                </button>
-                                <button onclick="event.stopPropagation(); nextTrack();" class="hover:text-sky-400"><i class="fa-solid fa-forward-step"></i></button>
-                            </div>
-                        </div>
-
-                        <!-- Sạc Pin Mode trên Dynamic Island -->
-                        <div id="islandChargingView" class="w-full hidden items-center justify-between">
-                            <div class="flex items-center gap-2 text-green-400 font-bold text-xs">
-                                <i class="fa-solid fa-bolt text-sm animate-pulse"></i>
-                                <span>Đang sạc pin</span>
-                            </div>
-                            <span class="text-xs font-mono font-bold text-green-400">100%</span>
-                        </div>
+                <!-- Name & Bio Title -->
+                <div class="flex-1 pt-1">
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full glass-pill text-[11px] font-mono text-slate-300 mb-2">
+                        <i class="fa-solid fa-sparkles text-amber-400 text-[10px]"></i>
+                        <span>PERSONAL IDENTITY</span>
                     </div>
 
-                    <!-- Icon góc phải -->
-                    <div class="flex items-center gap-1.5 text-[11px] cursor-pointer" onclick="toggleControlCenter()">
-                        <i class="fa-solid fa-signal"></i>
-                        <i class="fa-solid fa-wifi"></i>
-                        <i class="fa-solid fa-battery-full text-sm text-green-400" id="topBatteryIcon"></i>
-                    </div>
-                </div>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white flex items-center justify-center sm:justify-start gap-2">
+                        <span>Hà Quang Minh Đức</span>
+                    </h1>
 
-                <!-- MAGSAFE CHARGING OVERLAY -->
-                <div id="magsafeCircle">
-                    <i class="fa-solid fa-bolt text-5xl text-green-400 mb-2 animate-bounce"></i>
-                    <span class="text-3xl font-extrabold tracking-tight">100%</span>
-                    <span class="text-xs font-bold text-green-300 mt-1 uppercase tracking-widest">MagSafe Sạc Nhanh</span>
-                </div>
-
-                <!-- ==================== 1. MÀN HÌNH KHÓA RIÊNG BIỆT (LOCK SCREEN) ==================== -->
-                <div id="lockScreen" class="wp-cyber" onclick="showPasscodeScreen()">
-                    <div>
-                        <div class="face-id-pill">
-                            <i class="fa-solid fa-lock text-xs text-white/80"></i>
-                            <span>Vuốt hoặc chạm để mở khóa</span>
-                        </div>
-                        <div class="lock-date" id="lockDate">Thứ Tư, 16 tháng 9</div>
-                        <div class="lock-clock" id="lockClock">21:50</div>
-                    </div>
-
-                    <!-- Widget âm nhạc trên Lock Screen -->
-                    <div class="ios-widget p-3 flex items-center justify-between text-white my-auto cursor-pointer" onclick="event.stopPropagation(); togglePlayMusic();">
-                        <div class="flex items-center gap-3">
-                            <img src="avt.jpg" style="width: 42px; height: 42px; border-radius: 10px; object-fit: cover;">
-                            <div>
-                                <p class="text-[10px] text-sky-300 font-bold uppercase">Now Playing</p>
-                                <h4 class="text-xs font-bold truncate max-w-[170px]">Xương Rồng 🌵</h4>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-circle-play text-2xl text-sky-400"></i>
-                    </div>
-
-                    <div>
-                        <div class="swipe-hint">
-                            <i class="fa-solid fa-chevron-up text-xs block mb-1"></i>
-                            Chạm vào đây để nhập mật khẩu
-                        </div>
-                        <div class="flex justify-between items-center mt-6">
-                            <button class="lock-bottom-btn" onclick="event.stopPropagation(); toggleFlashlight(event);"><i class="fa-solid fa-flashlight"></i></button>
-                            <button class="lock-bottom-btn" onclick="event.stopPropagation(); showPasscodeScreen();"><i class="fa-solid fa-camera"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ==================== 2. MÀN HÌNH NHẬP MẬT MÃ (PASSCODE SCREEN) ==================== -->
-                <div id="passcodeScreen">
-                    <div class="text-center pt-2">
-                        <div class="flex items-center justify-center gap-2 mb-2 text-slate-300">
-                            <i class="fa-solid fa-lock text-xs"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white tracking-tight">Nhập mật mã</h3>
-                        <p class="text-[11px] text-slate-400 mt-0.5">Nhập 6 số bất kỳ để mở khóa</p>
-                        
-                        <div class="passcode-dots" id="passcodeDots">
-                            <span class="passcode-dot"></span>
-                            <span class="passcode-dot"></span>
-                            <span class="passcode-dot"></span>
-                            <span class="passcode-dot"></span>
-                            <span class="passcode-dot"></span>
-                            <span class="passcode-dot"></span>
-                        </div>
-                    </div>
-
-                    <div class="keypad-grid">
-                        <button class="key-btn" onclick="enterPassDigit('1')"><span class="key-number">1</span><span class="key-letters">&nbsp;</span></button>
-                        <button class="key-btn" onclick="enterPassDigit('2')"><span class="key-number">2</span><span class="key-letters">ABC</span></button>
-                        <button class="key-btn" onclick="enterPassDigit('3')"><span class="key-number">3</span><span class="key-letters">DEF</span></button>
-
-                        <button class="key-btn" onclick="enterPassDigit('4')"><span class="key-number">4</span><span class="key-letters">GHI</span></button>
-                        <button class="key-btn" onclick="enterPassDigit('5')"><span class="key-number">5</span><span class="key-letters">JKL</span></button>
-                        <button class="key-btn" onclick="enterPassDigit('6')"><span class="key-number">6</span><span class="key-letters">MNO</span></button>
-
-                        <button class="key-btn" onclick="enterPassDigit('7')"><span class="key-number">7</span><span class="key-letters">PQRS</span></button>
-                        <button class="key-btn" onclick="enterPassDigit('8')"><span class="key-number">8</span><span class="key-letters">TUV</span></button>
-                        <button class="key-btn" onclick="enterPassDigit('9')"><span class="key-number">9</span><span class="key-letters">WXYZ</span></button>
-
-                        <div></div>
-                        <button class="key-btn" onclick="enterPassDigit('0')"><span class="key-number">0</span><span class="key-letters">&nbsp;</span></button>
-                        <div></div>
-                    </div>
-
-                    <div class="flex justify-between items-center px-4 text-xs font-semibold text-white/90">
-                        <button class="py-2 hover:text-white" onclick="alert('🚨 Cuộc gọi khẩn cấp (Emergency Call)')">Khẩn cấp</button>
-                        <button class="py-2 hover:text-white" onclick="deletePassDigit()" id="deleteOrCancelBtn">Hủy</button>
-                    </div>
-                </div>
-
-                <!-- ==================== 3. TRUNG TÂM ĐIỀU KHIỂN (CONTROL CENTER) ==================== -->
-                <div id="controlCenter" onclick="closeControlCenterOnBg(event)">
-                    <div class="flex justify-between items-center text-white text-xs font-bold mb-3">
-                        <span>Trung tâm điều khiển</span>
-                        <button onclick="toggleControlCenter()" class="text-white/70 hover:text-white"><i class="fa-solid fa-xmark text-base"></i></button>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3 mb-3">
-                        <div class="cc-card grid grid-cols-2 gap-2 text-white">
-                            <div class="flex flex-col items-center justify-center p-2 rounded-xl bg-blue-600 cursor-pointer active:scale-90 transition">
-                                <i class="fa-solid fa-wifi text-base"></i>
-                                <span class="text-[9px] mt-1 font-bold">Wi-Fi</span>
-                            </div>
-                            <div class="flex flex-col items-center justify-center p-2 rounded-xl bg-emerald-600 cursor-pointer active:scale-90 transition">
-                                <i class="fa-solid fa-tower-broadcast text-base"></i>
-                                <span class="text-[9px] mt-1 font-bold">5G</span>
-                            </div>
-                            <div class="flex flex-col items-center justify-center p-2 rounded-xl bg-blue-500 cursor-pointer active:scale-90 transition">
-                                <i class="fa-brands fa-bluetooth-b text-base"></i>
-                                <span class="text-[9px] mt-1 font-bold">Bluetooth</span>
-                            </div>
-                            <div class="flex flex-col items-center justify-center p-2 rounded-xl bg-amber-500 cursor-pointer active:scale-90 transition">
-                                <i class="fa-solid fa-plane text-base"></i>
-                                <span class="text-[9px] mt-1 font-bold">Máy bay</span>
-                            </div>
-                        </div>
-
-                        <div class="cc-card flex flex-col justify-between text-white cursor-pointer" onclick="togglePlayMusic()">
-                            <div>
-                                <span class="text-[10px] text-slate-400 font-bold">Music</span>
-                                <h4 class="text-xs font-bold truncate">Xương Rồng 🌵</h4>
-                            </div>
-                            <div class="flex justify-around items-center text-sm mt-2">
-                                <i class="fa-solid fa-backward-step"></i>
-                                <i class="fa-solid fa-play text-lg text-sky-400"></i>
-                                <i class="fa-solid fa-forward-step"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-4 gap-2 text-white text-center text-xs font-bold">
-                        <div onclick="toggleFlashlight()" class="cc-card flex flex-col items-center justify-center p-3 cursor-pointer active:scale-95">
-                            <i class="fa-solid fa-flashlight text-lg text-amber-300"></i>
-                        </div>
-                        <div onclick="triggerCharging(); toggleControlCenter();" class="cc-card flex flex-col items-center justify-center p-3 cursor-pointer active:scale-95">
-                            <i class="fa-solid fa-bolt text-lg text-green-400"></i>
-                        </div>
-                        <div onclick="openApp('gameApp'); toggleControlCenter();" class="cc-card flex flex-col items-center justify-center p-3 cursor-pointer active:scale-95">
-                            <i class="fa-solid fa-gamepad text-lg text-purple-400"></i>
-                        </div>
-                        <div onclick="triggerSiri(); toggleControlCenter();" class="cc-card flex flex-col items-center justify-center p-3 cursor-pointer active:scale-95">
-                            <i class="fa-solid fa-wand-magic-sparkles text-lg text-pink-400"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ==================== 4. MÀN HÌNH CHÍNH (HOME SCREEN CONTAINER - ABSOLUTE INSET 0) ==================== -->
-                <div id="homeScreenContainer">
-                    
-                    <!-- WIDGET PROFILE CAO CẤP -->
-                    <div class="ios-widget p-3.5 text-white flex items-center gap-3.5 shadow-lg cursor-pointer" onclick="shootConfetti(); playSound('click');">
-                        <div class="relative flex-shrink-0">
-                            <img src="minhduc.jpg" alt="Avatar" style="width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255, 255, 255, 0.9); display: block;">
-                            <span style="position: absolute; bottom: 0; right: 0; width: 14px; height: 14px; background-color: #22c55e; border: 2px solid #0f172a; border-radius: 50%;"></span>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-1.5">
-                                <h2 class="font-extrabold text-[15px] tracking-tight text-white truncate">Hà Quang Minh Đức</h2>
-                                <i class="fa-solid fa-circle-check text-sky-400 text-xs flex-shrink-0"></i>
-                            </div>
-                            <p class="text-xs text-white/80 font-medium truncate mt-0.5">@haquangminhduc</p>
-                            <div class="mt-1.5 flex items-center gap-1.5">
-                                <span class="bg-white/20 text-[10px] font-bold px-2.5 py-0.5 rounded-full backdrop-blur-sm flex-shrink-0">📍 Hà Nội</span>
-                                <span class="bg-indigo-500/30 text-indigo-200 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-indigo-400/30 flex-shrink-0">iPhone 16 Pro ✨</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- LƯỚI 8 APP ICONS (CĂN GIỮA ĐẸP MẮT) -->
-                    <div class="my-auto py-2">
-                        <div class="grid grid-cols-4 gap-y-4 gap-x-2 text-center">
-                            <!-- Facebook -->
-                            <div class="app-item" onclick="openApp('fbApp')">
-                                <div class="icon-box icon-fb"><i class="fa-brands fa-facebook-f drop-shadow"></i></div>
-                                <span class="app-title">Facebook</span>
-                            </div>
-
-                            <!-- Instagram -->
-                            <div class="app-item" onclick="openApp('instaApp')">
-                                <div class="icon-box icon-insta"><i class="fa-brands fa-instagram drop-shadow"></i></div>
-                                <span class="app-title">Instagram</span>
-                            </div>
-
-                            <!-- TikTok -->
-                            <div class="app-item" onclick="openApp('tiktokApp')">
-                                <div class="icon-box icon-tiktok"><i class="fa-brands fa-tiktok text-cyan-400 drop-shadow-[2px_2px_0px_#ff0050]"></i></div>
-                                <span class="app-title">TikTok</span>
-                            </div>
-
-                            <!-- Locket -->
-                            <div class="app-item" onclick="openApp('locketApp')">
-                                <div class="icon-box icon-locket"><i class="fa-solid fa-heart text-amber-950"></i></div>
-                                <span class="app-title">Locket</span>
-                            </div>
-
-                            <!-- Photos App -->
-                            <div class="app-item" onclick="openApp('photosApp')">
-                                <div class="icon-box icon-photos"><i class="fa-solid fa-images text-indigo-600"></i></div>
-                                <span class="app-title">Ảnh</span>
-                            </div>
-
-                            <!-- Game Center -->
-                            <div class="app-item" onclick="openApp('gameApp')">
-                                <div class="icon-box icon-game"><i class="fa-solid fa-gamepad text-white"></i></div>
-                                <span class="app-title">Game</span>
-                            </div>
-
-                            <!-- Siri AI Assistant -->
-                            <div class="app-item" onclick="triggerSiri()">
-                                <div class="icon-box icon-siri"><i class="fa-solid fa-sparkles text-white"></i></div>
-                                <span class="app-title">Siri AI</span>
-                            </div>
-
-                            <!-- Settings App -->
-                            <div class="app-item" onclick="openApp('settingsApp')">
-                                <div class="icon-box icon-settings"><i class="fa-solid fa-gear"></i></div>
-                                <span class="app-title">Cài đặt</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- DOCK BAR VÀ DẤU CHẤM TRANG GHIM SÁT ĐÁY -->
-                    <div>
-                        <!-- Page Dots -->
-                        <div class="flex justify-center items-center gap-1.5 mb-2.5">
-                            <span class="w-1.5 h-1.5 rounded-full bg-white shadow"></span>
-                            <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
-                            <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
-                        </div>
-
-                        <!-- DOCK BAR -->
-                        <div class="ios-dock">
-                            <div class="app-item" onclick="openApp('fbApp')">
-                                <div class="icon-box" style="width: 50px; height: 50px; border-radius: 14px; background: linear-gradient(135deg, #34c759 0%, #248a3d 100%);"><i class="fa-solid fa-phone text-lg"></i></div>
-                            </div>
-                            <div class="app-item" onclick="openApp('safariApp')">
-                                <div class="icon-box" style="width: 50px; height: 50px; border-radius: 14px; background: linear-gradient(135deg, #007aff 0%, #004ecc 100%);"><i class="fa-solid fa-compass text-xl"></i></div>
-                            </div>
-                            <div class="app-item" onclick="openApp('messagesApp')">
-                                <div class="icon-box" style="width: 50px; height: 50px; border-radius: 14px; background: linear-gradient(135deg, #30d158 0%, #1ea641 100%);"><i class="fa-solid fa-comment-dots text-lg"></i></div>
-                            </div>
-                            <div class="app-item" onclick="togglePlayMusic(); expandIsland();">
-                                <div class="icon-box" style="width: 50px; height: 50px; border-radius: 14px; background: linear-gradient(135deg, #ff2d55 0%, #d62246 100%);"><i class="fa-brands fa-apple text-xl"></i></div>
-                            </div>
-                        </div>
-
-                        <!-- Home Bar -->
-                        <div class="home-bar" onclick="closeAllApps(); shootConfetti();" title="Vuốt đóng App về Home"></div>
-                    </div>
-
-                </div>
-
-                <!-- ==================== 5. CÁC ỨNG DỤNG MỞ THẬT ==================== -->
-                
-                <!-- APP 1: FAKE FACEBOOK -->
-                <div id="fbApp" class="app-window bg-slate-900 text-white p-0 pt-11 flex flex-col justify-between">
-                    <div class="px-4 py-2 flex items-center justify-between border-b border-white/10 bg-slate-900/95 sticky top-0 z-10">
-                        <h2 class="text-xl font-black text-blue-500 tracking-tight">facebook</h2>
-                        <div class="flex items-center gap-2 text-sm">
-                            <span class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center"><i class="fa-solid fa-magnifying-glass"></i></span>
-                            <span class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center"><i class="fa-brands fa-facebook-messenger"></i></span>
-                        </div>
-                    </div>
-
-                    <div class="flex-1 overflow-y-auto p-4 space-y-4">
-                        <div class="relative bg-slate-800 rounded-3xl overflow-hidden p-4 text-center border border-white/10">
-                            <div class="w-full h-24 bg-gradient-to-r from-blue-700 via-indigo-600 to-sky-500 rounded-2xl mb-10"></div>
-                            <div class="absolute top-12 left-1/2 transform -translate-x-1/2">
-                                <img src="minhduc.jpg" style="width: 76px; height: 76px; border-radius: 50%; object-fit: cover; border: 4px solid #0f172a; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-                            </div>
-                            <div class="flex items-center justify-center gap-1.5 mt-2">
-                                <h3 class="font-extrabold text-base">Hà Quang Minh Đức</h3>
-                                <i class="fa-solid fa-circle-check text-blue-500 text-xs"></i>
-                            </div>
-                            <p class="text-xs text-slate-300 mt-0.5">Sống tích cực, yêu đời và sáng tạo ✨</p>
-                            
-                            <div class="flex gap-2 mt-3.5">
-                                <button onclick="shootConfetti()" class="flex-1 py-2 bg-blue-600 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow active:scale-95">
-                                    <i class="fa-solid fa-user-plus text-xs"></i> Kết bạn
-                                </button>
-                                <a href="https://www.facebook.com/haquagminhduc" target="_blank" rel="noopener noreferrer" class="flex-1 py-2 bg-slate-700 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 text-sky-400 shadow active:scale-95">
-                                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Mở FB Thật
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Bài viết Demo -->
-                        <div class="bg-slate-800 rounded-2xl p-3 border border-white/10 space-y-2">
-                            <div class="flex items-center gap-2.5">
-                                <img src="avt.jpg" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;">
-                                <div>
-                                    <h4 class="font-bold text-xs">Hà Quang Minh Đức</h4>
-                                    <span class="text-[10px] text-slate-400">Vừa xong · 🌐</span>
-                                </div>
-                            </div>
-                            <p class="text-xs text-slate-200">Chào mừng mọi người ghé thăm website cá nhân phong cách iPhone 16 Pro Max của mình nha! 🚀📱</p>
-                            <img src="minhduc.jpg" style="border-radius: 14px; width: 100%; height: 180px; object-fit: cover;">
-                            <div class="flex justify-between text-xs text-slate-400 pt-1 border-t border-white/10">
-                                <button id="fbLikeBtn" onclick="toggleFbLike()" class="flex items-center gap-1.5 hover:text-blue-400 font-semibold">
-                                    <i class="fa-solid fa-thumbs-up" id="fbLikeIcon"></i> <span id="fbLikeCount">999</span> Thích
-                                </button>
-                                <button onclick="alert('Đã mở bình luận!')" class="flex items-center gap-1.5 hover:text-white font-semibold">
-                                    <i class="fa-solid fa-comment"></i> Bình luận
-                                </button>
-                                <button onclick="shootConfetti()" class="flex items-center gap-1.5 hover:text-white font-semibold">
-                                    <i class="fa-solid fa-share"></i> Chia sẻ
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="home-bar mt-2" onclick="closeAllApps()"></div>
-                </div>
-
-                <!-- APP 2: FAKE INSTAGRAM -->
-                <div id="instaApp" class="app-window bg-black text-white p-0 pt-11 flex flex-col justify-between">
-                    <div class="px-4 py-2 flex items-center justify-between border-b border-white/10 bg-black/95 sticky top-0 z-10">
-                        <h2 class="font-insta text-2xl tracking-wide">Instagram</h2>
-                        <div class="flex items-center gap-3 text-lg">
-                            <i class="fa-regular fa-heart cursor-pointer" onclick="shootConfetti()"></i>
-                            <i class="fa-brands fa-facebook-messenger"></i>
-                        </div>
-                    </div>
-
-                    <div class="flex-1 overflow-y-auto space-y-4">
-                        <!-- Story bar -->
-                        <div class="flex gap-3 px-4 py-2 border-b border-white/10 overflow-x-auto">
-                            <div class="flex flex-col items-center gap-1 min-w-[55px]">
-                                <div class="p-0.5 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600">
-                                    <img src="minhduc.jpg" style="width: 46px; height: 46px; border-radius: 50%; object-fit: cover; border: 2px solid black;">
-                                </div>
-                                <span class="text-[10px] text-slate-300">Tin của bạn</span>
-                            </div>
-                            <div class="flex flex-col items-center gap-1 min-w-[55px]">
-                                <div class="p-0.5 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600">
-                                    <img src="avt.jpg" style="width: 46px; height: 46px; border-radius: 50%; object-fit: cover; border: 2px solid black;">
-                                </div>
-                                <span class="text-[10px] text-slate-300">duc_official</span>
-                            </div>
-                        </div>
-
-                        <!-- Post Card -->
-                        <div class="space-y-2">
-                            <div class="flex items-center justify-between px-4">
-                                <div class="flex items-center gap-2">
-                                    <img src="avt.jpg" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
-                                    <span class="font-bold text-xs">@haquangminhduc</span>
-                                </div>
-                                <i class="fa-solid fa-ellipsis text-slate-400"></i>
-                            </div>
-
-                            <!-- Ảnh tương tác Double Tap -->
-                            <div class="relative cursor-pointer select-none" ondblclick="triggerInstaHeart(event)">
-                                <img src="minhduc.jpg" style="width: 100%; height: 260px; object-fit: cover;">
-                                <i class="fa-solid fa-heart insta-heart-anim" id="instaHeartAnim"></i>
-                            </div>
-
-                            <div class="px-4 space-y-1">
-                                <div class="flex items-center justify-between text-xl pt-1">
-                                    <div class="flex items-center gap-3">
-                                        <i class="fa-solid fa-heart cursor-pointer text-slate-300" id="instaLikeBtn" onclick="toggleInstaLike()"></i>
-                                        <i class="fa-regular fa-comment"></i>
-                                        <i class="fa-regular fa-paper-plane"></i>
-                                    </div>
-                                    <i class="fa-regular fa-bookmark"></i>
-                                </div>
-                                <p class="text-xs font-bold pt-1"><span id="instaLikesCount">1,280</span> lượt thích</p>
-                                <p class="text-xs"><span class="font-bold">haquangminhduc</span> Một ngày bình yên và nhiều năng lượng tích cực 🌿✨ #vibes #vietnam</p>
-                                <a href="https://www.instagram.com/haquangminhduc" target="_blank" rel="noopener noreferrer" class="text-sky-400 text-xs font-bold block pt-1">
-                                    Xem trang Instagram thật ↗
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="home-bar mt-2" onclick="closeAllApps()"></div>
-                </div>
-
-                <!-- APP 3: FAKE TIKTOK -->
-                <div id="tiktokApp" class="app-window bg-slate-950 text-white p-0 relative flex flex-col justify-between">
-                    <div class="absolute inset-0 z-0">
-                        <img src="minhduc.jpg" style="width: 100%; height: 100%; object-fit: cover; filter: brightness(0.75);">
-                    </div>
-
-                    <!-- Header -->
-                    <div class="relative z-10 pt-12 px-4 flex justify-center gap-6 text-sm font-bold">
-                        <span class="opacity-60 cursor-pointer">Đang Follow</span>
-                        <span class="border-b-2 border-white pb-1 cursor-pointer">Dành cho bạn</span>
-                    </div>
-
-                    <!-- Right Action Bar -->
-                    <div class="absolute right-3 bottom-20 z-10 flex flex-col items-center gap-4 text-center">
-                        <div class="relative cursor-pointer" onclick="shootConfetti()">
-                            <img src="avt.jpg" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid white;">
-                            <span class="absolute -bottom-1.5 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-rose-500 rounded-full flex items-center justify-center text-[10px] font-bold">+</span>
-                        </div>
-
-                        <div class="cursor-pointer" onclick="toggleTikTokLike()">
-                            <div class="w-10 h-10 rounded-full bg-black/40 flex items-center justify-center text-xl text-rose-500" id="ttHeartBox">
-                                <i class="fa-solid fa-heart" id="ttHeartIcon"></i>
-                            </div>
-                            <span class="text-[10px] font-bold" id="ttLikeCount">52.8K</span>
-                        </div>
-
-                        <div class="cursor-pointer" onclick="alert('Đã sao chép link TikTok!')">
-                            <div class="w-10 h-10 rounded-full bg-black/40 flex items-center justify-center text-lg">
-                                <i class="fa-solid fa-comment-dots"></i>
-                            </div>
-                            <span class="text-[10px] font-bold">1.2K</span>
-                        </div>
-
-                        <div class="cursor-pointer" onclick="shootConfetti()">
-                            <div class="w-10 h-10 rounded-full bg-black/40 flex items-center justify-center text-lg">
-                                <i class="fa-solid fa-share"></i>
-                            </div>
-                            <span class="text-[10px] font-bold">Chia sẻ</span>
-                        </div>
-
-                        <!-- Đĩa nhạc Vinyl quay tròn -->
-                        <div class="w-10 h-10 rounded-full bg-slate-900 border-2 border-slate-700 flex items-center justify-center tiktok-disc cursor-pointer" onclick="togglePlayMusic()">
-                            <img src="avt.jpg" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover;">
-                        </div>
-                    </div>
-
-                    <!-- Bottom Info -->
-                    <div class="relative z-10 p-4 space-y-2">
-                        <h4 class="font-extrabold text-sm text-white drop-shadow">@haquangminhduc</h4>
-                        <p class="text-xs text-white/90 drop-shadow line-clamp-2">Clip chill nhạc cùng Hà Quang Minh Đức 🌵🎵 Chúc các bạn một ngày thật vui vẻ!</p>
-                        <div class="flex items-center gap-2 text-xs text-white/80">
-                            <i class="fa-solid fa-music text-[10px]"></i>
-                            <span class="truncate max-w-[200px]">Xương Rồng - Hà Quang Minh Đức Chill</span>
-                        </div>
-                        <a href="https://www.tiktok.com/@haquangminhduc" target="_blank" rel="noopener noreferrer" class="inline-block px-3 py-1.5 bg-rose-600 rounded-full font-bold text-xs text-white shadow">
-                            Mở TikTok Thật 🎵
-                        </a>
-                    </div>
-
-                    <div class="home-bar relative z-10 mb-2" onclick="closeAllApps()"></div>
-                </div>
-
-                <!-- APP 4: PHOTOS APP -->
-                <div id="photosApp" class="app-window bg-slate-950 text-white p-4 pt-12 flex flex-col justify-between">
-                    <div class="flex justify-between items-center mb-3">
-                        <h2 class="text-xl font-black">Kho Ảnh 📸</h2>
-                        <button onclick="closeAllApps()" class="text-sky-400 font-bold text-sm">Đóng</button>
-                    </div>
-
-                    <div class="flex-1 overflow-y-auto space-y-3">
-                        <div class="rounded-2xl overflow-hidden shadow-lg border border-white/10 group cursor-pointer" onclick="shootConfetti()">
-                            <img src="minhduc.jpg" style="width: 100%; height: 200px; object-fit: cover;" class="group-hover:scale-105 transition duration-300">
-                            <div class="p-2.5 bg-slate-900 flex justify-between items-center text-xs">
-                                <span class="font-bold">Ảnh đại diện chính thức</span>
-                                <span class="text-slate-400 text-[10px]">Hà Nội · 2026</span>
-                            </div>
-                        </div>
-
-                        <div class="rounded-2xl overflow-hidden shadow-lg border border-white/10 group cursor-pointer" onclick="shootConfetti()">
-                            <img src="avt.jpg" style="width: 100%; height: 200px; object-fit: cover;" class="group-hover:scale-105 transition duration-300">
-                            <div class="p-2.5 bg-slate-900 flex justify-between items-center text-xs">
-                                <span class="font-bold">Portrait Chill</span>
-                                <span class="text-slate-400 text-[10px]">Studio · HD</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="home-bar mt-2" onclick="closeAllApps()"></div>
-                </div>
-
-                <!-- APP 5: GAME FLAPPY DUC -->
-                <div id="gameApp" class="app-window bg-slate-900 text-white p-0 pt-11 flex flex-col justify-between">
-                    <div class="px-4 py-2 flex items-center justify-between border-b border-white/10 bg-slate-900">
-                        <div class="flex items-center gap-2">
-                            <span class="text-lg">🎮</span>
-                            <h3 class="font-bold text-sm">Flappy Duc 🐥</h3>
-                        </div>
-                        <button onclick="closeAllApps()" class="text-sky-400 font-bold text-xs">Thoát</button>
-                    </div>
-
-                    <div class="relative flex-1 flex flex-col items-center justify-center">
-                        <canvas id="gameCanvas" width="360" height="480" onclick="handleGameClick()"></canvas>
-                        
-                        <div id="gameOverlay" class="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-center p-4">
-                            <div class="w-16 h-16 rounded-full bg-yellow-400 text-slate-950 flex items-center justify-center text-3xl mb-3 shadow-lg animate-bounce">
-                                🐥
-                            </div>
-                            <h4 class="font-black text-xl text-white drop-shadow">Chạm để Bay!</h4>
-                            <p class="text-xs text-slate-200 mt-1 mb-4">Vượt qua các cột chướng ngại vật để đạt điểm cao</p>
-                            <button onclick="startFlappyGame()" class="px-6 py-2.5 bg-yellow-400 text-slate-900 font-black rounded-full shadow-lg hover:bg-yellow-300 active:scale-95 transition text-sm">
-                                Bắt đầu Chơi ▶
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="home-bar mt-2" onclick="closeAllApps()"></div>
-                </div>
-
-                <!-- APP 6: CÀI ĐẶT -->
-                <div id="settingsApp" class="app-window bg-slate-900 text-white p-4 pt-12">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-xl font-extrabold">Cài đặt ⚙️</h2>
-                        <button onclick="closeAllApps()" class="text-sky-400 font-bold text-sm">Đóng</button>
-                    </div>
-                    <div class="bg-slate-800 p-3 rounded-2xl flex items-center gap-3 mb-4">
-                        <img src="minhduc.jpg" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover;">
-                        <div>
-                            <h4 class="font-bold text-sm">Hà Quang Minh Đức</h4>
-                            <p class="text-[11px] text-slate-400">Apple ID, iCloud+ & Media</p>
-                        </div>
-                    </div>
-                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Hình nền điện thoại</h3>
-                    <div class="grid grid-cols-3 gap-2 mb-4">
-                        <button onclick="setTheme('wp-cyber')" class="p-3 bg-indigo-950 text-white rounded-xl border border-indigo-500 text-xs font-bold">Cyber Glow</button>
-                        <button onclick="setTheme('wp-sakura')" class="p-3 bg-pink-900 text-pink-200 rounded-xl border border-pink-400 text-xs font-bold">Sakura</button>
-                        <button onclick="setTheme('wp-deepsea')" class="p-3 bg-sky-900 text-white rounded-xl border border-sky-400 text-xs font-bold">Deep Sea</button>
-                    </div>
-                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Giới thiệu thiết bị</h3>
-                    <div class="bg-slate-800 rounded-2xl p-3 text-xs space-y-2">
-                        <div class="flex justify-between"><span class="text-slate-400">Tên máy</span><span class="font-bold">iPhone 16 Pro Max</span></div>
-                        <div class="flex justify-between"><span class="text-slate-400">Phiên bản iOS</span><span class="font-bold">18.1 (22B83)</span></div>
-                        <div class="flex justify-between"><span class="text-slate-400">Dung lượng</span><span class="font-bold">256 GB</span></div>
-                        <div class="flex justify-between"><span class="text-slate-400">Chủ sở hữu</span><span class="font-bold text-sky-400">Hà Quang Minh Đức</span></div>
-                    </div>
-                    <div class="home-bar mt-auto" onclick="closeAllApps()"></div>
-                </div>
-
-                <!-- APP 7: IMESSAGE -->
-                <div id="messagesApp" class="app-window bg-slate-950 text-white p-4 pt-12 flex flex-col justify-between">
-                    <div class="flex items-center justify-between pb-3 border-b border-white/10">
-                        <div class="flex items-center gap-2">
-                            <img src="minhduc.jpg" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;">
-                            <div>
-                                <h4 class="font-bold text-xs">Hà Quang Minh Đức 🩵</h4>
-                                <p class="text-[9px] text-emerald-400">Đang hoạt động</p>
-                            </div>
-                        </div>
-                        <button onclick="closeAllApps()" class="text-sky-400 font-bold text-xs">Đóng</button>
-                    </div>
-                    <div class="space-y-3 my-auto py-2">
-                        <div class="flex justify-start">
-                            <div class="bg-slate-800 text-white text-xs p-3 rounded-2xl rounded-tl-none max-w-[240px]">
-                                Chào bạn! Chào mừng bạn ghé thăm iPhone của Minh Đức nhé ✨
-                            </div>
-                        </div>
-                        <div class="flex justify-end">
-                            <div class="bg-blue-600 text-white text-xs p-3 rounded-2xl rounded-tr-none max-w-[240px]">
-                                Giao diện iPhone xịn quá bạn ơi! 💖
-                            </div>
-                        </div>
-                        <div class="flex justify-start">
-                            <div class="bg-slate-800 text-white text-xs p-3 rounded-2xl rounded-tl-none max-w-[240px]">
-                                Cảm ơn bạn! Hãy kết nối với mình qua Facebook / Instagram nhé! 🚀
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2 bg-slate-800 p-2 rounded-full border border-white/10">
-                        <input type="text" placeholder="iMessage..." class="bg-transparent text-xs text-white flex-1 outline-none px-2">
-                        <button onclick="shootConfetti()" class="w-7 h-7 bg-blue-600 rounded-full flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-up"></i></button>
-                    </div>
-                    <div class="home-bar mt-2" onclick="closeAllApps()"></div>
-                </div>
-
-                <!-- APP 8: SAFARI BROWSER -->
-                <div id="safariApp" class="app-window bg-slate-900 text-white p-4 pt-12 flex flex-col justify-between">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="font-bold text-sm">Safari Browser 🧭</h3>
-                        <button onclick="closeAllApps()" class="text-sky-400 font-bold text-xs">Xong</button>
-                    </div>
-                    <div class="bg-slate-800 p-2.5 rounded-xl text-xs font-mono text-center text-sky-400 mb-4 flex items-center justify-center gap-2 border border-white/10">
-                        <i class="fa-solid fa-lock text-[10px]"></i>
-                        https://haquangminhduc.github.io
-                    </div>
-                    <div class="grid grid-cols-2 gap-3 my-auto">
-                        <div onclick="openApp('fbApp')" class="p-3 bg-slate-800 rounded-2xl flex items-center gap-3 hover:bg-slate-700 cursor-pointer">
-                            <i class="fa-brands fa-facebook text-blue-500 text-2xl"></i>
-                            <span class="text-xs font-bold">Facebook</span>
-                        </div>
-                        <div onclick="openApp('instaApp')" class="p-3 bg-slate-800 rounded-2xl flex items-center gap-3 hover:bg-slate-700 cursor-pointer">
-                            <i class="fa-brands fa-instagram text-rose-500 text-2xl"></i>
-                            <span class="text-xs font-bold">Instagram</span>
-                        </div>
-                        <div onclick="openApp('tiktokApp')" class="p-3 bg-slate-800 rounded-2xl flex items-center gap-3 hover:bg-slate-700 cursor-pointer">
-                            <i class="fa-brands fa-tiktok text-cyan-400 text-2xl"></i>
-                            <span class="text-xs font-bold">TikTok</span>
-                        </div>
-                        <div onclick="openApp('locketApp')" class="p-3 bg-slate-800 rounded-2xl flex items-center gap-3 hover:bg-slate-700 cursor-pointer">
-                            <i class="fa-solid fa-heart text-amber-400 text-2xl"></i>
-                            <span class="text-xs font-bold">Locket</span>
-                        </div>
-                    </div>
-                    <div class="home-bar mt-auto" onclick="closeAllApps()"></div>
-                </div>
-
-                <!-- APP 9: LOCKET APP -->
-                <div id="locketApp" class="app-window bg-amber-500 text-slate-900 p-5 pt-12 flex flex-col justify-between text-center">
-                    <div class="flex justify-end">
-                        <button onclick="closeAllApps()" class="text-black font-extrabold text-sm">✕</button>
-                    </div>
-                    <div class="my-auto">
-                        <div class="w-16 h-16 bg-black text-amber-400 rounded-3xl flex items-center justify-center mx-auto text-3xl shadow-xl mb-3">
-                            💛
-                        </div>
-                        <h3 class="font-extrabold text-2xl text-black">Locket Widget</h3>
-                        <p class="text-xs text-amber-950 font-semibold mt-1 mb-5">Chia sẻ khoảnh khắc ảnh trực tiếp tới bạn bè!</p>
-                        
-                        <div class="bg-black/10 p-3.5 rounded-2xl text-sm font-mono font-bold select-all mb-4">
-                            ID: haquangminhduc
-                        </div>
-
-                        <button onclick="copyLocketId()" class="w-full py-3.5 bg-black text-white font-extrabold rounded-2xl shadow-lg active:scale-95 transition text-sm">
-                            Sao chép ID Locket
-                        </button>
-                    </div>
-                    <div class="home-bar mt-auto" onclick="closeAllApps()"></div>
+                    <p class="text-xs sm:text-sm text-slate-400 font-mono mt-1">
+                        @haquangminhduc
+                    </p>
                 </div>
 
             </div>
+
+            <!-- Essential Info Grid (Full Name, Date of Birth, Hometown) -->
+            <div class="mt-8 space-y-3.5">
+
+                <!-- 1. Full Name -->
+                <div class="glass-pill rounded-2xl p-4 flex items-center justify-between group">
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-300 group-hover:text-white group-hover:bg-white/10 transition">
+                            <i class="fa-solid fa-user text-sm"></i>
+                        </div>
+                        <div>
+                            <div class="text-[10px] font-mono uppercase tracking-wider text-slate-400">Full Name</div>
+                            <div class="text-sm font-semibold text-slate-100">Ha Quang Minh Duc</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Date of Birth -->
+                <div class="glass-pill rounded-2xl p-4 flex items-center justify-between group">
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-300 group-hover:text-white group-hover:bg-white/10 transition">
+                            <i class="fa-solid fa-cake-candles text-sm"></i>
+                        </div>
+                        <div>
+                            <div class="text-[10px] font-mono uppercase tracking-wider text-slate-400">Date of Birth</div>
+                            <div class="text-sm font-semibold text-slate-100">07/05/2004</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Hometown -->
+                <div class="glass-pill rounded-2xl p-4 flex items-center justify-between group">
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-300 group-hover:text-white group-hover:bg-white/10 transition">
+                            <i class="fa-solid fa-location-dot text-sm"></i>
+                        </div>
+                        <div>
+                            <div class="text-[10px] font-mono uppercase tracking-wider text-slate-400">Hometown / Location</div>
+                            <div class="text-sm font-semibold text-slate-100">Nghe An, Vietnam 🇻🇳</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Quick Action / Social Connect Dock -->
+            <div class="mt-8 pt-6 border-t border-white/10 flex items-center justify-between gap-3">
+                
+                <!-- GitHub Link -->
+                <a href="https://github.com/haquangminhduc" target="_blank" rel="noopener noreferrer" class="flex-1 glass-pill py-3 px-4 rounded-2xl flex items-center justify-center gap-2 text-xs font-medium text-slate-200 hover:text-white transition group">
+                    <i class="fa-brands fa-github text-sm group-hover:scale-110 transition-transform"></i>
+                    <span class="font-mono">GitHub</span>
+                </a>
+
+                <!-- Facebook Link -->
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="flex-1 glass-pill py-3 px-4 rounded-2xl flex items-center justify-center gap-2 text-xs font-medium text-slate-200 hover:text-white transition group">
+                    <i class="fa-brands fa-facebook-f text-sm text-blue-400 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-mono">Facebook</span>
+                </a>
+
+                <!-- Copy Email Quick Button -->
+                <button onclick="copyEmail('haquangminhduc@gmail.com')" id="copy-btn" class="flex-1 glass-pill py-3 px-4 rounded-2xl flex items-center justify-center gap-2 text-xs font-medium text-slate-200 hover:text-white transition group">
+                    <i class="fa-solid fa-envelope text-sm text-rose-400 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-mono" id="copy-text">Email</span>
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- Subtle Footer Signature -->
+        <div class="mt-6 text-center text-[11px] font-mono text-slate-500 tracking-wide">
+            <span>Vibecoding • Hà Quang Minh Đức</span>
+        </div>
+
+    </main>
+
+    <!-- Photo Lightbox Modal -->
+    <div id="photo-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-xl transition-all duration-300" onclick="closeAvatar()">
+        <div class="relative max-w-sm w-full glass-card p-4 rounded-3xl text-center" onclick="event.stopPropagation()">
+            <div class="aspect-square w-full rounded-2xl overflow-hidden mb-4 bg-slate-900">
+                <img src="minhduc.jpg" alt="Hà Quang Minh Đức" class="w-full h-full object-cover">
+            </div>
+            <div class="font-semibold text-white text-sm">Hà Quang Minh Đức</div>
+            <p class="text-xs font-mono text-slate-400 mt-1">Portrait View</p>
+            <button onclick="closeAvatar()" class="mt-4 w-full py-2.5 rounded-xl glass-pill font-mono text-xs text-white hover:bg-white/10 transition">
+                Close
+            </button>
         </div>
     </div>
 
-    <!-- AUDIO PHÁT NHẠC NỀN -->
-    <audio id="bgAudio" loop preload="auto">
-        <source src="xuongrong.mp3" type="audio/mpeg">
-        <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_1115217b5b.mp3?filename=sunny-ukulele-14777.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- JAVASCRIPT HỆ THỐNG IOS SIMULATOR -->
+    <!-- Scripts -->
     <script>
-        // ==================== WEB AUDIO SOUND FX ====================
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-        function playSound(type) {
-            try {
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-
-                const now = audioCtx.currentTime;
-                if (type === 'lock') {
-                    osc.frequency.setValueAtTime(450, now);
-                    osc.frequency.exponentialRampToValueAtTime(120, now + 0.08);
-                    gain.gain.setValueAtTime(0.3, now);
-                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
-                    osc.start(now);
-                    osc.stop(now + 0.08);
-                } else if (type === 'unlock') {
-                    osc.frequency.setValueAtTime(300, now);
-                    osc.frequency.exponentialRampToValueAtTime(800, now + 0.12);
-                    gain.gain.setValueAtTime(0.25, now);
-                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
-                    osc.start(now);
-                    osc.stop(now + 0.12);
-                } else if (type === 'key') {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(550, now);
-                    gain.gain.setValueAtTime(0.18, now);
-                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-                    osc.start(now);
-                    osc.stop(now + 0.05);
-                } else if (type === 'charge') {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(440, now);
-                    osc.frequency.setValueAtTime(880, now + 0.12);
-                    gain.gain.setValueAtTime(0.3, now);
-                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-                    osc.start(now);
-                    osc.stop(now + 0.3);
-                } else if (type === 'click') {
-                    osc.frequency.setValueAtTime(600, now);
-                    gain.gain.setValueAtTime(0.15, now);
-                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.04);
-                    osc.start(now);
-                    osc.stop(now + 0.04);
-                }
-            } catch (e) {}
-        }
-
-        // ==================== 1. CLOCK & DATE ====================
+        // 1. Realtime Local Clock
         function updateClock() {
             const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const timeStr = `${hours}:${minutes}`;
-
-            document.getElementById('iosClock').textContent = timeStr;
-            document.getElementById('lockClock').textContent = timeStr;
-
-            const days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
-            const dayName = days[now.getDay()];
-            const dateStr = `${dayName}, ${now.getDate()} tháng ${now.getMonth() + 1}`;
-            document.getElementById('lockDate').textContent = dateStr;
+            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+            const clockEl = document.getElementById('live-clock');
+            if (clockEl) clockEl.innerText = timeStr;
         }
         setInterval(updateClock, 1000);
         updateClock();
 
-        // ==================== 2. LOCK & PASSCODE FLOW ====================
-        let currentPasscode = "";
-        const maxDigits = 6;
-        let isScreenOn = true;
-
-        function showPasscodeScreen() {
-            playSound('click');
-            document.getElementById('lockScreen').classList.add('slide-up');
-            document.getElementById('passcodeScreen').classList.add('active');
-        }
-
-        function hidePasscodeScreen() {
-            currentPasscode = "";
-            updatePasscodeDots();
-            document.getElementById('passcodeScreen').classList.remove('active');
-            document.getElementById('lockScreen').classList.remove('slide-up');
-            playSound('click');
-        }
-
-        function enterPassDigit(digit) {
-            if (currentPasscode.length < maxDigits) {
-                currentPasscode += digit;
-                playSound('key');
-                updatePasscodeDots();
-
-                if (currentPasscode.length === maxDigits) {
-                    setTimeout(() => {
-                        unlockToHomeScreen();
-                    }, 200);
-                }
-            }
-        }
-
-        function deletePassDigit() {
-            if (currentPasscode.length > 0) {
-                currentPasscode = currentPasscode.slice(0, -1);
-                playSound('click');
-                updatePasscodeDots();
-            } else {
-                hidePasscodeScreen();
-            }
-        }
-
-        function updatePasscodeDots() {
-            const dots = document.querySelectorAll('.passcode-dot');
-            dots.forEach((dot, index) => {
-                if (index < currentPasscode.length) {
-                    dot.classList.add('filled');
-                } else {
-                    dot.classList.remove('filled');
-                }
-            });
-
-            const delBtn = document.getElementById('deleteOrCancelBtn');
-            if (delBtn) {
-                delBtn.textContent = currentPasscode.length > 0 ? 'Xóa' : 'Hủy';
-            }
-        }
-
-        function unlockToHomeScreen() {
-            playSound('unlock');
-            document.getElementById('passcodeScreen').classList.add('unlocked');
-            shootConfetti();
-        }
-
-        function togglePower() {
-            const overlay = document.getElementById('screenOffOverlay');
-            if (isScreenOn) {
-                isScreenOn = false;
-                playSound('lock');
-                overlay.style.display = 'block';
-            } else {
-                isScreenOn = true;
-                overlay.style.display = 'none';
-                currentPasscode = "";
-                updatePasscodeDots();
-                document.getElementById('passcodeScreen').classList.remove('active', 'unlocked');
-                document.getElementById('lockScreen').classList.remove('slide-up');
-                closeAllApps();
-                closeSiri();
-            }
-        }
-
-        // ==================== 3. DYNAMIC ISLAND & CHARGING ====================
-        const island = document.getElementById('dynamicIsland');
-        const compactView = document.getElementById('islandCompactView');
-        const expandedView = document.getElementById('islandExpandedView');
-        const chargingView = document.getElementById('islandChargingView');
-        let isIslandExpanded = false;
-
-        function toggleDynamicIsland(event) {
-            event.stopPropagation();
-            if (island.classList.contains('charging-mode')) return;
-            if (isIslandExpanded) {
-                collapseIsland();
-            } else {
-                expandIsland();
-            }
-        }
-
-        function expandIsland() {
-            isIslandExpanded = true;
-            island.classList.remove('compact');
-            island.classList.add('expanded');
-            compactView.classList.add('hidden');
-            expandedView.classList.remove('hidden');
-            expandedView.classList.add('flex');
-            playSound('click');
-        }
-
-        function collapseIsland() {
-            isIslandExpanded = false;
-            island.classList.remove('expanded', 'charging-mode');
-            island.classList.add('compact');
-            expandedView.classList.add('hidden');
-            expandedView.classList.remove('flex');
-            chargingView.classList.add('hidden');
-            chargingView.classList.remove('flex');
-            compactView.classList.remove('hidden');
-            compactView.classList.add('flex');
-        }
-
-        function triggerCharging() {
-            playSound('charge');
+        // 2. Theme switcher
+        function setTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+            const g1 = document.getElementById('glow-1');
+            const g2 = document.getElementById('glow-2');
             
-            // Hiện MagSafe Ring
-            const ring = document.getElementById('magsafeCircle');
-            ring.classList.add('active');
-
-            // Dynamic Island Mode Sạc
-            island.classList.remove('compact', 'expanded');
-            island.classList.add('charging-mode');
-            compactView.classList.add('hidden');
-            expandedView.classList.add('hidden');
-            chargingView.classList.remove('hidden');
-            chargingView.classList.add('flex');
-
-            setTimeout(() => {
-                ring.classList.remove('active');
-            }, 2500);
-
-            setTimeout(() => {
-                collapseIsland();
-            }, 4000);
-        }
-
-        // ==================== 4. SIRI AI ASSISTANT ====================
-        const siriResponses = {
-            "Minh Đức là ai?": "Hà Quang Minh Đức là một chàng trai đam mê công nghệ, sáng tạo và luôn tràn đầy năng lượng tích cực! ✨",
-            "Gu người yêu?": "Minh Đức thích người chân thành, đáng yêu, hiểu chuyện và thích đi dạo ngắm phố phường cùng nhau 💖",
-            "Có người yêu chưa?": "Hiện tại Minh Đức vẫn đang tập trung phát triển bản thân và chờ đợi một nửa thật đặc biệt đấy! 👀",
-            "Sở thích của Đức?": "Minh Đức cực kỳ thích nghe nhạc chill, du lịch trải nghiệm, khám phá công nghệ mới và chụp ảnh 🎧📸"
-        };
-
-        function triggerSiri() {
-            playSound('unlock');
-            document.getElementById('siriOverlay').classList.add('active');
-        }
-
-        function closeSiri() {
-            document.getElementById('siriOverlay').classList.remove('active');
-            playSound('click');
-        }
-
-        function askSiri(question) {
-            playSound('click');
-            const resp = siriResponses[question] || "Minh Đức rất vui được kết nối cùng bạn! Hãy nhắn tin cho Đức qua Facebook nha! ✨";
-            const textBox = document.getElementById('siriResponseText');
-            textBox.textContent = "Đang suy nghĩ...";
-            setTimeout(() => {
-                textBox.textContent = `"${resp}"`;
-                playSound('charge');
-            }, 400);
-        }
-
-        function sendCustomSiri() {
-            const input = document.getElementById('siriInput');
-            const val = input.value.trim();
-            if (!val) return;
-            askSiri(val);
-            input.value = "";
-        }
-
-        // ==================== 5. TRÌNH PHÁT NHẠC ====================
-        const bgAudio = document.getElementById('bgAudio');
-        let isPlaying = false;
-
-        function togglePlayMusic() {
-            if (isPlaying) {
-                bgAudio.pause();
-                isPlaying = false;
-                document.getElementById('playIconIsland').className = "fa-solid fa-play";
+            if (theme === 'gold') {
+                g1.className = 'ambient-glow w-96 h-96 -top-20 -left-20 bg-amber-600/30 animate-pulse';
+                g2.className = 'ambient-glow w-[30rem] h-[30rem] -bottom-32 -right-20 bg-yellow-600/25';
+            } else if (theme === 'emerald') {
+                g1.className = 'ambient-glow w-96 h-96 -top-20 -left-20 bg-emerald-600/30 animate-pulse';
+                g2.className = 'ambient-glow w-[30rem] h-[30rem] -bottom-32 -right-20 bg-teal-600/25';
+            } else if (theme === 'rose') {
+                g1.className = 'ambient-glow w-96 h-96 -top-20 -left-20 bg-rose-600/30 animate-pulse';
+                g2.className = 'ambient-glow w-[30rem] h-[30rem] -bottom-32 -right-20 bg-pink-600/25';
             } else {
-                bgAudio.play().then(() => {
-                    isPlaying = true;
-                    document.getElementById('playIconIsland').className = "fa-solid fa-pause";
-                }).catch(() => {
-                    isPlaying = true;
-                    document.getElementById('playIconIsland').className = "fa-solid fa-pause";
-                });
-            }
-            playSound('click');
-        }
-
-        function nextTrack() {
-            shootConfetti();
-            document.getElementById('trackTitle').textContent = "Bản Nhạc Chill 🎧";
-            playSound('click');
-        }
-        function prevTrack() {
-            document.getElementById('trackTitle').textContent = "Xương Rồng 🌵";
-            playSound('click');
-        }
-
-        // ==================== 6. VOLUME HUD ====================
-        let currentVolume = 0.7;
-        let volumeTimeout;
-
-        function changeVolume(delta) {
-            currentVolume = Math.min(1, Math.max(0, currentVolume + delta));
-            bgAudio.volume = currentVolume;
-            playSound('click');
-
-            const hud = document.getElementById('volumeHUD');
-            const level = document.getElementById('volumeHUDLevel');
-            level.style.height = `${currentVolume * 100}%`;
-            hud.classList.add('show');
-
-            clearTimeout(volumeTimeout);
-            volumeTimeout = setTimeout(() => {
-                hud.classList.remove('show');
-            }, 1200);
-        }
-
-        // ==================== 7. CONTROL CENTER ====================
-        let isCCActive = false;
-        function toggleControlCenter() {
-            const cc = document.getElementById('controlCenter');
-            isCCActive = !isCCActive;
-            if (isCCActive) {
-                cc.classList.add('active');
-                playSound('click');
-            } else {
-                cc.classList.remove('active');
-            }
-        }
-        function closeControlCenterOnBg(event) {
-            if (event.target.id === 'controlCenter') {
-                toggleControlCenter();
+                g1.className = 'ambient-glow w-96 h-96 -top-20 -left-20 bg-indigo-600/30 animate-pulse';
+                g2.className = 'ambient-glow w-[30rem] h-[30rem] -bottom-32 -right-20 bg-cyan-600/25';
             }
         }
 
-        function toggleFlashlight(event) {
-            if (event) event.stopPropagation();
-            playSound('click');
-            const screen = document.getElementById('iphoneScreen');
-            if (screen.style.filter === 'brightness(1.5)') {
-                screen.style.filter = 'none';
-            } else {
-                screen.style.filter = 'brightness(1.5)';
-            }
-        }
-
-        // ==================== 8. MỞ & ĐÓNG APP TƯƠNG TÁC ====================
-        function openApp(appId) {
-            playSound('unlock');
-            closeAllApps();
-            const app = document.getElementById(appId);
-            if (app) {
-                app.classList.add('active');
-            }
-        }
-
-        function closeAllApps() {
-            document.querySelectorAll('.app-window').forEach(app => {
-                app.classList.remove('active');
+        // 3. Interactive 3D Card Tilt
+        const card = document.getElementById('card-element');
+        if (card && window.matchMedia('(min-width: 768px)').matches) {
+            window.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                const rotX = -(y / (rect.height / 2)) * 6;
+                const rotY = (x / (rect.width / 2)) * 6;
+                card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
             });
-            collapseIsland();
-            playSound('lock');
+
+            window.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+            });
         }
 
-        // Fake FB Like
-        let fbLiked = false;
-        function toggleFbLike() {
-            fbLiked = !fbLiked;
-            const btn = document.getElementById('fbLikeBtn');
-            const icon = document.getElementById('fbLikeIcon');
-            const count = document.getElementById('fbLikeCount');
-            if (fbLiked) {
-                btn.classList.add('text-blue-500');
-                icon.className = "fa-solid fa-thumbs-up text-blue-500";
-                count.textContent = "1,000";
-                shootConfetti();
-            } else {
-                btn.classList.remove('text-blue-500');
-                icon.className = "fa-solid fa-thumbs-up";
-                count.textContent = "999";
-            }
-            playSound('click');
+        // 4. Quick Copy Email
+        function copyEmail(email) {
+            navigator.clipboard.writeText(email).then(() => {
+                const btnText = document.getElementById('copy-text');
+                const original = btnText.innerText;
+                btnText.innerText = 'Copied!';
+                btnText.classList.add('text-emerald-400');
+                
+                setTimeout(() => {
+                    btnText.innerText = original;
+                    btnText.classList.remove('text-emerald-400');
+                }, 2000);
+            });
         }
 
-        // Fake Insta Like & Double Tap
-        let instaLiked = false;
-        function toggleInstaLike() {
-            instaLiked = !instaLiked;
-            const btn = document.getElementById('instaLikeBtn');
-            const count = document.getElementById('instaLikesCount');
-            if (instaLiked) {
-                btn.className = "fa-solid fa-heart text-rose-500 cursor-pointer";
-                count.textContent = "1,281";
-                shootConfetti();
-            } else {
-                btn.className = "fa-solid fa-heart text-slate-300 cursor-pointer";
-                count.textContent = "1,280";
-            }
-            playSound('click');
+        // 5. Avatar Modal
+        function previewAvatar() {
+            const modal = document.getElementById('photo-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
         }
 
-        function triggerInstaHeart(event) {
-            const heart = document.getElementById('instaHeartAnim');
-            heart.classList.add('show');
-            if (!instaLiked) toggleInstaLike();
-            playSound('charge');
-            setTimeout(() => {
-                heart.classList.remove('show');
-            }, 600);
+        function closeAvatar() {
+            const modal = document.getElementById('photo-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
 
-        // Fake TikTok Like
-        let ttLiked = false;
-        function toggleTikTokLike() {
-            ttLiked = !ttLiked;
-            const box = document.getElementById('ttHeartBox');
-            const count = document.getElementById('ttLikeCount');
-            if (ttLiked) {
-                box.className = "w-10 h-10 rounded-full bg-rose-600 flex items-center justify-center text-xl text-white";
-                count.textContent = "52.9K";
-                shootConfetti();
-            } else {
-                box.className = "w-10 h-10 rounded-full bg-black/40 flex items-center justify-center text-xl text-rose-500";
-                count.textContent = "52.8K";
-            }
-            playSound('click');
-        }
+        // 6. Robust Audio Engine & Beat-Reactive Visual Glow
+        const bgAudio = document.getElementById('bg-audio');
+        let isMusicPlaying = false;
+        let animFrameId = null;
 
-        function copyLocketId() {
-            navigator.clipboard.writeText("haquangminhduc");
-            playSound('charge');
-            shootConfetti();
-            alert("💛 Đã sao chép ID Locket: haquangminhduc");
-        }
+        function startBeatPulse() {
+            if (animFrameId) cancelAnimationFrame(animFrameId);
 
-        function setTheme(themeName) {
-            const screen = document.getElementById('iphoneScreen');
-            const lock = document.getElementById('lockScreen');
-            screen.className = `iphone-screen ${themeName}`;
-            lock.className = `${themeName}`;
-            playSound('click');
-            shootConfetti();
-        }
+            const card = document.getElementById('card-element');
+            const glow1 = document.getElementById('glow-1');
+            const glow2 = document.getElementById('glow-2');
+            let startTime = performance.now();
 
-        // ==================== 9. MINI GAME FLAPPY DUC ====================
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        let gameRunning = false;
-        let birdY = 200;
-        let birdVelocity = 0;
-        let pipes = [];
-        let score = 0;
-        let gameLoopId;
+            function render(now) {
+                animFrameId = requestAnimationFrame(render);
 
-        function startFlappyGame() {
-            document.getElementById('gameOverlay').style.display = 'none';
-            birdY = 200;
-            birdVelocity = 0;
-            pipes = [];
-            score = 0;
-            gameRunning = true;
-            playSound('unlock');
+                if (!bgAudio.paused && !bgAudio.muted) {
+                    const elapsed = (now - startTime) / 1000;
+                    
+                    // Rhythmic harmonic beat waves (simulating bass kicks and groove)
+                    const beat1 = Math.pow(Math.sin(elapsed * 4.2), 4);
+                    const beat2 = Math.pow(Math.sin(elapsed * 2.1 + 0.5), 2);
+                    const intensity = beat1 * 0.7 + beat2 * 0.3; // 0.0 to 1.0
 
-            if (gameLoopId) cancelAnimationFrame(gameLoopId);
-            gameLoop();
-        }
+                    if (card) {
+                        const glowSpread = 28 + intensity * 45;
+                        const borderAlpha = 0.15 + intensity * 0.45;
+                        const borderColor = `rgba(255, 255, 255, ${borderAlpha})`;
 
-        function handleGameClick() {
-            if (!gameRunning) return;
-            birdVelocity = -6.5;
-            playSound('key');
-        }
+                        card.style.boxShadow = `0 30px 60px -12px rgba(0, 0, 0, 0.75), 0 0 0 1px ${borderColor}, 0 0 ${glowSpread}px var(--brand-glow), 0 0 ${glowSpread * 1.6}px var(--brand-glow)`;
+                        card.style.borderColor = borderColor;
+                    }
 
-        function gameLoop() {
-            if (!gameRunning) return;
-
-            // Update bird
-            birdVelocity += 0.35;
-            birdY += birdVelocity;
-
-            // Spawn pipes
-            if (pipes.length === 0 || pipes[pipes.length - 1].x < 200) {
-                const gap = 110;
-                const topHeight = Math.floor(Math.random() * 180) + 40;
-                pipes.push({
-                    x: 360,
-                    top: topHeight,
-                    bottom: 480 - topHeight - gap,
-                    passed: false
-                });
-            }
-
-            // Move pipes
-            for (let i = 0; i < pipes.length; i++) {
-                pipes[i].x -= 2.2;
-
-                if (!pipes[i].passed && pipes[i].x < 80) {
-                    pipes[i].passed = true;
-                    score++;
-                    playSound('click');
-                }
-
-                // Check collision
-                if (pipes[i].x < 110 && pipes[i].x > 50) {
-                    if (birdY < pipes[i].top || birdY > 480 - pipes[i].bottom) {
-                        endGame();
-                        return;
+                    if (glow1) {
+                        glow1.style.transform = `scale(${1 + intensity * 0.3})`;
+                        glow1.style.opacity = `${0.4 + intensity * 0.4}`;
+                    }
+                    if (glow2) {
+                        glow2.style.transform = `scale(${1 + intensity * 0.25})`;
+                        glow2.style.opacity = `${0.25 + intensity * 0.35}`;
+                    }
+                } else {
+                    if (card) {
+                        card.style.boxShadow = `0 30px 60px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06), 0 0 40px var(--brand-glow)`;
+                        card.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+                    }
+                    if (glow1) {
+                        glow1.style.transform = 'scale(1)';
+                        glow1.style.opacity = '0.55';
+                    }
+                    if (glow2) {
+                        glow2.style.transform = 'scale(1)';
+                        glow2.style.opacity = '0.25';
                     }
                 }
             }
-
-            // Remove off-screen pipes
-            pipes = pipes.filter(p => p.x > -60);
-
-            // Ground collision
-            if (birdY > 460 || birdY < 0) {
-                endGame();
-                return;
-            }
-
-            // Draw
-            ctx.clearRect(0, 0, 360, 480);
-
-            // Pipes
-            ctx.fillStyle = "#22c55e";
-            pipes.forEach(p => {
-                ctx.fillRect(p.x, 0, 45, p.top);
-                ctx.fillRect(p.x, 480 - p.bottom, 45, p.bottom);
-            });
-
-            // Bird
-            ctx.font = "26px sans-serif";
-            ctx.fillText("🐥", 70, birdY);
-
-            // Score
-            ctx.fillStyle = "#ffffff";
-            ctx.font = "bold 28px 'Plus Jakarta Sans'";
-            ctx.fillText(score, 170, 50);
-
-            gameLoopId = requestAnimationFrame(gameLoop);
+            render(performance.now());
         }
 
-        function endGame() {
-            gameRunning = false;
-            playSound('lock');
-            const overlay = document.getElementById('gameOverlay');
-            overlay.innerHTML = `
-                <div class="w-16 h-16 rounded-full bg-rose-500 text-white flex items-center justify-center text-3xl mb-3 shadow-lg">💥</div>
-                <h4 class="font-black text-xl text-white">Game Over!</h4>
-                <p class="text-xs text-slate-200 mt-1 mb-4">Điểm số của bạn: <span class="font-bold text-yellow-300 text-lg">${score}</span></p>
-                <button onclick="startFlappyGame()" class="px-6 py-2.5 bg-yellow-400 text-slate-900 font-black rounded-full shadow-lg hover:bg-yellow-300 active:scale-95 transition text-sm">
-                    Chơi Lại 🔄
-                </button>
-            `;
-            overlay.style.display = 'flex';
-        }
-
-        // ==================== 10. CONFETTI EFFECT ====================
-        function shootConfetti() {
-            if (typeof confetti === 'function') {
-                confetti({
-                    particleCount: 40,
-                    spread: 60,
-                    origin: { y: 0.7 }
+        function playMusic() {
+            if (!bgAudio) return;
+            bgAudio.muted = false;
+            bgAudio.volume = 1.0;
+            const playPromise = bgAudio.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    isMusicPlaying = true;
+                    startBeatPulse();
+                }).catch(err => {
+                    console.log("Audio waiting for user click/tap:", err);
                 });
             }
+        }
+
+        // Trigger audio playback reliably on any interaction (click, touch, key, pointer)
+        const interactionEvents = ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown'];
+        
+        function handleUserInteraction() {
+            playMusic();
+            interactionEvents.forEach(evt => {
+                window.removeEventListener(evt, handleUserInteraction);
+                document.removeEventListener(evt, handleUserInteraction);
+            });
+        }
+
+        interactionEvents.forEach(evt => {
+            window.addEventListener(evt, handleUserInteraction, { passive: true });
+            document.addEventListener(evt, handleUserInteraction, { passive: true });
+        });
+
+        // Also ensure clicking on the card plays music
+        const cardElem = document.getElementById('card-element');
+        if (cardElem) {
+            cardElem.addEventListener('click', () => {
+                if (bgAudio && bgAudio.paused) {
+                    playMusic();
+                }
+            });
         }
     </script>
 </body>
