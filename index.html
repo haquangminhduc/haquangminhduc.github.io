@@ -2,8 +2,8 @@
 <html lang="vi" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hà Quang Minh Đức — Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Hà Quang Minh Đức 🇻🇳</title>
     <link rel="icon" href="icon.jpeg" type="image/jpeg">
 
     <!-- Google Fonts -->
@@ -14,7 +14,7 @@
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -24,235 +24,134 @@
                     fontFamily: {
                         sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
                         mono: ['"Space Grotesk"', 'monospace'],
-                    },
-                    colors: {
-                        brand: {
-                            gold: 'var(--brand-accent, #6366f1)',
-                            surface: 'rgba(15, 18, 28, 0.7)',
-                            border: 'rgba(255, 255, 255, 0.1)',
-                        }
                     }
                 }
             }
         }
     </script>
 
-    <style>
-        :root {
-            --brand-accent: #6366f1;
-            --brand-glow: rgba(99, 102, 241, 0.25);
-            --gradient-1: #4f46e5;
-            --gradient-2: #06b6d4;
-        }
-
-        [data-theme="gold"] {
-            --brand-accent: #f59e0b;
-            --brand-glow: rgba(245, 158, 11, 0.25);
-            --gradient-1: #d97706;
-            --gradient-2: #fbbf24;
-        }
-
-        [data-theme="emerald"] {
-            --brand-accent: #10b981;
-            --brand-glow: rgba(16, 185, 129, 0.25);
-            --gradient-1: #059669;
-            --gradient-2: #34d399;
-        }
-
-        [data-theme="rose"] {
-            --brand-accent: #f43f5e;
-            --brand-glow: rgba(244, 63, 94, 0.25);
-            --gradient-1: #e11d48;
-            --gradient-2: #fb7185;
-        }
-
-        * {
-            -webkit-tap-highlight-color: transparent;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: #06080e;
-            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
-            overflow-x: hidden;
-        }
-
-        /* Ambient glowing orbs */
-        .ambient-glow {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(120px);
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.55;
-            transition: all 1s ease;
-        }
-
-        /* Glassmorphism card */
-        .glass-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%), rgba(13, 16, 26, 0.72);
-            backdrop-filter: blur(36px);
-            -webkit-backdrop-filter: blur(36px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 
-                0 30px 60px -12px rgba(0, 0, 0, 0.7),
-                0 0 0 1px rgba(255, 255, 255, 0.06),
-                0 0 40px var(--brand-glow);
-        }
-
-        .glass-pill {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px);
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .glass-pill:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-1.5px);
-        }
-
-        /* Subtle Noise Overlay */
-        .noise-bg {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0.025;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-        }
-
-        /* 3D Dynamic Tilt */
-        .tilt-box {
-            transform-style: preserve-3d;
-            perspective: 1200px;
-            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .accent-gradient {
-            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 100%);
-        }
-
-        /* Equalizer Sound Wave Animation */
-        @keyframes eqDance1 { 0%, 100% { height: 4px; } 50% { height: 14px; } }
-        @keyframes eqDance2 { 0%, 100% { height: 12px; } 50% { height: 4px; } }
-        @keyframes eqDance3 { 0%, 100% { height: 6px; } 50% { height: 15px; } }
-
-        .animate-equalizer .eq-bar:nth-child(1) { animation: eqDance1 0.75s ease-in-out infinite; }
-        .animate-equalizer .eq-bar:nth-child(2) { animation: eqDance2 0.55s ease-in-out infinite; }
-        .animate-equalizer .eq-bar:nth-child(3) { animation: eqDance3 0.85s ease-in-out infinite; }
-    </style>
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="min-h-screen flex items-center justify-center p-4 sm:p-6 text-slate-100 relative selection:bg-indigo-500 selection:text-white" data-theme="indigo">
+<body class="h-screen h-[100dvh] w-screen overflow-hidden flex items-center justify-center p-3 sm:p-5 text-slate-100 relative selection:bg-indigo-500 selection:text-white">
 
-    <!-- Noise Texture & Ambient Lighting -->
+    <!-- Noise Texture & Dynamic RGB Ambient Lighting -->
     <div class="noise-bg"></div>
     
-    <div class="ambient-glow w-96 h-96 -top-20 -left-20 bg-indigo-600/30 animate-pulse" id="glow-1"></div>
-    <div class="ambient-glow w-[30rem] h-[30rem] -bottom-32 -right-20 bg-cyan-600/25" id="glow-2"></div>
-    <div class="ambient-glow w-64 h-64 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-purple-600/15"></div>
+    <!-- Floating Star Dust Canvas -->
+    <canvas id="stars-canvas" class="fixed inset-0 pointer-events-none z-[1]"></canvas>
+    
+    <div class="rgb-orb-1" id="glow-1"></div>
+    <div class="rgb-orb-2" id="glow-2"></div>
+    <div class="rgb-orb-3" id="glow-3"></div>
 
     <!-- Background Audio Element -->
     <audio id="bg-audio" loop preload="auto" src="nhacnen.mp3"></audio>
 
-    <!-- Main Container -->
-    <main class="relative z-10 w-full max-w-lg mx-auto">
+    <!-- Main Container: Guaranteed to fit in 100dvh without vertical scroll -->
+    <main class="relative z-10 w-full max-w-md mx-auto flex flex-col justify-center max-h-[100dvh] py-1">
 
-        <!-- Top Bar: Live Clock & Controls (Color Palette) -->
-        <div class="flex items-center justify-between px-3 mb-4">
-            <div class="flex items-center gap-2 text-[11px] font-mono text-slate-400">
-                <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span>VIETNAM (ICT) <span id="live-clock" class="text-slate-200 font-semibold">--:--:--</span></span>
+        <!-- Top Bar: Live Clock & Realtime Weather Indicator -->
+        <div class="flex items-center justify-between px-2 mb-2 sm:mb-3">
+            <div class="flex items-center gap-1.5 text-[10px] sm:text-[11px] font-mono text-slate-400">
+                <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>VIETNAM <span id="live-clock" class="text-slate-200 font-semibold tracking-wider">--:--:--</span></span>
+                <span class="text-slate-600 font-sans">•</span>
+                <span id="weather-display" class="inline-flex items-center gap-1 text-slate-300" title="Thời tiết thời gian thực tại Nghệ An">
+                    <i id="weather-icon" class="fa-solid fa-cloud-sun text-amber-300 text-[10px]"></i>
+                    <span id="weather-temp" class="font-semibold text-slate-200">--°C</span>
+                </span>
             </div>
 
-            <!-- Color Palette Selector -->
-            <div class="flex items-center gap-1.5 p-1 rounded-full glass-pill">
-                <button onclick="setTheme('indigo')" class="w-3.5 h-3.5 rounded-full bg-indigo-500 hover:scale-125 transition-transform" title="Indigo"></button>
-                <button onclick="setTheme('gold')" class="w-3.5 h-3.5 rounded-full bg-amber-500 hover:scale-125 transition-transform" title="Gold"></button>
-                <button onclick="setTheme('emerald')" class="w-3.5 h-3.5 rounded-full bg-emerald-500 hover:scale-125 transition-transform" title="Emerald"></button>
-                <button onclick="setTheme('rose')" class="w-3.5 h-3.5 rounded-full bg-rose-500 hover:scale-125 transition-transform" title="Rose"></button>
+            <!-- Decorative Theme Color Dots (Trang trí phong cách Mac/UI) -->
+            <div class="flex items-center gap-1.5 py-1 px-2.5 rounded-full glass-pill" title="RGB Aura Palette">
+                <span class="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.6)] animate-pulse"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
             </div>
         </div>
 
         <!-- Sleek Profile Card -->
-        <div id="card-element" class="tilt-box glass-card rounded-[2.5rem] p-7 sm:p-9 relative overflow-hidden">
+        <div id="card-element" class="tilt-box glass-card rounded-[2rem] sm:rounded-[2.25rem] p-4 sm:p-7 relative overflow-hidden">
 
-            <!-- Subtle Card Top Highlight -->
-            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+            <!-- Subtle Card Top RGB Highlight -->
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-[1.5px] bg-gradient-to-r from-transparent via-indigo-400/60 to-transparent"></div>
 
             <!-- Header Profile Area -->
-            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
+            <div class="flex items-center gap-4 text-left">
                 
-                <!-- Avatar with Glowing Border -->
-                <div class="relative group cursor-pointer" onclick="previewAvatar()">
-                    <div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-3xl overflow-hidden p-[2px] bg-gradient-to-tr from-white/30 via-white/10 to-transparent shadow-xl">
-                        <img src="avt.jpg" alt="Hà Quang Minh Đức" class="w-full h-full object-cover rounded-[22px] group-hover:scale-105 transition-transform duration-500">
+                <!-- Avatar with Blue Frame & Blue Verified Badge -->
+                <div class="relative shrink-0 group">
+                    <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden p-[2.5px] bg-gradient-to-tr from-blue-600 via-blue-500 to-sky-400 shadow-xl shadow-blue-500/25">
+                        <img src="avt.jpg" alt="Hà Quang Minh Đức" class="w-full h-full object-cover rounded-[14px]">
                     </div>
-                    <!-- Verified Status Pill -->
-                    <div class="absolute -bottom-2 -right-2 bg-[#06080e] p-1 rounded-full border border-white/10 shadow-lg flex items-center justify-center">
-                        <div class="w-5 h-5 rounded-full accent-gradient flex items-center justify-center text-white text-[10px]">
+                    <!-- Verified Status Badge (Blue) -->
+                    <div class="absolute -bottom-1 -right-1 bg-[#06080e] p-0.5 rounded-full border border-white/10 shadow-lg flex items-center justify-center">
+                        <div class="w-4 h-4 rounded-full bg-gradient-to-tr from-blue-600 to-sky-400 flex items-center justify-center text-white text-[8px] shadow-[0_0_8px_rgba(56,189,248,0.7)]">
                             <i class="fa-solid fa-check"></i>
                         </div>
                     </div>
                 </div>
 
                 <!-- Name & Bio Title -->
-                <div class="flex-1 pt-1">
-                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full glass-pill text-[11px] font-mono text-slate-300 mb-2">
-                        <i class="fa-solid fa-sparkles text-amber-400 text-[10px]"></i>
-                        <span>PERSONAL IDENTITY</span>
-                    </div>
-
-                    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white flex items-center justify-center sm:justify-start gap-2">
-                        <span>Hà Quang Minh Đức</span>
+                <div class="flex-1 min-w-0">
+                    <h1 class="text-lg sm:text-2xl font-extrabold tracking-tight text-white truncate">
+                        Hà Quang Minh Đức
                     </h1>
 
-                    <p class="text-xs sm:text-sm text-slate-400 font-mono mt-1">
+                    <p class="text-[11px] sm:text-xs text-sky-400/90 font-mono">
                         @haquangminhduc
                     </p>
+
+                    <!-- Typewriter Text Quote -->
+                    <div class="mt-1 flex items-center gap-1 min-h-[1.2rem] text-[10px] sm:text-[11px] text-slate-300">
+                        <i class="fa-solid fa-quote-left text-[8px] text-indigo-400/70 shrink-0"></i>
+                        <span id="typewriter-text" class="italic tracking-tight text-slate-200"></span><span class="inline-block w-[1.5px] h-3 bg-sky-400 animate-pulse"></span>
+                    </div>
                 </div>
 
             </div>
 
             <!-- Essential Info Grid (Full Name, Date of Birth, Hometown) -->
-            <div class="mt-8 space-y-3.5">
+            <div class="mt-4 sm:mt-5 space-y-2 sm:space-y-3">
 
                 <!-- 1. Full Name -->
-                <div class="glass-pill rounded-2xl p-4 flex items-center justify-between group">
-                    <div class="flex items-center gap-3.5">
-                        <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-300 group-hover:text-white group-hover:bg-white/10 transition">
-                            <i class="fa-solid fa-user text-sm"></i>
+                <div class="glass-pill rounded-xl sm:rounded-2xl p-2.5 sm:p-3.5 flex items-center justify-between group">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-white/5 flex items-center justify-center text-slate-300 group-hover:text-blue-400 group-hover:bg-white/10 transition">
+                            <i class="fa-solid fa-user text-xs sm:text-sm"></i>
                         </div>
                         <div>
-                            <div class="text-[10px] font-mono uppercase tracking-wider text-slate-400">Full Name</div>
-                            <div class="text-sm font-semibold text-slate-100">Ha Quang Minh Duc</div>
+                            <div class="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400">Full Name</div>
+                            <div class="text-xs sm:text-sm font-semibold text-slate-100">Ha Quang Minh Duc</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- 2. Date of Birth -->
-                <div class="glass-pill rounded-2xl p-4 flex items-center justify-between group">
-                    <div class="flex items-center gap-3.5">
-                        <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-300 group-hover:text-white group-hover:bg-white/10 transition">
-                            <i class="fa-solid fa-cake-candles text-sm"></i>
+                <div class="glass-pill rounded-xl sm:rounded-2xl p-2.5 sm:p-3.5 flex items-center justify-between group">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-white/5 flex items-center justify-center text-slate-300 group-hover:text-amber-400 group-hover:bg-white/10 transition">
+                            <i class="fa-solid fa-cake-candles text-xs sm:text-sm"></i>
                         </div>
                         <div>
-                            <div class="text-[10px] font-mono uppercase tracking-wider text-slate-400">Date of Birth</div>
-                            <div class="text-sm font-semibold text-slate-100">07/05/2004</div>
+                            <div class="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400">Date of Birth</div>
+                            <div class="text-xs sm:text-sm font-semibold text-slate-100">07/05/2004</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- 3. Hometown -->
-                <div class="glass-pill rounded-2xl p-4 flex items-center justify-between group">
-                    <div class="flex items-center gap-3.5">
-                        <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-300 group-hover:text-white group-hover:bg-white/10 transition">
-                            <i class="fa-solid fa-location-dot text-sm"></i>
+                <div class="glass-pill rounded-xl sm:rounded-2xl p-2.5 sm:p-3.5 flex items-center justify-between group">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-white/5 flex items-center justify-center text-slate-300 group-hover:text-emerald-400 group-hover:bg-white/10 transition">
+                            <i class="fa-solid fa-location-dot text-xs sm:text-sm"></i>
                         </div>
                         <div>
-                            <div class="text-[10px] font-mono uppercase tracking-wider text-slate-400">Hometown / Location</div>
-                            <div class="text-sm font-semibold text-slate-100">Nghe An, Vietnam 🇻🇳</div>
+                            <div class="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400">Hometown / Location</div>
+                            <div class="text-xs sm:text-sm font-semibold text-slate-100">Nghe An, Vietnam 🇻🇳</div>
                         </div>
                     </div>
                 </div>
@@ -260,24 +159,24 @@
             </div>
 
             <!-- Quick Action / Social Connect Dock -->
-            <div class="mt-8 pt-6 border-t border-white/10 flex items-center justify-between gap-3">
+            <div class="mt-4 sm:mt-5 pt-3 sm:pt-4 border-t border-white/10 flex items-center justify-between gap-2 sm:gap-3">
                 
                 <!-- GitHub Link -->
-                <a href="https://github.com/haquangminhduc" target="_blank" rel="noopener noreferrer" class="flex-1 glass-pill py-3 px-4 rounded-2xl flex items-center justify-center gap-2 text-xs font-medium text-slate-200 hover:text-white transition group">
-                    <i class="fa-brands fa-github text-sm group-hover:scale-110 transition-transform"></i>
-                    <span class="font-mono">GitHub</span>
+                <a href="https://github.com/haquangminhduc" target="_blank" rel="noopener noreferrer" class="flex-1 glass-pill py-2.5 px-2 sm:py-3 sm:px-3 rounded-xl sm:rounded-2xl flex items-center justify-center gap-1.5 text-xs font-medium text-slate-200 hover:text-white transition group">
+                    <i class="fa-brands fa-github text-xs sm:text-sm group-hover:scale-110 transition-transform"></i>
+                    <span class="font-mono text-[11px] sm:text-xs">GitHub</span>
                 </a>
 
                 <!-- Facebook Link -->
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="flex-1 glass-pill py-3 px-4 rounded-2xl flex items-center justify-center gap-2 text-xs font-medium text-slate-200 hover:text-white transition group">
-                    <i class="fa-brands fa-facebook-f text-sm text-blue-400 group-hover:scale-110 transition-transform"></i>
-                    <span class="font-mono">Facebook</span>
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="flex-1 glass-pill py-2.5 px-2 sm:py-3 sm:px-3 rounded-xl sm:rounded-2xl flex items-center justify-center gap-1.5 text-xs font-medium text-slate-200 hover:text-white transition group">
+                    <i class="fa-brands fa-facebook-f text-xs sm:text-sm text-blue-400 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-mono text-[11px] sm:text-xs">Facebook</span>
                 </a>
 
                 <!-- Copy Email Quick Button -->
-                <button onclick="copyEmail('haquangminhduc@gmail.com')" id="copy-btn" class="flex-1 glass-pill py-3 px-4 rounded-2xl flex items-center justify-center gap-2 text-xs font-medium text-slate-200 hover:text-white transition group">
-                    <i class="fa-solid fa-envelope text-sm text-rose-400 group-hover:scale-110 transition-transform"></i>
-                    <span class="font-mono" id="copy-text">Email</span>
+                <button onclick="copyEmail('haquangminhduc@gmail.com')" id="copy-btn" class="flex-1 glass-pill py-2.5 px-2 sm:py-3 sm:px-3 rounded-xl sm:rounded-2xl flex items-center justify-center gap-1.5 text-xs font-medium text-slate-200 hover:text-white transition group">
+                    <i class="fa-solid fa-envelope text-xs sm:text-sm text-rose-400 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-mono text-[11px] sm:text-xs" id="copy-text">Email</span>
                 </button>
 
             </div>
@@ -285,203 +184,13 @@
         </div>
 
         <!-- Subtle Footer Signature -->
-        <div class="mt-6 text-center text-[11px] font-mono text-slate-500 tracking-wide">
+        <div class="mt-3 sm:mt-4 text-center text-[10px] sm:text-[11px] font-mono text-slate-500 tracking-wider">
             <span>Vibecoding • Hà Quang Minh Đức</span>
         </div>
 
     </main>
 
-    <!-- Photo Lightbox Modal -->
-    <div id="photo-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-xl transition-all duration-300" onclick="closeAvatar()">
-        <div class="relative max-w-sm w-full glass-card p-4 rounded-3xl text-center" onclick="event.stopPropagation()">
-            <div class="aspect-square w-full rounded-2xl overflow-hidden mb-4 bg-slate-900">
-                <img src="minhduc.jpg" alt="Hà Quang Minh Đức" class="w-full h-full object-cover">
-            </div>
-            <div class="font-semibold text-white text-sm">Hà Quang Minh Đức</div>
-            <p class="text-xs font-mono text-slate-400 mt-1">Portrait View</p>
-            <button onclick="closeAvatar()" class="mt-4 w-full py-2.5 rounded-xl glass-pill font-mono text-xs text-white hover:bg-white/10 transition">
-                Close
-            </button>
-        </div>
-    </div>
-
-    <!-- Scripts -->
-    <script>
-        // 1. Realtime Local Clock
-        function updateClock() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
-            const clockEl = document.getElementById('live-clock');
-            if (clockEl) clockEl.innerText = timeStr;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        // 2. Theme switcher
-        function setTheme(theme) {
-            document.body.setAttribute('data-theme', theme);
-            const g1 = document.getElementById('glow-1');
-            const g2 = document.getElementById('glow-2');
-            
-            if (theme === 'gold') {
-                g1.className = 'ambient-glow w-96 h-96 -top-20 -left-20 bg-amber-600/30 animate-pulse';
-                g2.className = 'ambient-glow w-[30rem] h-[30rem] -bottom-32 -right-20 bg-yellow-600/25';
-            } else if (theme === 'emerald') {
-                g1.className = 'ambient-glow w-96 h-96 -top-20 -left-20 bg-emerald-600/30 animate-pulse';
-                g2.className = 'ambient-glow w-[30rem] h-[30rem] -bottom-32 -right-20 bg-teal-600/25';
-            } else if (theme === 'rose') {
-                g1.className = 'ambient-glow w-96 h-96 -top-20 -left-20 bg-rose-600/30 animate-pulse';
-                g2.className = 'ambient-glow w-[30rem] h-[30rem] -bottom-32 -right-20 bg-pink-600/25';
-            } else {
-                g1.className = 'ambient-glow w-96 h-96 -top-20 -left-20 bg-indigo-600/30 animate-pulse';
-                g2.className = 'ambient-glow w-[30rem] h-[30rem] -bottom-32 -right-20 bg-cyan-600/25';
-            }
-        }
-
-        // 3. Interactive 3D Card Tilt
-        const card = document.getElementById('card-element');
-        if (card && window.matchMedia('(min-width: 768px)').matches) {
-            window.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                const rotX = -(y / (rect.height / 2)) * 6;
-                const rotY = (x / (rect.width / 2)) * 6;
-                card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-            });
-
-            window.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
-            });
-        }
-
-        // 4. Quick Copy Email
-        function copyEmail(email) {
-            navigator.clipboard.writeText(email).then(() => {
-                const btnText = document.getElementById('copy-text');
-                const original = btnText.innerText;
-                btnText.innerText = 'Copied!';
-                btnText.classList.add('text-emerald-400');
-                
-                setTimeout(() => {
-                    btnText.innerText = original;
-                    btnText.classList.remove('text-emerald-400');
-                }, 2000);
-            });
-        }
-
-        // 5. Avatar Modal
-        function previewAvatar() {
-            const modal = document.getElementById('photo-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        function closeAvatar() {
-            const modal = document.getElementById('photo-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
-        // 6. Robust Audio Engine & Beat-Reactive Visual Glow
-        const bgAudio = document.getElementById('bg-audio');
-        let isMusicPlaying = false;
-        let animFrameId = null;
-
-        function startBeatPulse() {
-            if (animFrameId) cancelAnimationFrame(animFrameId);
-
-            const card = document.getElementById('card-element');
-            const glow1 = document.getElementById('glow-1');
-            const glow2 = document.getElementById('glow-2');
-            let startTime = performance.now();
-
-            function render(now) {
-                animFrameId = requestAnimationFrame(render);
-
-                if (!bgAudio.paused && !bgAudio.muted) {
-                    const elapsed = (now - startTime) / 1000;
-                    
-                    // Rhythmic harmonic beat waves (simulating bass kicks and groove)
-                    const beat1 = Math.pow(Math.sin(elapsed * 4.2), 4);
-                    const beat2 = Math.pow(Math.sin(elapsed * 2.1 + 0.5), 2);
-                    const intensity = beat1 * 0.7 + beat2 * 0.3; // 0.0 to 1.0
-
-                    if (card) {
-                        const glowSpread = 28 + intensity * 45;
-                        const borderAlpha = 0.15 + intensity * 0.45;
-                        const borderColor = `rgba(255, 255, 255, ${borderAlpha})`;
-
-                        card.style.boxShadow = `0 30px 60px -12px rgba(0, 0, 0, 0.75), 0 0 0 1px ${borderColor}, 0 0 ${glowSpread}px var(--brand-glow), 0 0 ${glowSpread * 1.6}px var(--brand-glow)`;
-                        card.style.borderColor = borderColor;
-                    }
-
-                    if (glow1) {
-                        glow1.style.transform = `scale(${1 + intensity * 0.3})`;
-                        glow1.style.opacity = `${0.4 + intensity * 0.4}`;
-                    }
-                    if (glow2) {
-                        glow2.style.transform = `scale(${1 + intensity * 0.25})`;
-                        glow2.style.opacity = `${0.25 + intensity * 0.35}`;
-                    }
-                } else {
-                    if (card) {
-                        card.style.boxShadow = `0 30px 60px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06), 0 0 40px var(--brand-glow)`;
-                        card.style.borderColor = 'rgba(255, 255, 255, 0.12)';
-                    }
-                    if (glow1) {
-                        glow1.style.transform = 'scale(1)';
-                        glow1.style.opacity = '0.55';
-                    }
-                    if (glow2) {
-                        glow2.style.transform = 'scale(1)';
-                        glow2.style.opacity = '0.25';
-                    }
-                }
-            }
-            render(performance.now());
-        }
-
-        function playMusic() {
-            if (!bgAudio) return;
-            bgAudio.muted = false;
-            bgAudio.volume = 1.0;
-            const playPromise = bgAudio.play();
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    isMusicPlaying = true;
-                    startBeatPulse();
-                }).catch(err => {
-                    console.log("Audio waiting for user click/tap:", err);
-                });
-            }
-        }
-
-        // Trigger audio playback reliably on any interaction (click, touch, key, pointer)
-        const interactionEvents = ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown'];
-        
-        function handleUserInteraction() {
-            playMusic();
-            interactionEvents.forEach(evt => {
-                window.removeEventListener(evt, handleUserInteraction);
-                document.removeEventListener(evt, handleUserInteraction);
-            });
-        }
-
-        interactionEvents.forEach(evt => {
-            window.addEventListener(evt, handleUserInteraction, { passive: true });
-            document.addEventListener(evt, handleUserInteraction, { passive: true });
-        });
-
-        // Also ensure clicking on the card plays music
-        const cardElem = document.getElementById('card-element');
-        if (cardElem) {
-            cardElem.addEventListener('click', () => {
-                if (bgAudio && bgAudio.paused) {
-                    playMusic();
-                }
-            });
-        }
-    </script>
+    <!-- Custom Scripts -->
+    <script src="script.js"></script>
 </body>
 </html>
