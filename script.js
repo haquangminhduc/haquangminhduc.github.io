@@ -184,7 +184,9 @@ function updateCalendarDisplay() {
 }
 updateCalendarDisplay();
 
-// 5. Floating Star Dust Engine
+// 5. Floating & Twinkling Dense Star Dust Engine
+let currentBassEnergy = 0;
+
 (function initStarDust() {
     const canvas = document.getElementById('stars-canvas');
     if (!canvas) return;
@@ -192,9 +194,10 @@ updateCalendarDisplay();
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
-    const starCount = Math.min(Math.floor((width * height) / 18000), 55);
+    // Denser star dust (increased count by 3.5x for magical cosmic atmosphere)
+    const starCount = Math.min(Math.floor((width * height) / 4200), 160);
     const stars = [];
-    const colors = ['#ffffff', '#e0e7ff', '#bae6fd', '#fef08a', '#fbcfe8'];
+    const colors = ['#ffffff', '#e0e7ff', '#bae6fd', '#fef08a', '#fbcfe8', '#ddd6fe', '#c7d2fe'];
 
     class Star {
         constructor() {
@@ -203,25 +206,26 @@ updateCalendarDisplay();
         reset(initial = false) {
             this.x = Math.random() * width;
             this.y = initial ? Math.random() * height : height + Math.random() * 20;
-            this.size = Math.random() * 1.6 + 0.4;
-            this.baseAlpha = Math.random() * 0.6 + 0.2;
+            this.size = Math.random() * 1.8 + 0.3;
+            this.baseAlpha = Math.random() * 0.65 + 0.2;
             this.alpha = this.baseAlpha;
-            this.twinkleSpeed = Math.random() * 0.025 + 0.01;
+            this.twinkleSpeed = Math.random() * 0.03 + 0.01;
             this.twinkleAngle = Math.random() * Math.PI * 2;
-            this.speedY = Math.random() * 0.35 + 0.12;
-            this.speedX = (Math.random() - 0.5) * 0.18;
+            this.speedY = Math.random() * 0.38 + 0.1;
+            this.speedX = (Math.random() - 0.5) * 0.2;
             this.color = colors[Math.floor(Math.random() * colors.length)];
-            this.isCross = Math.random() > 0.85; // Một số hạt có hình sao 4 cánh
+            this.isCross = Math.random() > 0.82; // Sparkling 4-point star
         }
         update() {
-            this.y -= this.speedY;
+            const beatBoost = currentBassEnergy * 0.5;
+            this.y -= (this.speedY + beatBoost * 0.3);
             this.x += this.speedX;
-            this.twinkleAngle += this.twinkleSpeed;
-            this.alpha = this.baseAlpha + Math.sin(this.twinkleAngle) * 0.25;
+            this.twinkleAngle += (this.twinkleSpeed + beatBoost * 0.05);
+            this.alpha = this.baseAlpha + Math.sin(this.twinkleAngle) * 0.3 + beatBoost * 0.35;
             if (this.alpha < 0.05) this.alpha = 0.05;
-            if (this.alpha > 0.95) this.alpha = 0.95;
+            if (this.alpha > 0.98) this.alpha = 0.98;
 
-            if (this.y < -10 || this.x < -10 || this.x > width + 10) {
+            if (this.y < -12 || this.x < -12 || this.x > width + 12) {
                 this.reset(false);
             }
         }
@@ -229,24 +233,22 @@ updateCalendarDisplay();
             ctx.save();
             ctx.globalAlpha = this.alpha;
             ctx.fillStyle = this.color;
-            ctx.shadowBlur = this.size * 4;
+            ctx.shadowBlur = this.size * (4 + currentBassEnergy * 3);
             ctx.shadowColor = this.color;
 
-            if (this.isCross && this.size > 1.2) {
-                // Vẽ ngôi sao 4 cánh mini
-                const len = this.size * 2.2;
+            if (this.isCross && this.size > 1.1) {
+                const len = this.size * (2.2 + currentBassEnergy * 0.8);
                 ctx.beginPath();
                 ctx.moveTo(this.x, this.y - len);
                 ctx.lineTo(this.x, this.y + len);
                 ctx.moveTo(this.x - len, this.y);
                 ctx.lineTo(this.x + len, this.y);
                 ctx.strokeStyle = this.color;
-                ctx.lineWidth = 0.7;
+                ctx.lineWidth = 0.75;
                 ctx.stroke();
             } else {
-                // Vẽ hạt cầu tròn
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, this.size + currentBassEnergy * 0.4, 0, Math.PI * 2);
                 ctx.fill();
             }
             ctx.restore();
@@ -310,10 +312,35 @@ function typeLoop() {
 }
 typeLoop();
 
-// 7. Robust Audio Engine & Beat-Reactive RGB Glow
+// 7. Web Audio API Realtime Frequency Spectrum LED Engine
 const bgAudio = document.getElementById('bg-audio');
 let isMusicPlaying = false;
 let animFrameId = null;
+
+let audioCtx = null;
+let analyserNode = null;
+let frequencyData = null;
+let audioSourceNode = null;
+
+function initAudioAnalyser() {
+    if (audioCtx) return;
+    try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+        analyserNode = audioCtx.createAnalyser();
+        analyserNode.fftSize = 128; // 64 frequency bins
+        analyserNode.smoothingTimeConstant = 0.82;
+
+        if (!audioSourceNode && bgAudio) {
+            audioSourceNode = audioCtx.createMediaElementSource(bgAudio);
+            audioSourceNode.connect(analyserNode);
+            analyserNode.connect(audioCtx.destination);
+        }
+        frequencyData = new Uint8Array(analyserNode.frequencyBinCount);
+    } catch (e) {
+        console.log("Web Audio API initialization:", e);
+    }
+}
 
 function startBeatPulse() {
     if (animFrameId) cancelAnimationFrame(animFrameId);
@@ -324,33 +351,105 @@ function startBeatPulse() {
     function render(now) {
         animFrameId = requestAnimationFrame(render);
 
-        if (!bgAudio.paused && !bgAudio.muted) {
+        let bassIntensity = 0;
+
+        if (analyserNode && frequencyData && !bgAudio.paused && !bgAudio.muted) {
+            analyserNode.getByteFrequencyData(frequencyData);
+            // Sum bass frequencies (first 6 bins)
+            let bassSum = 0;
+            const bins = 6;
+            for (let i = 0; i < bins; i++) {
+                bassSum += frequencyData[i];
+            }
+            bassIntensity = Math.min(1.0, (bassSum / (bins * 255)) * 1.4);
+            currentBassEnergy = bassIntensity;
+        }
+
+        // Fallback harmonic wave if audio context is warming up
+        if (bassIntensity === 0 && !bgAudio.paused && !bgAudio.muted) {
             const elapsed = (now - startTime) / 1000;
-            
-            // Rhythmic harmonic beat waves
             const beat1 = Math.pow(Math.sin(elapsed * 4.2), 4);
             const beat2 = Math.pow(Math.sin(elapsed * 2.1 + 0.5), 2);
-            const intensity = beat1 * 0.7 + beat2 * 0.3; // 0.0 to 1.0
+            bassIntensity = beat1 * 0.7 + beat2 * 0.3;
+            currentBassEnergy = bassIntensity;
+        }
+
+        if (!bgAudio.paused && !bgAudio.muted) {
+            const elapsed = (now - startTime) / 1000;
+            const hue = (elapsed * 50) % 360;
 
             if (card) {
-                const glowSpread = 24 + intensity * 36;
-                const borderAlpha = 0.15 + intensity * 0.35;
-                const hue = (elapsed * 60) % 360;
-                const borderColor = `hsla(${hue}, 80%, 65%, ${borderAlpha})`;
-                const glowColor = `hsla(${hue}, 80%, 60%, ${0.25 + intensity * 0.3})`;
+                const glowSpread = 22 + bassIntensity * 45;
+                const borderAlpha = 0.2 + bassIntensity * 0.5;
+                const borderColor = `hsla(${hue}, 85%, 65%, ${borderAlpha})`;
+                const glowColor = `hsla(${hue}, 85%, 60%, ${0.28 + bassIntensity * 0.45})`;
 
-                card.style.boxShadow = `0 25px 50px -12px rgba(0, 0, 0, 0.75), 0 0 0 1px ${borderColor}, 0 0 ${glowSpread}px ${glowColor}`;
+                card.style.boxShadow = `0 25px 50px -12px rgba(0, 0, 0, 0.75), 0 0 0 ${1 + bassIntensity * 1.5}px ${borderColor}, 0 0 ${glowSpread}px ${glowColor}`;
                 card.style.borderColor = borderColor;
             }
+
+            updateAudioProgressBorder();
         } else {
+            currentBassEnergy = 0;
             if (card) {
                 card.style.boxShadow = `0 25px 50px -12px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.06), 0 0 35px rgba(99, 102, 241, 0.2)`;
                 card.style.borderColor = 'rgba(255, 255, 255, 0.12)';
             }
+            updateAudioProgressBorder();
         }
     }
     render(performance.now());
 }
+
+// 7b. Dynamic Audio Progress Border Engine (Tự động chạy quanh viền khung Profile theo % thời lượng nhạc)
+function updateAudioProgressBorder() {
+    const card = document.getElementById('card-element');
+    const path = document.getElementById('card-audio-progress-bar');
+    if (!card || !path) return;
+
+    const rect = card.getBoundingClientRect();
+    const w = rect.width;
+    const h = rect.height;
+    if (w === 0 || h === 0) return;
+
+    const r = window.innerWidth < 640 ? 32 : 36;
+    const inset = 1.75;
+
+    // Path starting from Top Center (w/2, inset) going clockwise around card
+    const d = `
+        M ${w / 2} ${inset}
+        L ${w - r} ${inset}
+        A ${r - inset} ${r - inset} 0 0 1 ${w - inset} ${r}
+        L ${w - inset} ${h - r}
+        A ${r - inset} ${r - inset} 0 0 1 ${w - r} ${h - inset}
+        L ${r} ${h - inset}
+        A ${r - inset} ${r - inset} 0 0 1 ${inset} ${h - r}
+        L ${inset} ${r}
+        A ${r - inset} ${r - inset} 0 0 1 ${r} ${inset}
+        Z
+    `.replace(/\s+/g, ' ').trim();
+
+    path.setAttribute('d', d);
+    const totalLength = path.getTotalLength();
+    path.style.strokeDasharray = totalLength;
+
+    if (bgAudio && bgAudio.duration && !bgAudio.paused) {
+        const progress = bgAudio.currentTime / bgAudio.duration;
+        path.style.strokeDashoffset = totalLength * (1 - progress);
+        path.style.opacity = '1';
+        path.style.strokeWidth = `${3 + currentBassEnergy * 2.5}px`;
+    } else {
+        path.style.opacity = '0';
+    }
+}
+
+if (bgAudio) {
+    bgAudio.addEventListener('timeupdate', updateAudioProgressBorder);
+    bgAudio.addEventListener('play', updateAudioProgressBorder);
+    bgAudio.addEventListener('pause', updateAudioProgressBorder);
+}
+
+window.addEventListener('resize', updateAudioProgressBorder);
 
 function updateMusicUI(isPlaying) {
     const musicIcon = document.getElementById('music-icon');
@@ -383,6 +482,10 @@ function toggleMusic(e) {
 
 function playMusic() {
     if (!bgAudio) return;
+    initAudioAnalyser();
+    if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
     bgAudio.muted = false;
     bgAudio.volume = 1.0;
     const playPromise = bgAudio.play();

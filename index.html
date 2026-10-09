@@ -53,8 +53,8 @@
     <main class="relative z-10 w-full max-w-md mx-auto flex flex-col justify-center max-h-[100dvh] py-1">
 
         <!-- Top Bar: Live Clock & Realtime Weather Indicator -->
-        <div class="flex items-center justify-between px-2 mb-2 sm:mb-3">
-            <div class="flex items-center gap-1.5 text-[10px] sm:text-[11px] font-mono text-slate-400">
+        <div class="flex items-center justify-between px-1 sm:px-2 mb-2 sm:mb-3">
+            <div class="flex items-center gap-1 sm:gap-1.5 text-[9px] sm:text-[11px] font-mono text-slate-400 shrink-0">
                 <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                 <span>VIETNAM <span id="live-clock" class="text-slate-200 font-semibold tracking-wider">--:--:--</span></span>
                 <span class="text-slate-600 font-sans">•</span>
@@ -64,15 +64,15 @@
                 </span>
             </div>
 
-            <div class="flex items-center gap-1.5">
+            <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
                 <!-- Music Toggle Button -->
-                <button id="music-toggle-btn" onclick="toggleMusic(event)" class="flex items-center gap-1.5 py-1 px-2.5 rounded-full glass-pill text-[10px] sm:text-[11px] text-slate-300 hover:text-white transition group" title="Bật / Tắt nhạc nền">
+                <button id="music-toggle-btn" onclick="toggleMusic(event)" class="flex items-center gap-1.5 py-1 px-2 sm:px-2.5 rounded-full glass-pill text-[10px] sm:text-[11px] text-slate-300 hover:text-white active:scale-95 transition group" title="Bật / Tắt nhạc nền">
                     <i id="music-icon" class="fa-solid fa-music text-indigo-400 text-[10px]"></i>
                     <i id="music-infinity-icon" class="fa-solid fa-infinity text-indigo-400 text-[11px]"></i>
                 </button>
 
                 <!-- Interactive Theme Switcher Button -->
-                <button onclick="cycleTheme()" class="flex items-center gap-1.5 py-1 px-2.5 rounded-full glass-pill hover:scale-105 transition cursor-pointer group" title="Bấm để Đổi Giao Diện Ambient Theme">
+                <button onclick="cycleTheme()" class="flex items-center gap-1.5 py-1 px-2 sm:px-2.5 rounded-full glass-pill hover:scale-105 active:scale-95 transition cursor-pointer group" title="Bấm để Đổi Giao Diện Ambient Theme">
                     <span class="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.6)] animate-pulse"></span>
                     <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]"></span>
                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"></span>
@@ -82,17 +82,43 @@
         </div>
 
         <!-- Sleek Profile Card -->
-        <div id="card-element" class="tilt-box glass-card rounded-[2rem] sm:rounded-[2.25rem] p-4 sm:p-7 relative overflow-hidden">
+        <div id="card-element" class="tilt-box glass-card rounded-[1.75rem] sm:rounded-[2.25rem] p-3.5 sm:p-7 relative overflow-hidden">
 
             <!-- Subtle Card Top RGB Highlight -->
             <div class="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-[1.5px] bg-gradient-to-r from-transparent via-indigo-400/60 to-transparent"></div>
 
+            <!-- Dynamic Audio Progress Border SVG Overlay -->
+            <svg id="audio-progress-svg" class="absolute inset-0 w-full h-full pointer-events-none z-20" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="audio-progress-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#38bdf8" />
+                        <stop offset="35%" stop-color="#818cf8" />
+                        <stop offset="70%" stop-color="#c084fc" />
+                        <stop offset="100%" stop-color="#f43f5e" />
+                    </linearGradient>
+                    <filter id="progress-glow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="3" result="blur" />
+                        <feMerge>
+                            <feMergeNode in="blur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                </defs>
+                <path id="card-audio-progress-bar"
+                      fill="none"
+                      stroke="url(#audio-progress-gradient)"
+                      stroke-width="3.5"
+                      stroke-linecap="round"
+                      filter="url(#progress-glow)"
+                      style="stroke-dasharray: 2000; stroke-dashoffset: 2000; transition: stroke-dashoffset 0.15s linear, opacity 0.4s ease; opacity: 0;" />
+            </svg>
+
             <!-- Header Profile Area -->
-            <div class="flex items-center gap-4 text-left">
+            <div class="flex items-center gap-3.5 sm:gap-4 text-left">
                 
                 <!-- Avatar with Blue Frame & Blue Verified Badge -->
                 <div class="relative shrink-0 group">
-                    <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden p-[2.5px] bg-gradient-to-tr from-blue-600 via-blue-500 to-sky-400 shadow-xl shadow-blue-500/25">
+                    <div class="relative w-15 h-15 xs:w-16 xs:h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden p-[2.5px] bg-gradient-to-tr from-blue-600 via-blue-500 to-sky-400 shadow-xl shadow-blue-500/25">
                         <img src="avtcatrose.jpg" alt="Hà Quang Minh Đức" class="w-full h-full object-cover rounded-[14px]">
                     </div>
                     <!-- Verified Status Badge (Blue) -->
@@ -105,22 +131,22 @@
 
                 <!-- Name & Bio Title -->
                 <div class="flex-1 min-w-0">
-                    <h1 class="text-lg sm:text-2xl font-extrabold tracking-tight text-white truncate">
+                    <h1 class="text-base xs:text-lg sm:text-2xl font-extrabold tracking-tight text-white truncate">
                         Hà Quang Minh Đức
                     </h1>
 
-                    <p class="text-[11px] sm:text-xs text-sky-400/90 font-mono">
+                    <p class="text-[10px] xs:text-[11px] sm:text-xs text-sky-400/90 font-mono">
                         @haquangminhduc
                     </p>
 
                     <!-- Realtime Greeting (Lời Chào Theo Thời Gian Thực) -->
-                    <div class="mt-0.5 flex items-center gap-1.5 text-[10px] sm:text-[11px] font-semibold text-amber-300/90 tracking-tight">
-                        <i id="greeting-icon" class="fa-solid fa-sun text-amber-400 text-[10px]"></i>
+                    <div class="mt-0.5 flex items-center gap-1.5 text-[9.5px] xs:text-[10px] sm:text-[11px] font-semibold text-amber-300/90 tracking-tight">
+                        <i id="greeting-icon" class="fa-solid fa-sun text-amber-400 text-[9px] xs:text-[10px]"></i>
                         <span id="greeting-text">--</span>
                     </div>
 
                     <!-- Typewriter Text Quote -->
-                    <div class="mt-0.5 flex items-center gap-1 min-h-[1.2rem] text-[10px] sm:text-[11px] text-slate-300">
+                    <div class="mt-0.5 flex items-center gap-1 min-h-[1.2rem] text-[9.5px] xs:text-[10px] sm:text-[11px] text-slate-300">
                         <i class="fa-solid fa-quote-left text-[8px] text-indigo-400/70 shrink-0"></i>
                         <span id="typewriter-text" class="italic tracking-tight text-slate-200"></span><span class="inline-block w-[1.5px] h-3 bg-sky-400 animate-pulse"></span>
                     </div>
@@ -129,74 +155,74 @@
             </div>
 
             <!-- Essential Info Grid (Full Name, Date of Birth, Hometown) -->
-            <div class="mt-4 sm:mt-5 space-y-2 sm:space-y-3">
+            <div class="mt-3 sm:mt-5 space-y-2 sm:space-y-3">
 
                 <!-- 1. Full Name -->
-                <div class="glass-pill rounded-xl sm:rounded-2xl p-2.5 sm:p-3.5 flex items-center justify-between group">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-white/5 flex items-center justify-center text-slate-300 group-hover:text-blue-400 group-hover:bg-white/10 transition">
+                <div class="glass-pill rounded-xl sm:rounded-2xl p-2 sm:p-3.5 flex items-center justify-between group">
+                    <div class="flex items-center gap-2.5 sm:gap-3">
+                        <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-white/5 flex items-center justify-center text-slate-300 group-hover:text-blue-400 group-hover:bg-white/10 transition shrink-0">
                             <i class="fa-solid fa-user text-xs sm:text-sm"></i>
                         </div>
                         <div>
-                            <div class="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400">Full Name</div>
+                            <div class="text-[8.5px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400">Full Name</div>
                             <div class="text-xs sm:text-sm font-semibold text-slate-100">Ha Quang Minh Duc</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- 2. Date of Birth -->
-                <div class="glass-pill rounded-xl sm:rounded-2xl p-2.5 sm:p-3.5 flex items-center justify-between group">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-white/5 flex items-center justify-center text-slate-300 group-hover:text-amber-400 group-hover:bg-white/10 transition">
+                <div class="glass-pill rounded-xl sm:rounded-2xl p-2 sm:p-3.5 flex items-center justify-between group">
+                    <div class="flex items-center gap-2.5 sm:gap-3">
+                        <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-white/5 flex items-center justify-center text-slate-300 group-hover:text-amber-400 group-hover:bg-white/10 transition shrink-0">
                             <i class="fa-solid fa-cake-candles text-xs sm:text-sm"></i>
                         </div>
                         <div>
-                            <div class="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400">Date of Birth</div>
+                            <div class="text-[8.5px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400">Date of Birth</div>
                             <div class="text-xs sm:text-sm font-semibold text-slate-100">07/05/2004</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- 3. Hometown -->
-                <div class="glass-pill rounded-xl sm:rounded-2xl p-2.5 sm:p-3.5 flex items-center justify-between group">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-white/5 flex items-center justify-center text-slate-300 group-hover:text-emerald-400 group-hover:bg-white/10 transition">
+                <div class="glass-pill rounded-xl sm:rounded-2xl p-2 sm:p-3.5 flex items-center justify-between group">
+                    <div class="flex items-center gap-2.5 sm:gap-3">
+                        <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-white/5 flex items-center justify-center text-slate-300 group-hover:text-emerald-400 group-hover:bg-white/10 transition shrink-0">
                             <i class="fa-solid fa-location-dot text-xs sm:text-sm"></i>
                         </div>
                         <div>
-                            <div class="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400">Hometown / Location</div>
+                            <div class="text-[8.5px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400">Hometown / Location</div>
                             <div class="text-xs sm:text-sm font-semibold text-slate-100">Nghe An, Vietnam 🇻🇳</div>
                         </div>
                     </div>
                 </div>
 
             </div>
-            <div class="mt-4 sm:mt-5 pt-3 sm:pt-4 border-t border-white/10 grid grid-cols-2 gap-2.5 sm:gap-3">
+            <div class="mt-3 sm:mt-5 pt-2.5 sm:pt-4 border-t border-white/10 grid grid-cols-2 gap-2 sm:gap-3">
                 
                 <!-- Solar Date Card (Dương Lịch) -->
-                <div class="glass-pill py-2.5 px-3 sm:py-3 sm:px-4 rounded-xl sm:rounded-2xl flex flex-col justify-center items-start text-left relative overflow-hidden group">
-                    <div class="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-sky-400 font-semibold mb-0.5">
-                        <i class="fa-solid fa-sun text-amber-400 text-xs"></i>
+                <div class="glass-pill py-2 px-2.5 sm:py-3 sm:px-4 rounded-xl sm:rounded-2xl flex flex-col justify-center items-start text-left relative overflow-hidden group">
+                    <div class="flex items-center gap-1 sm:gap-1.5 text-[8.5px] sm:text-[10px] font-mono uppercase tracking-wider text-sky-400 font-semibold mb-0.5">
+                        <i class="fa-solid fa-sun text-amber-400 text-[10px] sm:text-xs"></i>
                         <span>Dương Lịch</span>
                     </div>
                     <div id="solar-date-display" class="text-xs sm:text-sm font-bold text-slate-100 font-mono">
                         --/--/----
                     </div>
-                    <div id="solar-day-display" class="text-[10px] sm:text-[11px] text-slate-400">
+                    <div id="solar-day-display" class="text-[9.5px] sm:text-[11px] text-slate-400">
                         --
                     </div>
                 </div>
 
                 <!-- Lunar Date Card (Âm Lịch) -->
-                <div class="glass-pill py-2.5 px-3 sm:py-3 sm:px-4 rounded-xl sm:rounded-2xl flex flex-col justify-center items-start text-left relative overflow-hidden group">
-                    <div class="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-semibold mb-0.5">
-                        <i class="fa-solid fa-moon text-indigo-300 text-xs"></i>
+                <div class="glass-pill py-2 px-2.5 sm:py-3 sm:px-4 rounded-xl sm:rounded-2xl flex flex-col justify-center items-start text-left relative overflow-hidden group">
+                    <div class="flex items-center gap-1 sm:gap-1.5 text-[8.5px] sm:text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-semibold mb-0.5">
+                        <i class="fa-solid fa-moon text-indigo-300 text-[10px] sm:text-xs"></i>
                         <span>Âm Lịch</span>
                     </div>
                     <div id="lunar-date-display" class="text-xs sm:text-sm font-bold text-slate-100 font-mono">
                         --/--/----
                     </div>
-                    <div id="lunar-canchi-display" class="text-[10px] sm:text-[11px] text-slate-400">
+                    <div id="lunar-canchi-display" class="text-[9.5px] sm:text-[11px] text-slate-400">
                         Năm --
                     </div>
                 </div>
