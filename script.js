@@ -422,3 +422,93 @@ if (cardElem) {
         }
     });
 }
+
+// 8. Realtime Greeting Engine
+function updateGreeting() {
+    const now = new Date();
+    const hour = now.getHours();
+    const greetingEl = document.getElementById('greeting-text');
+    const iconEl = document.getElementById('greeting-icon');
+    if (!greetingEl || !iconEl) return;
+
+    let text = '';
+    let iconClass = 'fa-solid ';
+
+    if (hour >= 5 && hour < 11) {
+        text = 'Chào buổi sáng! 🌄 Thật nhiều năng lượng nhé!';
+        iconClass += 'fa-sun text-amber-300';
+    } else if (hour >= 11 && hour < 14) {
+        text = 'Chào buổi trưa! ☀️ Nhớ ăn uống nghỉ ngơi!';
+        iconClass += 'fa-cloud-sun text-amber-400';
+    } else if (hour >= 14 && hour < 18) {
+        text = 'Chào buổi chiều! 🌇 Chúc bạn một ngày an yên!';
+        iconClass += 'fa-sun-plant-wilt text-orange-400';
+    } else if (hour >= 18 && hour < 22) {
+        text = 'Chào buổi tối! 🌃 Thư giãn sau ngày dài nhé!';
+        iconClass += 'fa-moon text-indigo-300';
+    } else {
+        text = 'Đêm đã khuya! 🌙 Chúc bạn ngủ thật ngon giấc!';
+        iconClass += 'fa-bed text-sky-300';
+    }
+
+    greetingEl.innerText = text;
+    iconEl.className = iconClass + ' text-[10px] animate-pulse';
+}
+updateGreeting();
+setInterval(updateGreeting, 60000);
+
+// 9. Ambient Theme Switcher Engine
+const themes = [
+    { id: 'theme-cosmic', name: 'Midnight Cosmic 🌌' },
+    { id: 'theme-cyberpunk', name: 'Neon Cyberpunk ⚡' },
+    { id: 'theme-sunset', name: 'Sunset Rose 🌅' },
+    { id: 'theme-emerald', name: 'Emerald Aurora 🌿' }
+];
+
+let currentThemeIndex = 0;
+
+function applyTheme(index, isSilent = false) {
+    currentThemeIndex = index % themes.length;
+    const theme = themes[currentThemeIndex];
+    document.body.className = document.body.className.replace(/theme-\w+/g, '').trim();
+    if (theme.id !== 'theme-cosmic') {
+        document.body.classList.add(theme.id);
+    }
+    localStorage.setItem('user-theme', theme.id);
+
+    if (!isSilent) {
+        showThemeToast(`Chủ đề: ${theme.name}`);
+    }
+}
+
+function cycleTheme() {
+    applyTheme(currentThemeIndex + 1);
+}
+
+function showThemeToast(msg) {
+    let toast = document.getElementById('theme-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'theme-toast';
+        toast.className = 'fixed top-14 left-1/2 -translate-x-1/2 z-50 glass-pill py-1.5 px-4 rounded-full text-xs font-mono font-medium text-slate-100 shadow-2xl transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-2 border border-white/20 backdrop-blur-md';
+        document.body.appendChild(toast);
+    }
+    toast.innerText = msg;
+    toast.classList.remove('opacity-0', '-translate-y-2', 'pointer-events-none');
+    toast.classList.add('opacity-100', 'translate-y-0');
+
+    setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', '-translate-y-2', 'pointer-events-none');
+    }, 1800);
+}
+
+(function initTheme() {
+    const saved = localStorage.getItem('user-theme');
+    if (saved) {
+        const idx = themes.findIndex(t => t.id === saved);
+        if (idx !== -1) {
+            applyTheme(idx, true);
+        }
+    }
+})();

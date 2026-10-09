@@ -120,3 +120,43 @@ html, body {
     perspective: 1200px;
     transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* Theme Palette Definitions */
+body.theme-cyberpunk {
+    background-color: #0b0514;
+}
+body.theme-cyberpunk .rgb-orb-1 {
+    background: radial-gradient(circle, rgba(240, 0, 255, 0.5) 0%, rgba(157, 0, 255, 0.4) 50%, transparent 70%);
+}
+body.theme-cyberpunk .rgb-orb-2 {
+    background: radial-gradient(circle, rgba(0, 240, 255, 0.5) 0%, rgba(0, 112, 255, 0.4) 50%, transparent 70%);
+}
+body.theme-cyberpunk .rgb-orb-3 {
+    background: radial-gradient(circle, rgba(255, 0, 128, 0.4) 0%, rgba(121, 40, 202, 0.3) 50%, transparent 70%);
+}
+
+body.theme-sunset {
+    background-color: #0f0814;
+}
+body.theme-sunset .rgb-orb-1 {
+    background: radial-gradient(circle, rgba(255, 78, 80, 0.5) 0%, rgba(249, 212, 35, 0.4) 50%, transparent 70%);
+}
+body.theme-sunset .rgb-orb-2 {
+    background: radial-gradient(circle, rgba(255, 117, 140, 0.5) 0%, rgba(255, 126, 179, 0.4) 50%, transparent 70%);
+}
+body.theme-sunset .rgb-orb-3 {
+    background: radial-gradient(circle, rgba(127, 0, 255, 0.4) 0%, rgba(225, 0, 255, 0.3) 50%, transparent 70%);
+}
+
+body.theme-emerald {
+    background-color: #030f0c;
+}
+body.theme-emerald .rgb-orb-1 {
+    background: radial-gradient(circle, rgba(0, 180, 219, 0.5) 0%, rgba(0, 131, 176, 0.4) 50%, transparent 70%);
+}
+body.theme-emerald .rgb-orb-2 {
+    background: radial-gradient(circle, rgba(17, 153, 142, 0.5) 0%, rgba(56, 239, 125, 0.4) 50%, transparent 70%);
+}
+body.theme-emerald .rgb-orb-3 {
+    background: radial-gradient(circle, rgba(5, 117, 230, 0.4) 0%, rgba(0, 242, 96, 0.3) 50%, transparent 70%);
+}

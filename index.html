@@ -71,13 +71,13 @@
                     <i id="music-infinity-icon" class="fa-solid fa-infinity text-indigo-400 text-[11px]"></i>
                 </button>
 
-                <!-- Decorative Theme Color Dots (Trang trí phong cách Mac/UI) -->
-                <div class="flex items-center gap-1.5 py-1 px-2.5 rounded-full glass-pill" title="RGB Aura Palette">
+                <!-- Interactive Theme Switcher Button -->
+                <button onclick="cycleTheme()" class="flex items-center gap-1.5 py-1 px-2.5 rounded-full glass-pill hover:scale-105 transition cursor-pointer group" title="Bấm để Đổi Giao Diện Ambient Theme">
                     <span class="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.6)] animate-pulse"></span>
                     <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]"></span>
                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"></span>
                     <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
-                </div>
+                </button>
             </div>
         </div>
 
@@ -113,8 +113,14 @@
                         @haquangminhduc
                     </p>
 
+                    <!-- Realtime Greeting (Lời Chào Theo Thời Gian Thực) -->
+                    <div class="mt-0.5 flex items-center gap-1.5 text-[10px] sm:text-[11px] font-semibold text-amber-300/90 tracking-tight">
+                        <i id="greeting-icon" class="fa-solid fa-sun text-amber-400 text-[10px]"></i>
+                        <span id="greeting-text">--</span>
+                    </div>
+
                     <!-- Typewriter Text Quote -->
-                    <div class="mt-1 flex items-center gap-1 min-h-[1.2rem] text-[10px] sm:text-[11px] text-slate-300">
+                    <div class="mt-0.5 flex items-center gap-1 min-h-[1.2rem] text-[10px] sm:text-[11px] text-slate-300">
                         <i class="fa-solid fa-quote-left text-[8px] text-indigo-400/70 shrink-0"></i>
                         <span id="typewriter-text" class="italic tracking-tight text-slate-200"></span><span class="inline-block w-[1.5px] h-3 bg-sky-400 animate-pulse"></span>
                     </div>
