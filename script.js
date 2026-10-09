@@ -135,7 +135,7 @@ function updateCalendarDisplay() {
         const k = INT(off / 29.530588853);
         let nm = getNewMoonDay(k, timeZone);
         const sunLong = getSunLongitude(nm, timeZone);
-        if (sunLong >= 9) {
+        if (sunLong >= 10) {
             nm = getNewMoonDay(k - 1, timeZone);
         }
         return nm;
