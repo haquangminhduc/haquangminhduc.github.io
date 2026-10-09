@@ -66,20 +66,123 @@ if (card && window.matchMedia('(min-width: 768px)').matches) {
     });
 }
 
-// 4. Quick Copy Email
-function copyEmail(email) {
-    navigator.clipboard.writeText(email).then(() => {
-        const btnText = document.getElementById('copy-text');
-        const original = btnText.innerText;
-        btnText.innerText = 'Copied!';
-        btnText.classList.add('text-emerald-400');
-        
-        setTimeout(() => {
-            btnText.innerText = original;
-            btnText.classList.remove('text-emerald-400');
-        }, 2000);
-    });
+// 4. Realtime Solar & Lunar Calendar Converter (Âm Dương Lịch Việt Nam)
+function updateCalendarDisplay() {
+    const now = new Date();
+    const dd = now.getDate();
+    const mm = now.getMonth() + 1;
+    const yyyy = now.getFullYear();
+
+    // Dương Lịch Display
+    const daysOfWeek = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+    const dayStr = daysOfWeek[now.getDay()];
+    const pad = (n) => (n < 10 ? '0' + n : n);
+    const solarDateStr = `${pad(dd)}/${pad(mm)}/${yyyy}`;
+
+    const solarDateEl = document.getElementById('solar-date-display');
+    const solarDayEl = document.getElementById('solar-day-display');
+    if (solarDateEl) solarDateEl.innerText = solarDateStr;
+    if (solarDayEl) solarDayEl.innerText = dayStr;
+
+    // Âm Lịch Computation (Hồ Ngọc Đức Algorithm - GMT+7)
+    function INT(d) { return Math.floor(d); }
+
+    function jdFromDate(d, m, y) {
+        const a = INT((14 - m) / 12);
+        const y1 = y + 4800 - a;
+        const m1 = m + 12 * a - 3;
+        let jd = d + INT((153 * m1 + 2) / 5) + 365 * y1 + INT(y1 / 4) - INT(y1 / 100) + INT(y1 / 400) - 32045;
+        if (jd < 2299161) {
+            jd = d + INT((153 * m1 + 2) / 5) + 365 * y1 + INT(y1 / 4) - 32083;
+        }
+        return jd;
+    }
+
+    function getSunLongitude(dayNumber, timeZone) {
+        const T = (dayNumber - 2451545.5 - timeZone / 24.0) / 36525.0;
+        const dr = Math.PI / 180.0;
+        const L0 = 280.46645 + 36000.76983 * T + 0.0003032 * T * T;
+        const M = 357.52910 + 35999.05030 * T - 0.0001559 * T * T - 0.00000048 * T * T * T;
+        const C = (1.914600 - 0.004817 * T - 0.000014 * T * T) * Math.sin(dr * M) + (0.019993 - 0.000101 * T) * Math.sin(dr * 2 * M) + 0.000289 * Math.sin(dr * 3 * M);
+        let L = L0 + C;
+        L = L - 360.0 * Math.floor(L / 360.0);
+        return INT(L / 30.0);
+    }
+
+    function getNewMoonDay(k, timeZone) {
+        const T = k / 1236.85;
+        const T2 = T * T;
+        const T3 = T2 * T;
+        const dr = Math.PI / 180.0;
+        let Jd1 = 2415020.75933 + 29.53058868 * k + 0.0001178 * T2 - 0.000000155 * T3;
+        Jd1 += 0.00033 * Math.sin(dr * (166.56 + 132.87 * T - 0.009173 * T2));
+        const M = 359.2242 + 29.10535608 * k - 0.0000333 * T2 - 0.000000347 * T3;
+        const Mpr = 306.0253 + 385.81691806 * k + 0.0107306 * T2 + 0.00001236 * T3;
+        const F = 21.2964 + 390.67050646 * k - 0.0016528 * T2 - 0.00000239 * T3;
+        let C1 = (0.1734 - 0.000393 * T) * Math.sin(dr * M) + 0.0021 * Math.sin(dr * 2 * M);
+        C1 -= 0.4068 * Math.sin(dr * Mpr) - 0.0161 * Math.sin(dr * 2 * Mpr);
+        C1 += 0.0104 * Math.sin(dr * 2 * F) - 0.0051 * Math.sin(dr * (M + Mpr));
+        C1 -= 0.0074 * Math.sin(dr * (M - Mpr)) + 0.0004 * Math.sin(dr * (2 * F + M));
+        C1 -= 0.0004 * Math.sin(dr * (2 * F - M)) - 0.0006 * Math.sin(dr * (2 * F + Mpr));
+        C1 += 0.0010 * Math.sin(dr * (2 * F - Mpr)) + 0.0005 * Math.sin(dr * (M + 2 * Mpr));
+        const deltaT = (k < -11) ? 0.001 + 0.000839 * T : (k < 0) ? 0.0002 * T : 0;
+        const JdNew = Jd1 + C1 - deltaT;
+        return INT(JdNew + 0.5 + timeZone / 24.0);
+    }
+
+    function getLunarMonth11(yy, timeZone) {
+        const off = jdFromDate(31, 12, yy) - 2415021;
+        const k = INT(off / 29.530588853);
+        let nm = getNewMoonDay(k, timeZone);
+        const sunLong = getSunLongitude(nm, timeZone);
+        if (sunLong >= 9) {
+            nm = getNewMoonDay(k - 1, timeZone);
+        }
+        return nm;
+    }
+
+    function getLunarDate(d, m, y, timeZone = 7) {
+        const dayNumber = jdFromDate(d, m, y);
+        const k = INT((dayNumber - 2415021.076998695) / 29.530588853);
+        let monthStart = getNewMoonDay(k + 1, timeZone);
+        if (monthStart > dayNumber) {
+            monthStart = getNewMoonDay(k, timeZone);
+        }
+        let a11 = getLunarMonth11(y, timeZone);
+        let ly = y;
+        if (a11 > monthStart) {
+            ly = y - 1;
+            a11 = getLunarMonth11(y - 1, timeZone);
+        } else {
+            const a11Next = getLunarMonth11(y + 1, timeZone);
+            if (monthStart >= a11Next) {
+                ly = y + 1;
+                a11 = a11Next;
+            }
+        }
+        const lunarDay = dayNumber - monthStart + 1;
+        const diff = INT((monthStart - a11) / 29.5);
+        let lunarMonth = diff + 11;
+        if (lunarMonth > 12) lunarMonth -= 12;
+
+        const CAN = ['Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', 'Kỷ', 'Canh', 'Tân', 'Nhâm', 'Quý'];
+        const CHI = ['Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tỵ', 'Ngọ', 'Mùi', 'Thân', 'Dậu', 'Tuất', 'Hợi'];
+        const canYear = CAN[(ly + 6) % 10];
+        const chiYear = CHI[(ly + 8) % 12];
+
+        return { day: lunarDay, month: lunarMonth, year: ly, canChiYear: `${canYear} ${chiYear}` };
+    }
+
+    const lunar = getLunarDate(dd, mm, yyyy, 7);
+    const lunarDateStr = `${pad(lunar.day)}/${pad(lunar.month)}/${lunar.year}`;
+    const lunarCanChiStr = `Năm ${lunar.canChiYear}`;
+
+    const lunarDateEl = document.getElementById('lunar-date-display');
+    const lunarCanChiEl = document.getElementById('lunar-canchi-display');
+    if (lunarDateEl) lunarDateEl.innerText = lunarDateStr;
+    if (lunarCanChiEl) lunarCanChiEl.innerText = lunarCanChiStr;
 }
+updateCalendarDisplay();
 
 // 5. Floating Star Dust Engine
 (function initStarDust() {
@@ -249,6 +352,35 @@ function startBeatPulse() {
     render(performance.now());
 }
 
+function updateMusicUI(isPlaying) {
+    const musicIcon = document.getElementById('music-icon');
+    const infinityIcon = document.getElementById('music-infinity-icon');
+    const musicBtn = document.getElementById('music-toggle-btn');
+
+    if (isPlaying) {
+        if (musicIcon) musicIcon.className = 'fa-solid fa-compact-disc text-indigo-400 animate-spin text-[10px]';
+        if (infinityIcon) infinityIcon.className = 'fa-solid fa-infinity text-indigo-400 text-[11px] animate-pulse';
+        if (musicBtn) musicBtn.setAttribute('title', 'Tắt nhạc nền');
+    } else {
+        if (musicIcon) musicIcon.className = 'fa-solid fa-volume-xmark text-rose-400 text-[10px]';
+        if (infinityIcon) infinityIcon.className = 'fa-solid fa-infinity text-slate-500 text-[11px]';
+        if (musicBtn) musicBtn.setAttribute('title', 'Bật nhạc nền');
+    }
+}
+
+function toggleMusic(e) {
+    if (e) e.stopPropagation();
+    if (!bgAudio) return;
+
+    if (!bgAudio.paused && !bgAudio.muted) {
+        bgAudio.pause();
+        isMusicPlaying = false;
+        updateMusicUI(false);
+    } else {
+        playMusic();
+    }
+}
+
 function playMusic() {
     if (!bgAudio) return;
     bgAudio.muted = false;
@@ -257,9 +389,11 @@ function playMusic() {
     if (playPromise !== undefined) {
         playPromise.then(() => {
             isMusicPlaying = true;
+            updateMusicUI(true);
             startBeatPulse();
         }).catch(err => {
             console.log("Audio waiting for user click/tap:", err);
+            updateMusicUI(false);
         });
     }
 }
