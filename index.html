@@ -21,6 +21,12 @@
             darkMode: 'class',
             theme: {
                 extend: {
+                    screens: {
+                        'xs': '375px',
+                    },
+                    spacing: {
+                        '15': '3.75rem',
+                    },
                     fontFamily: {
                         sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
                         mono: ['"Space Grotesk"', 'monospace'],
@@ -34,7 +40,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="h-screen h-[100dvh] w-screen overflow-hidden flex items-center justify-center p-3 sm:p-5 text-slate-100 relative selection:bg-indigo-500 selection:text-white">
+<body class="min-h-screen min-h-[100dvh] w-full overflow-x-hidden overflow-y-auto flex items-center justify-center p-3 sm:p-5 text-slate-100 relative selection:bg-indigo-500 selection:text-white">
 
     <!-- Noise Texture & Dynamic RGB Ambient Lighting -->
     <div class="noise-bg"></div>
@@ -118,7 +124,7 @@
                 
                 <!-- Avatar with Blue Frame & Blue Verified Badge -->
                 <div class="relative shrink-0 group">
-                    <div class="relative w-15 h-15 xs:w-16 xs:h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden p-[2.5px] bg-gradient-to-tr from-blue-600 via-blue-500 to-sky-400 shadow-xl shadow-blue-500/25">
+                    <div class="relative avatar-container w-14 h-14 xs:w-16 xs:h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden p-[2.5px] bg-gradient-to-tr from-blue-600 via-blue-500 to-sky-400 shadow-xl shadow-blue-500/25">
                         <img src="avtcatrose.jpg" alt="Hà Quang Minh Đức" class="w-full h-full object-cover rounded-[14px]">
                     </div>
                     <!-- Verified Status Badge (Blue) -->
