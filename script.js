@@ -233,7 +233,7 @@ let currentBassEnergy = 0;
             this.isCross = Math.random() > 0.85;
         }
         update() {
-            const beatBoost = currentBassEnergy * 0.35;
+            const beatBoost = isMobile ? 0 : currentBassEnergy * 0.35;
             this.y -= (this.speedY + beatBoost * 0.2);
             this.x += this.speedX;
             this.twinkleAngle += (this.twinkleSpeed + beatBoost * 0.04);
@@ -255,7 +255,7 @@ let currentBassEnergy = 0;
             }
 
             if (this.isCross && this.size > 1.1) {
-                const len = this.size * (2.0 + currentBassEnergy * 0.6);
+                const len = this.size * (2.0 + (isMobile ? 0 : currentBassEnergy * 0.6));
                 ctx.beginPath();
                 ctx.moveTo(this.x, this.y - len);
                 ctx.lineTo(this.x, this.y + len);
@@ -266,7 +266,7 @@ let currentBassEnergy = 0;
                 ctx.stroke();
             } else {
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size + currentBassEnergy * 0.3, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, this.size + (isMobile ? 0 : currentBassEnergy * 0.3), 0, Math.PI * 2);
                 ctx.fill();
             }
             ctx.restore();
@@ -562,7 +562,9 @@ function startBeatPulse() {
     if (animFrameId) cancelAnimationFrame(animFrameId);
 
     const card = document.getElementById('card-element');
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
     let startTime = performance.now();
+    let lastMobileStyleUpdate = 0;
 
     function render(now) {
         animFrameId = requestAnimationFrame(render);
@@ -578,7 +580,7 @@ function startBeatPulse() {
                 bassSum += frequencyData[i];
             }
             bassIntensity = Math.min(1.0, (bassSum / (bins * 255)) * 1.4);
-            currentBassEnergy = bassIntensity;
+            currentBassEnergy = isMobileDevice ? bassIntensity * 0.4 : bassIntensity;
         }
 
         // Fallback harmonic wave if audio context is warming up
@@ -587,22 +589,32 @@ function startBeatPulse() {
             const beat1 = Math.pow(Math.sin(elapsed * 4.2), 4);
             const beat2 = Math.pow(Math.sin(elapsed * 2.1 + 0.5), 2);
             bassIntensity = beat1 * 0.7 + beat2 * 0.3;
-            currentBassEnergy = bassIntensity;
+            currentBassEnergy = isMobileDevice ? bassIntensity * 0.4 : bassIntensity;
         }
 
         if (!bgAudio.paused && !bgAudio.muted) {
             const elapsed = (now - startTime) / 1000;
-            const hue = (elapsed * 50) % 360;
 
             if (card) {
-                const isMobileScreen = window.innerWidth < 768;
-                const glowSpread = isMobileScreen ? 16 + bassIntensity * 22 : 22 + bassIntensity * 45;
-                const borderAlpha = 0.2 + bassIntensity * 0.5;
-                const borderColor = `hsla(${hue}, 85%, 65%, ${borderAlpha})`;
-                const glowColor = `hsla(${hue}, 85%, 60%, ${0.28 + bassIntensity * 0.45})`;
+                if (!isMobileDevice) {
+                    const hue = (elapsed * 50) % 360;
+                    const glowSpread = 22 + bassIntensity * 45;
+                    const borderAlpha = 0.2 + bassIntensity * 0.5;
+                    const borderColor = `hsla(${hue}, 85%, 65%, ${borderAlpha})`;
+                    const glowColor = `hsla(${hue}, 85%, 60%, ${0.28 + bassIntensity * 0.45})`;
 
-                card.style.boxShadow = `0 20px 40px -10px rgba(0, 0, 0, 0.75), 0 0 0 ${1 + bassIntensity * 1.5}px ${borderColor}, 0 0 ${glowSpread}px ${glowColor}`;
-                card.style.borderColor = borderColor;
+                    card.style.boxShadow = `0 20px 40px -10px rgba(0, 0, 0, 0.75), 0 0 0 ${1 + bassIntensity * 1.5}px ${borderColor}, 0 0 ${glowSpread}px ${glowColor}`;
+                    card.style.borderColor = borderColor;
+                } else {
+                    // Mobile Optimization: Throttle dynamic box shadow DOM mutations to avoid GPU fill-rate bottleneck
+                    if (now - lastMobileStyleUpdate > 80) { // Update ~12 FPS on mobile for card shadow
+                        const hue = (elapsed * 40) % 360;
+                        const borderColor = `hsla(${hue}, 80%, 65%, ${0.3 + bassIntensity * 0.35})`;
+                        card.style.borderColor = borderColor;
+                        card.style.boxShadow = `0 15px 35px -10px rgba(0, 0, 0, 0.6), 0 0 18px hsla(${hue}, 75%, 60%, 0.3)`;
+                        lastMobileStyleUpdate = now;
+                    }
+                }
             }
 
             updateAudioProgressBorder();
@@ -741,16 +753,19 @@ function playMusic() {
     }
 }
 
-// Trigger audio playback reliably on any interaction (click, touch, key, pointer)
-const interactionEvents = ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown'];
+// Trigger audio playback reliably on any interaction once
+let userHasInteracted = false;
 
 function handleUserInteraction() {
+    if (userHasInteracted || (bgAudio && !bgAudio.paused)) return;
+    userHasInteracted = true;
     playMusic();
 }
 
+const interactionEvents = ['click', 'touchstart', 'pointerdown', 'keydown'];
+
 interactionEvents.forEach(evt => {
-    window.addEventListener(evt, handleUserInteraction, { passive: true });
-    document.addEventListener(evt, handleUserInteraction, { passive: true });
+    window.addEventListener(evt, handleUserInteraction, { passive: true, once: true });
 });
 
 const cardElem = document.getElementById('card-element');
@@ -760,11 +775,6 @@ if (cardElem) {
             playMusic();
         }
     });
-    cardElem.addEventListener('touchstart', () => {
-        if (bgAudio && bgAudio.paused) {
-            playMusic();
-        }
-    }, { passive: true });
 }
 
 function refreshAudioProgress() {
@@ -848,66 +858,6 @@ function showThemeToast(msg) {
     }
 })();
 
-// 10. Interactive Liquid Glass Heart Reaction Engine
-function initHeartCount() {
-    const saved = localStorage.getItem('user-hearts');
-    const countEl = document.getElementById('heart-count');
-    let count = saved ? parseInt(saved, 10) : 0;
-    if (isNaN(count)) count = 0;
-    if (countEl) countEl.innerText = count.toLocaleString();
-}
-
-function spawnHearts(e) {
-    if (e) e.stopPropagation();
-
-    // 1. Update Heart Count
-    const countEl = document.getElementById('heart-count');
-    let count = parseInt(localStorage.getItem('user-hearts') || '0', 10);
-    if (isNaN(count)) count = 0;
-    count += 1;
-    localStorage.setItem('user-hearts', count.toString());
-    if (countEl) countEl.innerText = count.toLocaleString();
-
-    // 2. Button Pop Scale Animation
-    const btn = document.getElementById('heart-btn');
-    if (btn) {
-        btn.style.transform = 'scale(1.18)';
-        setTimeout(() => { btn.style.transform = 'scale(1)'; }, 180);
-    }
-
-    // 3. Spawn Floating Heart Burst
-    const rect = e.target.getBoundingClientRect();
-    const startX = e.clientX || (rect.left + rect.width / 2);
-    const startY = e.clientY || (rect.top + rect.height / 2);
-
-    const heartIcons = ['❤️', '💖', '✨', '💕', '💗', '🌸', '✨', '💖'];
-    const burstCount = 10;
-
-    for (let i = 0; i < burstCount; i++) {
-        const heart = document.createElement('span');
-        heart.className = 'floating-heart';
-        heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
-
-        const size = Math.random() * 14 + 16;
-        const dx = (Math.random() - 0.5) * 160;
-        const rot = (Math.random() - 0.5) * 60;
-
-        heart.style.left = `${startX}px`;
-        heart.style.top = `${startY}px`;
-        heart.style.fontSize = `${size}px`;
-        heart.style.setProperty('--dx', `${dx}px`);
-        heart.style.setProperty('--rot', `${rot}deg`);
-
-        document.body.appendChild(heart);
-
-        setTimeout(() => {
-            if (heart && heart.parentNode) {
-                heart.parentNode.removeChild(heart);
-            }
-        }, 2200);
-    }
-}
-initHeartCount();
 
 // 11. Light / Dark Mode Toggle Engine
 function toggleLightDarkMode(e) {
