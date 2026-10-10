@@ -185,111 +185,6 @@ body.theme-emerald .rgb-orb-3 {
     background: radial-gradient(circle, rgba(5, 117, 230, 0.4) 0%, rgba(0, 242, 96, 0.3) 50%, transparent 70%);
 }
 
-/* ============================================================
-   Apple Liquid Glass Design System (iOS 26 / macOS Tahoe)
-   ============================================================ */
-
-body.light-mode {
-    background: radial-gradient(circle at 12% 15%, rgba(244, 114, 182, 0.45) 0%, transparent 45%),
-                radial-gradient(circle at 88% 80%, rgba(56, 189, 248, 0.45) 0%, transparent 45%),
-                radial-gradient(circle at 50% 45%, rgba(168, 85, 247, 0.32) 0%, transparent 55%),
-                linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 45%, #f1f5f9 100%);
-    background-attachment: fixed;
-    color: #0f172a;
-}
-
-body.light-mode .rgb-orb-1 {
-    background: radial-gradient(circle, rgba(236, 72, 153, 0.45) 0%, rgba(99, 102, 241, 0.35) 50%, transparent 70%);
-}
-body.light-mode .rgb-orb-2 {
-    background: radial-gradient(circle, rgba(14, 165, 233, 0.45) 0%, rgba(52, 211, 153, 0.35) 50%, transparent 70%);
-}
-body.light-mode .rgb-orb-3 {
-    background: radial-gradient(circle, rgba(251, 146, 60, 0.4) 0%, rgba(168, 85, 247, 0.3) 50%, transparent 70%);
-}
-
-/* Apple Liquid Glass Cards & Panels */
-body.light-mode .glass-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.62) 100%);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.75);
-    border-top: 1.5px solid rgba(255, 255, 255, 0.95);
-    border-radius: 28px;
-    box-shadow: 
-        0 4px 6px -1px rgba(0, 0, 0, 0.04),
-        0 12px 24px -4px rgba(0, 0, 0, 0.08),
-        0 24px 48px -8px rgba(15, 23, 42, 0.12),
-        inset 0 1px 1px 0 rgba(255, 255, 255, 0.95),
-        inset 0 -1px 1px 0 rgba(0, 0, 0, 0.03);
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease;
-}
-
-/* Specular Light Refraction Overlay (Top-Left Specular Highlight) */
-body.light-mode .glass-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 45%;
-    background: radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.15) 50%, transparent 80%);
-    pointer-events: none;
-    z-index: 1;
-}
-
-/* Apple Liquid Glass Pills & Inner Containers */
-body.light-mode .glass-pill {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.68) 0%, rgba(255, 255, 255, 0.52) 100%);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    border-top: 1.2px solid rgba(255, 255, 255, 0.95);
-    border-radius: 20px;
-    box-shadow: 
-        0 4px 12px rgba(15, 23, 42, 0.05),
-        inset 0 1px 1px 0 rgba(255, 255, 255, 0.95),
-        inset 0 -1px 1px 0 rgba(0, 0, 0, 0.02);
-    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-body.light-mode .glass-pill:hover {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.7) 100%);
-    border-color: rgba(255, 255, 255, 0.98);
-    transform: translateY(-2.5px) scale(1.015);
-    box-shadow: 
-        0 8px 24px -4px rgba(15, 23, 42, 0.1),
-        inset 0 1px 2px 0 rgba(255, 255, 255, 1);
-}
-
-body.light-mode .glass-pill:active {
-    transform: translateY(1px) scale(0.97);
-}
-
-
-/* Text & Contrast Adaptations in Light Mode */
-body.light-mode h1.text-white,
-body.light-mode .text-slate-100 {
-    color: #0f172a !important;
-}
-
-body.light-mode .text-slate-200 {
-    color: #1e293b !important;
-}
-
-body.light-mode .text-slate-300 {
-    color: #334155 !important;
-}
-
-body.light-mode .text-slate-400 {
-    color: #475569 !important;
-}
-
-body.light-mode .text-slate-500 {
-    color: #64748b !important;
-}
 
 /* ============================================================
    Mobile Performance & GPU Acceleration Optimizations
@@ -321,12 +216,14 @@ body.light-mode .text-slate-500 {
     }
 
     .glass-card {
-        backdrop-filter: blur(18px) saturate(140%);
-        -webkit-backdrop-filter: blur(18px) saturate(140%);
+        backdrop-filter: blur(14px) saturate(130%);
+        -webkit-backdrop-filter: blur(14px) saturate(130%);
+        will-change: transform, opacity;
     }
 
     .glass-pill {
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        will-change: transform;
     }
 }

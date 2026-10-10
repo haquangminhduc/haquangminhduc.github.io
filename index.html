@@ -100,7 +100,7 @@
     <div class="rgb-orb-3" id="glow-3"></div>
 
     <!-- Background Audio Element -->
-    <audio id="bg-audio" loop preload="auto" src="emtunglacathegioivoianh.mp3"></audio>
+    <audio id="bg-audio" loop preload="metadata" src="emtunglacathegioivoianh.mp3"></audio>
 
     <!-- Main Container: Guaranteed to fit in 100dvh without vertical scroll -->
     <main class="relative z-10 w-full max-w-md mx-auto flex flex-col justify-center max-h-[100dvh] py-1">
@@ -127,11 +127,6 @@
                 <button id="music-toggle-btn" onclick="toggleMusic(event)" class="flex items-center gap-1.5 py-1 px-2 sm:px-2.5 rounded-full glass-pill text-[10px] sm:text-[11px] text-slate-300 hover:text-white active:scale-95 transition group cursor-pointer" title="Bật / Tắt nhạc nền">
                     <i id="music-icon" class="fa-solid fa-music text-indigo-400 text-[10px]"></i>
                     <i id="music-infinity-icon" class="fa-solid fa-infinity text-indigo-400 text-[11px]"></i>
-                </button>
-
-                <!-- Light / Dark Mode Toggle Icon Button -->
-                <button id="light-dark-toggle-btn" onclick="toggleLightDarkMode(event)" class="flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full glass-pill text-slate-300 hover:text-amber-300 active:scale-95 transition cursor-pointer group" title="Bật / Tắt Giao Diện Sáng (Light / Dark Mode)">
-                    <i id="light-dark-icon" class="fa-solid fa-moon text-[10px] sm:text-[11px] text-amber-300 transition-transform duration-300 group-hover:rotate-45"></i>
                 </button>
 
                 <!-- Interactive Theme Switcher Button -->

@@ -397,7 +397,25 @@ let currentBassEnergy = 0;
         }
     }, spawnInterval);
 
-    function animateStars() {
+    let lastFrameTime = 0;
+    const targetFpsInterval = isMobile ? 1000 / 30 : 0; // 30 FPS on mobile, 60 FPS on desktop
+
+    function animateStars(now) {
+        if (document.hidden) {
+            // Pause animation when tab/browser is hidden to save 100% CPU/GPU & battery
+            requestAnimationFrame(animateStars);
+            return;
+        }
+
+        if (isMobile && targetFpsInterval > 0) {
+            const delta = now - lastFrameTime;
+            if (delta < targetFpsInterval) {
+                requestAnimationFrame(animateStars);
+                return;
+            }
+            lastFrameTime = now - (delta % targetFpsInterval);
+        }
+
         ctx.clearRect(0, 0, width, height);
         if (fgCanvas && fgCtx) {
             fgCtx.clearRect(0, 0, width, height);
@@ -428,7 +446,7 @@ let currentBassEnergy = 0;
         }
         requestAnimationFrame(animateStars);
     }
-    animateStars();
+    requestAnimationFrame(animateStars);
 
     window.addEventListener('resize', () => {
         width = canvas.width = window.innerWidth;
@@ -544,8 +562,8 @@ function initAudioAnalyser() {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         audioCtx = new AudioContext();
         analyserNode = audioCtx.createAnalyser();
-        analyserNode.fftSize = 128; // 64 frequency bins
-        analyserNode.smoothingTimeConstant = 0.82;
+        analyserNode.fftSize = 64; // Optimized 32 frequency bins for instant performance
+        analyserNode.smoothingTimeConstant = 0.8;
 
         if (!audioSourceNode && bgAudio) {
             audioSourceNode = audioCtx.createMediaElementSource(bgAudio);
@@ -859,34 +877,7 @@ function showThemeToast(msg) {
 })();
 
 
-// 11. Light / Dark Mode Toggle Engine
-function toggleLightDarkMode(e) {
-    if (e) e.stopPropagation();
-    const isLight = document.body.classList.toggle('light-mode');
-    const icon = document.getElementById('light-dark-icon');
-    const btn = document.getElementById('light-dark-toggle-btn');
 
-    if (isLight) {
-        if (icon) icon.className = 'fa-solid fa-sun text-[10px] sm:text-[11px] text-amber-400 transition-transform duration-300 group-hover:rotate-45';
-        if (btn) btn.setAttribute('title', 'Chuyển sang Giao Diện Tối (Dark Mode)');
-        localStorage.setItem('user-mode', 'light');
-    } else {
-        if (icon) icon.className = 'fa-solid fa-moon text-[10px] sm:text-[11px] text-amber-300 transition-transform duration-300 group-hover:rotate-45';
-        if (btn) btn.setAttribute('title', 'Chuyển sang Giao Diện Sáng (Light Mode)');
-        localStorage.setItem('user-mode', 'dark');
-    }
-}
-
-(function initLightDarkMode() {
-    const savedMode = localStorage.getItem('user-mode');
-    if (savedMode === 'light') {
-        document.body.classList.add('light-mode');
-        const icon = document.getElementById('light-dark-icon');
-        const btn = document.getElementById('light-dark-toggle-btn');
-        if (icon) icon.className = 'fa-solid fa-sun text-[10px] sm:text-[11px] text-amber-400 transition-transform duration-300 group-hover:rotate-45';
-        if (btn) btn.setAttribute('title', 'Chuyển sang Giao Diện Tối (Dark Mode)');
-    }
-})();
 
 // 12. Preloader Progress (0-100%) Engine
 (function initPreloaderProgress() {
