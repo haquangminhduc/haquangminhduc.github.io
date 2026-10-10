@@ -43,7 +43,7 @@ html, body {
     filter: blur(80px);
     pointer-events: none;
     z-index: 0;
-    animation: floatOrb1 14s ease-in-out infinite alternate, rgbHueCycle 18s linear infinite;
+    animation: floatOrb1 14s ease-in-out infinite alternate;
 }
 
 .rgb-orb-2 {
@@ -57,7 +57,7 @@ html, body {
     filter: blur(90px);
     pointer-events: none;
     z-index: 0;
-    animation: floatOrb2 16s ease-in-out infinite alternate, rgbHueCycle 18s linear infinite reverse;
+    animation: floatOrb2 16s ease-in-out infinite alternate;
 }
 
 .rgb-orb-3 {
@@ -71,7 +71,7 @@ html, body {
     filter: blur(85px);
     pointer-events: none;
     z-index: 0;
-    animation: floatOrb3 20s ease-in-out infinite, rgbHueCycle 18s linear infinite;
+    animation: floatOrb3 20s ease-in-out infinite;
 }
 
 @keyframes floatOrb1 {
@@ -213,6 +213,10 @@ body.theme-emerald .rgb-orb-3 {
         height: 14rem;
         filter: blur(40px);
         animation: floatOrb3 20s ease-in-out infinite;
+    }
+
+    .noise-bg {
+        display: none;
     }
 
     .glass-card {
