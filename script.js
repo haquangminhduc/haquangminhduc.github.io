@@ -821,8 +821,8 @@ function showThemeToast(msg) {
 function initHeartCount() {
     const saved = localStorage.getItem('user-hearts');
     const countEl = document.getElementById('heart-count');
-    let count = saved ? parseInt(saved, 10) : 1248;
-    if (isNaN(count)) count = 1248;
+    let count = saved ? parseInt(saved, 10) : 0;
+    if (isNaN(count)) count = 0;
     if (countEl) countEl.innerText = count.toLocaleString();
 }
 
@@ -831,8 +831,8 @@ function spawnHearts(e) {
 
     // 1. Update Heart Count
     const countEl = document.getElementById('heart-count');
-    let count = parseInt(localStorage.getItem('user-hearts') || '1248', 10);
-    if (isNaN(count)) count = 1248;
+    let count = parseInt(localStorage.getItem('user-hearts') || '0', 10);
+    if (isNaN(count)) count = 0;
     count += 1;
     localStorage.setItem('user-hearts', count.toString());
     if (countEl) countEl.innerText = count.toLocaleString();
