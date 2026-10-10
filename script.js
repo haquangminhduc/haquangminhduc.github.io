@@ -189,15 +189,26 @@ let currentBassEnergy = 0;
 
 (function initStarDust() {
     const canvas = document.getElementById('stars-canvas');
+    const fgCanvas = document.getElementById('shooting-stars-canvas');
     if (!canvas) return;
+
     const ctx = canvas.getContext('2d');
+    const fgCtx = fgCanvas ? fgCanvas.getContext('2d') : ctx;
+
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
-    // Denser star dust (increased count by 3.5x for magical cosmic atmosphere)
+    if (fgCanvas) {
+        fgCanvas.width = width;
+        fgCanvas.height = height;
+    }
+
+    // Denser star dust (increased count for magical cosmic atmosphere)
     const starCount = Math.min(Math.floor((width * height) / 4200), 160);
     const stars = [];
-    const colors = ['#ffffff', '#e0e7ff', '#bae6fd', '#fef08a', '#fbcfe8', '#ddd6fe', '#c7d2fe'];
+    const shootingStars = [];
+    const touchParticles = [];
+    const colors = ['#ffffff', '#e0e7ff', '#bae6fd', '#fef08a', '#fbcfe8', '#ddd6fe', '#c7d2fe', '#38bdf8', '#f43f5e'];
 
     class Star {
         constructor() {
@@ -214,7 +225,7 @@ let currentBassEnergy = 0;
             this.speedY = Math.random() * 0.38 + 0.1;
             this.speedX = (Math.random() - 0.5) * 0.2;
             this.color = colors[Math.floor(Math.random() * colors.length)];
-            this.isCross = Math.random() > 0.82; // Sparkling 4-point star
+            this.isCross = Math.random() > 0.82;
         }
         update() {
             const beatBoost = currentBassEnergy * 0.5;
@@ -255,15 +266,151 @@ let currentBassEnergy = 0;
         }
     }
 
+    class ShootingStar {
+        constructor() {
+            this.reset();
+        }
+        reset() {
+            // Cut right across the whole screen and over the profile card
+            this.x = Math.random() * (width * 1.4) - width * 0.2;
+            this.y = Math.random() * (height * 0.7) - height * 0.1;
+            this.length = Math.random() * 140 + 70;
+            this.speed = Math.random() * 12 + 7;
+            this.angle = Math.PI / 4 + (Math.random() - 0.5) * 0.35;
+            this.vx = Math.cos(this.angle) * this.speed;
+            this.vy = Math.sin(this.angle) * this.speed;
+            this.alpha = 1;
+            this.decay = Math.random() * 0.015 + 0.007;
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+            this.lineWidth = Math.random() * 2.2 + 1.2;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.alpha -= this.decay;
+        }
+        draw(targetCtx) {
+            if (this.alpha <= 0) return;
+            targetCtx.save();
+            targetCtx.globalAlpha = this.alpha;
+            const tailX = this.x - Math.cos(this.angle) * this.length;
+            const tailY = this.y - Math.sin(this.angle) * this.length;
+            const grad = targetCtx.createLinearGradient(this.x, this.y, tailX, tailY);
+            grad.addColorStop(0, '#ffffff');
+            grad.addColorStop(0.2, this.color);
+            grad.addColorStop(1, 'transparent');
+            targetCtx.strokeStyle = grad;
+            targetCtx.lineWidth = this.lineWidth;
+            targetCtx.lineCap = 'round';
+            targetCtx.beginPath();
+            targetCtx.moveTo(this.x, this.y);
+            targetCtx.lineTo(tailX, tailY);
+            targetCtx.stroke();
+
+            // Bright sparkling head particle passing over card
+            targetCtx.fillStyle = '#ffffff';
+            targetCtx.shadowBlur = 12;
+            targetCtx.shadowColor = this.color;
+            targetCtx.beginPath();
+            targetCtx.arc(this.x, this.y, this.lineWidth * 1.2, 0, Math.PI * 2);
+            targetCtx.fill();
+            targetCtx.restore();
+        }
+    }
+
+    class TouchParticle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            const angle = Math.random() * Math.PI * 2;
+            const speed = Math.random() * 4.5 + 1.5;
+            this.vx = Math.cos(angle) * speed;
+            this.vy = Math.sin(angle) * speed;
+            this.size = Math.random() * 3 + 1;
+            this.alpha = 1;
+            this.decay = Math.random() * 0.03 + 0.015;
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+            this.isCross = Math.random() > 0.45;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.vy += 0.06;
+            this.vx *= 0.96;
+            this.alpha -= this.decay;
+        }
+        draw(targetCtx) {
+            if (this.alpha <= 0) return;
+            targetCtx.save();
+            targetCtx.globalAlpha = this.alpha;
+            targetCtx.fillStyle = this.color;
+            targetCtx.shadowBlur = this.size * 6;
+            targetCtx.shadowColor = this.color;
+
+            if (this.isCross) {
+                const len = this.size * 2.2;
+                targetCtx.strokeStyle = this.color;
+                targetCtx.lineWidth = 1.2;
+                targetCtx.beginPath();
+                targetCtx.moveTo(this.x, this.y - len);
+                targetCtx.lineTo(this.x, this.y + len);
+                targetCtx.moveTo(this.x - len, this.y);
+                targetCtx.lineTo(this.x + len, this.y);
+                targetCtx.stroke();
+            } else {
+                targetCtx.beginPath();
+                targetCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                targetCtx.fill();
+            }
+            targetCtx.restore();
+        }
+    }
+
     for (let i = 0; i < starCount; i++) {
         stars.push(new Star());
     }
 
+    window.addEventListener('pointerdown', (e) => {
+        for (let i = 0; i < 15; i++) {
+            touchParticles.push(new TouchParticle(e.clientX, e.clientY));
+        }
+    }, { passive: true });
+
+    // Rapid shooting star spawning (nhiều sao băng đi qua màn hình & profile card)
+    setInterval(() => {
+        if (shootingStars.length < 30) {
+            shootingStars.push(new ShootingStar());
+        }
+    }, 320);
+
     function animateStars() {
         ctx.clearRect(0, 0, width, height);
+        if (fgCanvas && fgCtx) {
+            fgCtx.clearRect(0, 0, width, height);
+        }
+
+        // 1. Draw background stars
         for (let i = 0; i < stars.length; i++) {
             stars[i].update();
             stars[i].draw();
+        }
+
+        // 2. Draw foreground shooting stars (passing over profile card)
+        for (let i = shootingStars.length - 1; i >= 0; i--) {
+            shootingStars[i].update();
+            shootingStars[i].draw(fgCtx || ctx);
+            if (shootingStars[i].alpha <= 0) {
+                shootingStars.splice(i, 1);
+            }
+        }
+
+        // 3. Draw touch particles
+        for (let i = touchParticles.length - 1; i >= 0; i--) {
+            touchParticles[i].update();
+            touchParticles[i].draw(fgCtx || ctx);
+            if (touchParticles[i].alpha <= 0) {
+                touchParticles.splice(i, 1);
+            }
         }
         requestAnimationFrame(animateStars);
     }
@@ -272,11 +419,18 @@ let currentBassEnergy = 0;
     window.addEventListener('resize', () => {
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
+        if (fgCanvas) {
+            fgCanvas.width = width;
+            fgCanvas.height = height;
+        }
     });
 })();
 
 // 6. Typewriter Effect
 const quotes = [
+    "Có những chuyện ngoài chấp nhận ra, bản thân cũng chẳng biết nên làm gì hơn...",
+    "Không sắc không hương, làm sao yêu được người mình thương...",
+    "Thời gian sẽ xoá nhoà tất cả, bao gồm cả sự rung động ngày ấy...",
     "Những gì bạn thấy chính là tôi tôi sẽ không tranh cãi",
     "Khu vườn của tôi đầy những mảnh vỡ của các vì sao"
 ];
@@ -312,7 +466,7 @@ function typeLoop() {
 }
 typeLoop();
 
-// 7. Web Audio API Realtime Frequency Spectrum LED Engine
+// 7. Playlist & Web Audio API Realtime Frequency Spectrum LED Engine
 const bgAudio = document.getElementById('bg-audio');
 let isMusicPlaying = false;
 let animFrameId = null;
@@ -321,6 +475,54 @@ let audioCtx = null;
 let analyserNode = null;
 let frequencyData = null;
 let audioSourceNode = null;
+
+const playlist = [
+    {
+        title: "Em Từng Là Cả Thế Giới Với Anh",
+        artist: "Hà Quang Minh Đức",
+        src: "emtunglacathegioivoianh.mp3"
+    },
+    {
+        title: "Anh Ghét Mình Vì Còn Nhớ Em",
+        artist: "Vinh Khuất",
+        src: "Anh ghét mình vì còn nhớ em của Vinh Khuất nhưng buồn hơn.mp3"
+    },
+    {
+        title: "Mùa Hè Năm Ấy",
+        artist: "hqhuy",
+        src: "hqhuy - mùa hè năm ấy (Official Lyric Video).mp3"
+    },
+    {
+        title: "Trân Trọng",
+        artist: "hqhuy",
+        src: "hqhuy - trân trọng (Official Lyric Video).mp3"
+    }
+];
+
+let currentSongIndex = -1;
+
+function pickRandomSong() {
+    let nextIdx;
+    do {
+        nextIdx = Math.floor(Math.random() * playlist.length);
+    } while (playlist.length > 1 && nextIdx === currentSongIndex);
+
+    currentSongIndex = nextIdx;
+    const song = playlist[currentSongIndex];
+    if (bgAudio) {
+        bgAudio.src = song.src;
+    }
+    return song;
+}
+
+// Initial random song pick on load
+pickRandomSong();
+
+function playRandomSong(e) {
+    if (e) e.stopPropagation();
+    const song = pickRandomSong();
+    playMusic();
+}
 
 function initAudioAnalyser() {
     if (audioCtx) return;
@@ -447,6 +649,9 @@ if (bgAudio) {
     bgAudio.addEventListener('timeupdate', updateAudioProgressBorder);
     bgAudio.addEventListener('play', updateAudioProgressBorder);
     bgAudio.addEventListener('pause', updateAudioProgressBorder);
+    bgAudio.addEventListener('ended', () => {
+        playRandomSong();
+    });
 }
 
 window.addEventListener('resize', updateAudioProgressBorder);
@@ -455,15 +660,16 @@ function updateMusicUI(isPlaying) {
     const musicIcon = document.getElementById('music-icon');
     const infinityIcon = document.getElementById('music-infinity-icon');
     const musicBtn = document.getElementById('music-toggle-btn');
+    const song = playlist[currentSongIndex];
 
     if (isPlaying) {
         if (musicIcon) musicIcon.className = 'fa-solid fa-compact-disc text-indigo-400 animate-spin text-[10px]';
         if (infinityIcon) infinityIcon.className = 'fa-solid fa-infinity text-indigo-400 text-[11px] animate-pulse';
-        if (musicBtn) musicBtn.setAttribute('title', 'Tắt nhạc nền');
+        if (musicBtn && song) musicBtn.setAttribute('title', `Đang phát: ${song.title} (${song.artist})`);
     } else {
         if (musicIcon) musicIcon.className = 'fa-solid fa-volume-xmark text-rose-400 text-[10px]';
         if (infinityIcon) infinityIcon.className = 'fa-solid fa-infinity text-slate-500 text-[11px]';
-        if (musicBtn) musicBtn.setAttribute('title', 'Bật nhạc nền');
+        if (musicBtn && song) musicBtn.setAttribute('title', `Tạm dừng: ${song.title} (Bấm để phát)`);
     }
 }
 
@@ -480,6 +686,13 @@ function toggleMusic(e) {
     }
 }
 
+function removeInteractionListeners() {
+    interactionEvents.forEach(evt => {
+        window.removeEventListener(evt, handleUserInteraction);
+        document.removeEventListener(evt, handleUserInteraction);
+    });
+}
+
 function playMusic() {
     if (!bgAudio) return;
     initAudioAnalyser();
@@ -494,6 +707,7 @@ function playMusic() {
             isMusicPlaying = true;
             updateMusicUI(true);
             startBeatPulse();
+            removeInteractionListeners();
         }).catch(err => {
             console.log("Audio waiting for user click/tap:", err);
             updateMusicUI(false);
@@ -506,10 +720,6 @@ const interactionEvents = ['click', 'touchstart', 'touchend', 'pointerdown', 'ke
 
 function handleUserInteraction() {
     playMusic();
-    interactionEvents.forEach(evt => {
-        window.removeEventListener(evt, handleUserInteraction);
-        document.removeEventListener(evt, handleUserInteraction);
-    });
 }
 
 interactionEvents.forEach(evt => {
@@ -524,7 +734,16 @@ if (cardElem) {
             playMusic();
         }
     });
+    cardElem.addEventListener('touchstart', () => {
+        if (bgAudio && bgAudio.paused) {
+            playMusic();
+        }
+    }, { passive: true });
 }
+
+// Initial draw of border SVG geometry
+document.addEventListener('DOMContentLoaded', updateAudioProgressBorder);
+setTimeout(updateAudioProgressBorder, 300);
 
 // 8. Realtime Greeting Engine
 function updateGreeting() {
@@ -578,10 +797,6 @@ function applyTheme(index, isSilent = false) {
         document.body.classList.add(theme.id);
     }
     localStorage.setItem('user-theme', theme.id);
-
-    if (!isSilent) {
-        showThemeToast(`Chủ đề: ${theme.name}`);
-    }
 }
 
 function cycleTheme() {
@@ -589,21 +804,7 @@ function cycleTheme() {
 }
 
 function showThemeToast(msg) {
-    let toast = document.getElementById('theme-toast');
-    if (!toast) {
-        toast = document.createElement('div');
-        toast.id = 'theme-toast';
-        toast.className = 'fixed top-14 left-1/2 -translate-x-1/2 z-50 glass-pill py-1.5 px-4 rounded-full text-xs font-mono font-medium text-slate-100 shadow-2xl transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-2 border border-white/20 backdrop-blur-md';
-        document.body.appendChild(toast);
-    }
-    toast.innerText = msg;
-    toast.classList.remove('opacity-0', '-translate-y-2', 'pointer-events-none');
-    toast.classList.add('opacity-100', 'translate-y-0');
-
-    setTimeout(() => {
-        toast.classList.remove('opacity-100', 'translate-y-0');
-        toast.classList.add('opacity-0', '-translate-y-2', 'pointer-events-none');
-    }, 1800);
+    // Disabled toast notifications for clean UI
 }
 
 (function initTheme() {
@@ -613,5 +814,137 @@ function showThemeToast(msg) {
         if (idx !== -1) {
             applyTheme(idx, true);
         }
+    }
+})();
+
+// 10. Interactive Liquid Glass Heart Reaction Engine
+function initHeartCount() {
+    const saved = localStorage.getItem('user-hearts');
+    const countEl = document.getElementById('heart-count');
+    let count = saved ? parseInt(saved, 10) : 1248;
+    if (isNaN(count)) count = 1248;
+    if (countEl) countEl.innerText = count.toLocaleString();
+}
+
+function spawnHearts(e) {
+    if (e) e.stopPropagation();
+
+    // 1. Update Heart Count
+    const countEl = document.getElementById('heart-count');
+    let count = parseInt(localStorage.getItem('user-hearts') || '1248', 10);
+    if (isNaN(count)) count = 1248;
+    count += 1;
+    localStorage.setItem('user-hearts', count.toString());
+    if (countEl) countEl.innerText = count.toLocaleString();
+
+    // 2. Button Pop Scale Animation
+    const btn = document.getElementById('heart-btn');
+    if (btn) {
+        btn.style.transform = 'scale(1.18)';
+        setTimeout(() => { btn.style.transform = 'scale(1)'; }, 180);
+    }
+
+    // 3. Spawn Floating Heart Burst
+    const rect = e.target.getBoundingClientRect();
+    const startX = e.clientX || (rect.left + rect.width / 2);
+    const startY = e.clientY || (rect.top + rect.height / 2);
+
+    const heartIcons = ['❤️', '💖', '✨', '💕', '💗', '🌸', '✨', '💖'];
+    const burstCount = 10;
+
+    for (let i = 0; i < burstCount; i++) {
+        const heart = document.createElement('span');
+        heart.className = 'floating-heart';
+        heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+
+        const size = Math.random() * 14 + 16;
+        const dx = (Math.random() - 0.5) * 160;
+        const rot = (Math.random() - 0.5) * 60;
+
+        heart.style.left = `${startX}px`;
+        heart.style.top = `${startY}px`;
+        heart.style.fontSize = `${size}px`;
+        heart.style.setProperty('--dx', `${dx}px`);
+        heart.style.setProperty('--rot', `${rot}deg`);
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+            if (heart && heart.parentNode) {
+                heart.parentNode.removeChild(heart);
+            }
+        }, 2200);
+    }
+}
+initHeartCount();
+
+// 11. Light / Dark Mode Toggle Engine
+function toggleLightDarkMode(e) {
+    if (e) e.stopPropagation();
+    const isLight = document.body.classList.toggle('light-mode');
+    const icon = document.getElementById('light-dark-icon');
+    const btn = document.getElementById('light-dark-toggle-btn');
+
+    if (isLight) {
+        if (icon) icon.className = 'fa-solid fa-sun text-[10px] sm:text-[11px] text-amber-400 transition-transform duration-300 group-hover:rotate-45';
+        if (btn) btn.setAttribute('title', 'Chuyển sang Giao Diện Tối (Dark Mode)');
+        localStorage.setItem('user-mode', 'light');
+    } else {
+        if (icon) icon.className = 'fa-solid fa-moon text-[10px] sm:text-[11px] text-amber-300 transition-transform duration-300 group-hover:rotate-45';
+        if (btn) btn.setAttribute('title', 'Chuyển sang Giao Diện Sáng (Light Mode)');
+        localStorage.setItem('user-mode', 'dark');
+    }
+}
+
+(function initLightDarkMode() {
+    const savedMode = localStorage.getItem('user-mode');
+    if (savedMode === 'light') {
+        document.body.classList.add('light-mode');
+        const icon = document.getElementById('light-dark-icon');
+        const btn = document.getElementById('light-dark-toggle-btn');
+        if (icon) icon.className = 'fa-solid fa-sun text-[10px] sm:text-[11px] text-amber-400 transition-transform duration-300 group-hover:rotate-45';
+        if (btn) btn.setAttribute('title', 'Chuyển sang Giao Diện Tối (Dark Mode)');
+    }
+})();
+
+// 12. Preloader Progress (0-100%) Engine
+(function initPreloaderProgress() {
+    const bar = document.getElementById('preloader-progress-bar');
+    const percentEl = document.getElementById('preloader-percent');
+    const preloader = document.getElementById('preloader');
+    if (!bar || !percentEl || !preloader) return;
+
+    let progress = 0;
+    const interval = setInterval(() => {
+        if (progress < 90) {
+            progress += Math.floor(Math.random() * 8) + 4;
+            if (progress > 90) progress = 90;
+            bar.style.width = `${progress}%`;
+            percentEl.innerText = `${progress}%`;
+        }
+    }, 45);
+
+    function finishLoading() {
+        clearInterval(interval);
+        progress = 100;
+        bar.style.width = '100%';
+        percentEl.innerText = '100%';
+
+        setTimeout(() => {
+            preloader.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                if (preloader && preloader.parentNode) {
+                    preloader.parentNode.removeChild(preloader);
+                }
+            }, 800);
+        }, 350);
+    }
+
+    if (document.readyState === 'complete') {
+        setTimeout(finishLoading, 400);
+    } else {
+        window.addEventListener('load', () => {
+            setTimeout(finishLoading, 400);
+        });
     }
 })();

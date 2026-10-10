@@ -3,7 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <!-- Primary & Open Graph Social Meta Tags -->
     <title>Hà Quang Minh Đức 🇻🇳</title>
+    <meta name="title" content="Hà Quang Minh Đức 🇻🇳">
+    <meta name="description" content="Trang thông tin cá nhân chính thức của Hà Quang Minh Đức. Nghệ An, Việt Nam.">
+    <meta name="keywords" content="Hà Quang Minh Đức, haquangminhduc, profile, bio, portfolio">
+    <meta name="author" content="Hà Quang Minh Đức">
+
+    <!-- Open Graph / Facebook / Zalo / Messenger -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://haquangminhduc.github.io/">
+    <meta property="og:title" content="Hà Quang Minh Đức 🇻🇳">
+    <meta property="og:description" content="Trang thông tin cá nhân chính thức của Hà Quang Minh Đức. Nghệ An, Việt Nam.">
+    <meta property="og:image" content="https://haquangminhduc.github.io/avtcatrose.jpg">
+
+    <!-- Twitter / X -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://haquangminhduc.github.io/">
+    <meta property="twitter:title" content="Hà Quang Minh Đức 🇻🇳">
+    <meta property="twitter:description" content="Trang thông tin cá nhân chính thức của Hà Quang Minh Đức. Nghệ An, Việt Nam.">
+    <meta property="twitter:image" content="https://haquangminhduc.github.io/avtcatrose.jpg">
+
     <link rel="icon" href="iconweb.jpeg" type="image/jpeg">
 
     <!-- Google Fonts -->
@@ -42,11 +62,38 @@
 
 <body class="min-h-screen min-h-[100dvh] w-full overflow-x-hidden overflow-y-auto flex items-center justify-center p-3 sm:p-5 text-slate-100 relative selection:bg-indigo-500 selection:text-white">
 
+    <!-- Aesthetic Liquid Glass Preloader Screen -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#05070d] flex flex-col items-center justify-center transition-opacity duration-700 ease-out pointer-events-auto">
+        <div class="relative flex items-center justify-center mb-4">
+            <div class="w-16 h-16 rounded-full border-2 border-indigo-500/20 border-t-indigo-400 border-r-sky-400 animate-spin"></div>
+            <div class="absolute w-10 h-10 rounded-full overflow-hidden p-0.5 bg-gradient-to-tr from-blue-600 to-sky-400 shadow-[0_0_15px_rgba(56,189,248,0.5)]">
+                <img src="avtcatrose.jpg" alt="Avatar" class="w-full h-full object-cover rounded-full">
+            </div>
+        </div>
+        <div class="text-xs font-mono font-bold tracking-widest text-slate-200 uppercase">
+            HÀ QUANG MINH ĐỨC
+        </div>
+        
+        <!-- 0 - 100% Progress Bar & Counter -->
+        <div class="mt-3.5 w-48 xs:w-56 flex flex-col items-center gap-1.5">
+            <div class="w-full h-1.5 rounded-full bg-white/10 overflow-hidden relative border border-white/10 p-[0.5px]">
+                <div id="preloader-progress-bar" class="h-full w-0 rounded-full bg-gradient-to-r from-sky-400 via-indigo-400 to-rose-400 shadow-[0_0_10px_rgba(56,189,248,0.7)] transition-all duration-150 ease-out"></div>
+            </div>
+            <div class="flex items-center justify-between w-full text-[10px] font-mono text-slate-400 px-0.5">
+                <span>Loading...</span>
+                <span id="preloader-percent" class="font-bold text-sky-400 font-mono">0%</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Noise Texture & Dynamic RGB Ambient Lighting -->
     <div class="noise-bg"></div>
     
-    <!-- Floating Star Dust Canvas -->
+    <!-- Floating Star Dust Canvas (Background) -->
     <canvas id="stars-canvas" class="fixed inset-0 pointer-events-none z-[1]"></canvas>
+    
+    <!-- Shooting Stars & Foreground Burst Canvas (Over Profile Card z-30) -->
+    <canvas id="shooting-stars-canvas" class="fixed inset-0 pointer-events-none z-30"></canvas>
     
     <div class="rgb-orb-1" id="glow-1"></div>
     <div class="rgb-orb-2" id="glow-2"></div>
@@ -72,9 +119,14 @@
 
             <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
                 <!-- Music Toggle Button -->
-                <button id="music-toggle-btn" onclick="toggleMusic(event)" class="flex items-center gap-1.5 py-1 px-2 sm:px-2.5 rounded-full glass-pill text-[10px] sm:text-[11px] text-slate-300 hover:text-white active:scale-95 transition group" title="Bật / Tắt nhạc nền">
+                <button id="music-toggle-btn" onclick="toggleMusic(event)" class="flex items-center gap-1.5 py-1 px-2 sm:px-2.5 rounded-full glass-pill text-[10px] sm:text-[11px] text-slate-300 hover:text-white active:scale-95 transition group cursor-pointer" title="Bật / Tắt nhạc nền">
                     <i id="music-icon" class="fa-solid fa-music text-indigo-400 text-[10px]"></i>
                     <i id="music-infinity-icon" class="fa-solid fa-infinity text-indigo-400 text-[11px]"></i>
+                </button>
+
+                <!-- Light / Dark Mode Toggle Icon Button -->
+                <button id="light-dark-toggle-btn" onclick="toggleLightDarkMode(event)" class="flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full glass-pill text-slate-300 hover:text-amber-300 active:scale-95 transition cursor-pointer group" title="Bật / Tắt Giao Diện Sáng (Light / Dark Mode)">
+                    <i id="light-dark-icon" class="fa-solid fa-moon text-[10px] sm:text-[11px] text-amber-300 transition-transform duration-300 group-hover:rotate-45"></i>
                 </button>
 
                 <!-- Interactive Theme Switcher Button -->
@@ -200,6 +252,15 @@
                             <div class="text-xs sm:text-sm font-semibold text-slate-100">Nghe An, Vietnam 🇻🇳</div>
                         </div>
                     </div>
+                </div>
+
+                <!-- 4. Interactive Liquid Glass Heart Reaction Button (Cleaned without text) -->
+                <div class="glass-liquid-pill rounded-xl sm:rounded-2xl p-1.5 sm:p-2 flex items-center justify-center group transition-all duration-300">
+                    <button id="heart-btn" onclick="spawnHearts(event)" class="w-full relative flex items-center justify-center gap-2 py-2 px-4 rounded-xl bg-gradient-to-r from-rose-500/20 via-pink-500/25 to-rose-600/20 hover:from-rose-500/35 hover:to-pink-600/40 active:scale-95 transition-all duration-200 text-white text-xs font-semibold shadow-[0_4px_16px_rgba(244,63,94,0.3)] cursor-pointer overflow-hidden group/btn">
+                        <span class="absolute inset-0 bg-white/25 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700 ease-out pointer-events-none"></span>
+                        <i class="fa-solid fa-heart text-rose-400 text-sm sm:text-base animate-pulse group-hover/btn:scale-125 transition-transform duration-200"></i>
+                        <span id="heart-count" class="font-mono tracking-tight font-bold text-xs sm:text-sm text-slate-100">1,248</span>
+                    </button>
                 </div>
 
             </div>
