@@ -194,40 +194,48 @@ body.theme-emerald .rgb-orb-3 {
 }
 
 @media (max-width: 768px) {
+    /* Disable heavy GPU blur shaders & animations on mobile for ice-cold performance */
+    .rgb-orb-1, .rgb-orb-2, .rgb-orb-3 {
+        filter: none !important;
+        animation: none !important;
+        opacity: 0.6;
+    }
+
     .rgb-orb-1 {
-        width: 18rem;
-        height: 18rem;
-        filter: blur(40px);
-        animation: floatOrb1 16s ease-in-out infinite alternate;
+        width: 16rem;
+        height: 16rem;
+        background: radial-gradient(circle, rgba(236, 72, 153, 0.35) 0%, transparent 70%);
     }
 
     .rgb-orb-2 {
-        width: 20rem;
-        height: 20rem;
-        filter: blur(45px);
-        animation: floatOrb2 18s ease-in-out infinite alternate;
+        width: 18rem;
+        height: 18rem;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.35) 0%, transparent 70%);
     }
 
     .rgb-orb-3 {
-        width: 14rem;
-        height: 14rem;
-        filter: blur(40px);
-        animation: floatOrb3 20s ease-in-out infinite;
+        width: 12rem;
+        height: 12rem;
+        background: radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, transparent 70%);
     }
 
     .noise-bg {
-        display: none;
+        display: none !important;
     }
 
+    /* Crisp, high-contrast liquid glass style without heavy GPU backdrop-filter */
     .glass-card {
-        backdrop-filter: blur(14px) saturate(130%);
-        -webkit-backdrop-filter: blur(14px) saturate(130%);
-        will-change: transform, opacity;
+        background: linear-gradient(135deg, rgba(20, 27, 44, 0.93) 0%, rgba(10, 14, 24, 0.95) 100%);
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7);
     }
 
     .glass-pill {
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        will-change: transform;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border: 1px solid rgba(255, 255, 255, 0.12);
     }
 }

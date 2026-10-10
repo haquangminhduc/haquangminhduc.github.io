@@ -246,10 +246,10 @@ let currentBassEnergy = 0;
             }
         }
         draw() {
-            ctx.save();
             ctx.globalAlpha = this.alpha;
             ctx.fillStyle = this.color;
             if (!isMobile) {
+                ctx.save();
                 ctx.shadowBlur = this.size * (3 + currentBassEnergy * 2);
                 ctx.shadowColor = this.color;
             }
@@ -269,7 +269,10 @@ let currentBassEnergy = 0;
                 ctx.arc(this.x, this.y, this.size + (isMobile ? 0 : currentBassEnergy * 0.3), 0, Math.PI * 2);
                 ctx.fill();
             }
-            ctx.restore();
+
+            if (!isMobile) {
+                ctx.restore();
+            }
         }
     }
 
@@ -921,13 +924,24 @@ function showThemeToast(msg) {
     }
 })();
 
-// 13. Realtime FPS Counter Engine
+// 13. Realtime FPS Counter Engine (Disabled on mobile to save CPU/Battery)
 (function initFPSCounter() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+    const fpsEl = document.getElementById('fps-counter');
+    const fpsDisplay = document.getElementById('fps-display');
+    if (isMobile) {
+        if (fpsDisplay) fpsDisplay.style.display = 'none';
+        return;
+    }
+
     let frameCount = 0;
     let lastTime = performance.now();
-    const fpsEl = document.getElementById('fps-counter');
 
     function calcFPS(now) {
+        if (document.hidden) {
+            requestAnimationFrame(calcFPS);
+            return;
+        }
         frameCount++;
         if (now - lastTime >= 1000) {
             const fps = Math.round((frameCount * 1000) / (now - lastTime));
