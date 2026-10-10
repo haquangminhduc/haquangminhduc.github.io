@@ -354,3 +354,43 @@ body.light-mode .text-slate-400 {
 body.light-mode .text-slate-500 {
     color: #64748b !important;
 }
+
+/* ============================================================
+   Mobile Performance & GPU Acceleration Optimizations
+   ============================================================ */
+.rgb-orb-1, .rgb-orb-2, .rgb-orb-3 {
+    will-change: transform;
+}
+
+@media (max-width: 768px) {
+    .rgb-orb-1 {
+        width: 18rem;
+        height: 18rem;
+        filter: blur(40px);
+        animation: floatOrb1 16s ease-in-out infinite alternate;
+    }
+
+    .rgb-orb-2 {
+        width: 20rem;
+        height: 20rem;
+        filter: blur(45px);
+        animation: floatOrb2 18s ease-in-out infinite alternate;
+    }
+
+    .rgb-orb-3 {
+        width: 14rem;
+        height: 14rem;
+        filter: blur(40px);
+        animation: floatOrb3 20s ease-in-out infinite;
+    }
+
+    .glass-card {
+        backdrop-filter: blur(18px) saturate(140%);
+        -webkit-backdrop-filter: blur(18px) saturate(140%);
+    }
+
+    .glass-pill {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+}

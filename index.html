@@ -115,6 +115,11 @@
                     <i id="weather-icon" class="fa-solid fa-cloud-sun text-amber-300 text-[10px]"></i>
                     <span id="weather-temp" class="font-semibold text-slate-200">--°C</span>
                 </span>
+                <span class="text-slate-600 font-sans">•</span>
+                <span id="fps-display" class="inline-flex items-center gap-1 text-slate-300" title="Tốc độ khung hình thực tế (FPS)">
+                    <i class="fa-solid fa-gauge-high text-emerald-400 text-[9px]"></i>
+                    <span id="fps-counter" class="font-semibold text-emerald-400">60</span><span class="text-[8px] text-slate-400 font-mono">FPS</span>
+                </span>
             </div>
 
             <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
@@ -203,10 +208,13 @@
                         <span id="greeting-text">--</span>
                     </div>
 
-                    <!-- Typewriter Text Quote -->
-                    <div class="mt-0.5 flex items-center gap-1 min-h-[1.2rem] text-[9.5px] xs:text-[10px] sm:text-[11px] text-slate-300">
+                    <!-- Typewriter Text Quote (Fixed height single line, reserved space) -->
+                    <div class="mt-0.5 flex items-center gap-1.5 h-4 xs:h-4 sm:h-5 w-full overflow-hidden text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-slate-300">
                         <i class="fa-solid fa-quote-left text-[8px] text-indigo-400/70 shrink-0"></i>
-                        <span id="typewriter-text" class="italic tracking-tight text-slate-200"></span><span class="inline-block w-[1.5px] h-3 bg-sky-400 animate-pulse"></span>
+                        <div class="flex-1 min-w-0 overflow-hidden whitespace-nowrap text-ellipsis flex items-center gap-0.5">
+                            <span id="typewriter-text" class="italic tracking-tight text-slate-200 whitespace-nowrap overflow-hidden text-ellipsis inline-block max-w-full align-middle"></span>
+                            <span class="inline-block w-[1.5px] h-2.5 xs:h-3 bg-sky-400 animate-pulse shrink-0"></span>
+                        </div>
                     </div>
                 </div>
 

@@ -184,7 +184,7 @@ function updateCalendarDisplay() {
 }
 updateCalendarDisplay();
 
-// 5. Floating & Twinkling Dense Star Dust Engine
+// 5. Floating & Twinkling Dense Star Dust Engine (Mobile Optimized)
 let currentBassEnergy = 0;
 
 (function initStarDust() {
@@ -192,8 +192,10 @@ let currentBassEnergy = 0;
     const fgCanvas = document.getElementById('shooting-stars-canvas');
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
-    const fgCtx = fgCanvas ? fgCanvas.getContext('2d') : ctx;
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+
+    const ctx = canvas.getContext('2d', { alpha: true });
+    const fgCtx = fgCanvas ? fgCanvas.getContext('2d', { alpha: true }) : ctx;
 
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
@@ -203,8 +205,11 @@ let currentBassEnergy = 0;
         fgCanvas.height = height;
     }
 
-    // Denser star dust (increased count for magical cosmic atmosphere)
-    const starCount = Math.min(Math.floor((width * height) / 4200), 160);
+    // Star count optimized for smooth performance (especially on mobile)
+    const starCount = isMobile
+        ? Math.min(Math.floor((width * height) / 8000), 45)
+        : Math.min(Math.floor((width * height) / 4500), 110);
+
     const stars = [];
     const shootingStars = [];
     const touchParticles = [];
@@ -217,22 +222,22 @@ let currentBassEnergy = 0;
         reset(initial = false) {
             this.x = Math.random() * width;
             this.y = initial ? Math.random() * height : height + Math.random() * 20;
-            this.size = Math.random() * 1.8 + 0.3;
+            this.size = Math.random() * 1.6 + 0.3;
             this.baseAlpha = Math.random() * 0.65 + 0.2;
             this.alpha = this.baseAlpha;
             this.twinkleSpeed = Math.random() * 0.03 + 0.01;
             this.twinkleAngle = Math.random() * Math.PI * 2;
-            this.speedY = Math.random() * 0.38 + 0.1;
+            this.speedY = Math.random() * 0.35 + 0.1;
             this.speedX = (Math.random() - 0.5) * 0.2;
             this.color = colors[Math.floor(Math.random() * colors.length)];
-            this.isCross = Math.random() > 0.82;
+            this.isCross = Math.random() > 0.85;
         }
         update() {
-            const beatBoost = currentBassEnergy * 0.5;
-            this.y -= (this.speedY + beatBoost * 0.3);
+            const beatBoost = currentBassEnergy * 0.35;
+            this.y -= (this.speedY + beatBoost * 0.2);
             this.x += this.speedX;
-            this.twinkleAngle += (this.twinkleSpeed + beatBoost * 0.05);
-            this.alpha = this.baseAlpha + Math.sin(this.twinkleAngle) * 0.3 + beatBoost * 0.35;
+            this.twinkleAngle += (this.twinkleSpeed + beatBoost * 0.04);
+            this.alpha = this.baseAlpha + Math.sin(this.twinkleAngle) * 0.25 + beatBoost * 0.25;
             if (this.alpha < 0.05) this.alpha = 0.05;
             if (this.alpha > 0.98) this.alpha = 0.98;
 
@@ -244,11 +249,13 @@ let currentBassEnergy = 0;
             ctx.save();
             ctx.globalAlpha = this.alpha;
             ctx.fillStyle = this.color;
-            ctx.shadowBlur = this.size * (4 + currentBassEnergy * 3);
-            ctx.shadowColor = this.color;
+            if (!isMobile) {
+                ctx.shadowBlur = this.size * (3 + currentBassEnergy * 2);
+                ctx.shadowColor = this.color;
+            }
 
             if (this.isCross && this.size > 1.1) {
-                const len = this.size * (2.2 + currentBassEnergy * 0.8);
+                const len = this.size * (2.0 + currentBassEnergy * 0.6);
                 ctx.beginPath();
                 ctx.moveTo(this.x, this.y - len);
                 ctx.lineTo(this.x, this.y + len);
@@ -259,7 +266,7 @@ let currentBassEnergy = 0;
                 ctx.stroke();
             } else {
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size + currentBassEnergy * 0.4, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, this.size + currentBassEnergy * 0.3, 0, Math.PI * 2);
                 ctx.fill();
             }
             ctx.restore();
@@ -271,18 +278,17 @@ let currentBassEnergy = 0;
             this.reset();
         }
         reset() {
-            // Cut right across the whole screen and over the profile card
-            this.x = Math.random() * (width * 1.4) - width * 0.2;
-            this.y = Math.random() * (height * 0.7) - height * 0.1;
-            this.length = Math.random() * 140 + 70;
-            this.speed = Math.random() * 12 + 7;
-            this.angle = Math.PI / 4 + (Math.random() - 0.5) * 0.35;
+            this.x = Math.random() * (width * 1.3) - width * 0.15;
+            this.y = Math.random() * (height * 0.6) - height * 0.05;
+            this.length = isMobile ? Math.random() * 85 + 45 : Math.random() * 130 + 70;
+            this.speed = isMobile ? Math.random() * 9 + 6 : Math.random() * 12 + 7;
+            this.angle = Math.PI / 4 + (Math.random() - 0.5) * 0.3;
             this.vx = Math.cos(this.angle) * this.speed;
             this.vy = Math.sin(this.angle) * this.speed;
             this.alpha = 1;
-            this.decay = Math.random() * 0.015 + 0.007;
+            this.decay = Math.random() * 0.018 + 0.009;
             this.color = colors[Math.floor(Math.random() * colors.length)];
-            this.lineWidth = Math.random() * 2.2 + 1.2;
+            this.lineWidth = isMobile ? Math.random() * 1.5 + 1.0 : Math.random() * 2.2 + 1.2;
         }
         update() {
             this.x += this.vx;
@@ -307,12 +313,14 @@ let currentBassEnergy = 0;
             targetCtx.lineTo(tailX, tailY);
             targetCtx.stroke();
 
-            // Bright sparkling head particle passing over card
+            // Sparkling head particle (omit CPU shadowBlur on mobile for smooth 60fps)
             targetCtx.fillStyle = '#ffffff';
-            targetCtx.shadowBlur = 12;
-            targetCtx.shadowColor = this.color;
+            if (!isMobile) {
+                targetCtx.shadowBlur = 10;
+                targetCtx.shadowColor = this.color;
+            }
             targetCtx.beginPath();
-            targetCtx.arc(this.x, this.y, this.lineWidth * 1.2, 0, Math.PI * 2);
+            targetCtx.arc(this.x, this.y, this.lineWidth * 1.1, 0, Math.PI * 2);
             targetCtx.fill();
             targetCtx.restore();
         }
@@ -323,20 +331,20 @@ let currentBassEnergy = 0;
             this.x = x;
             this.y = y;
             const angle = Math.random() * Math.PI * 2;
-            const speed = Math.random() * 4.5 + 1.5;
+            const speed = Math.random() * 3.5 + 1.0;
             this.vx = Math.cos(angle) * speed;
             this.vy = Math.sin(angle) * speed;
-            this.size = Math.random() * 3 + 1;
+            this.size = Math.random() * 2.5 + 1;
             this.alpha = 1;
-            this.decay = Math.random() * 0.03 + 0.015;
+            this.decay = Math.random() * 0.04 + 0.02;
             this.color = colors[Math.floor(Math.random() * colors.length)];
-            this.isCross = Math.random() > 0.45;
+            this.isCross = Math.random() > 0.5;
         }
         update() {
             this.x += this.vx;
             this.y += this.vy;
             this.vy += 0.06;
-            this.vx *= 0.96;
+            this.vx *= 0.95;
             this.alpha -= this.decay;
         }
         draw(targetCtx) {
@@ -344,13 +352,15 @@ let currentBassEnergy = 0;
             targetCtx.save();
             targetCtx.globalAlpha = this.alpha;
             targetCtx.fillStyle = this.color;
-            targetCtx.shadowBlur = this.size * 6;
-            targetCtx.shadowColor = this.color;
+            if (!isMobile) {
+                targetCtx.shadowBlur = this.size * 4;
+                targetCtx.shadowColor = this.color;
+            }
 
             if (this.isCross) {
-                const len = this.size * 2.2;
+                const len = this.size * 2;
                 targetCtx.strokeStyle = this.color;
-                targetCtx.lineWidth = 1.2;
+                targetCtx.lineWidth = 1;
                 targetCtx.beginPath();
                 targetCtx.moveTo(this.x, this.y - len);
                 targetCtx.lineTo(this.x, this.y + len);
@@ -371,17 +381,21 @@ let currentBassEnergy = 0;
     }
 
     window.addEventListener('pointerdown', (e) => {
-        for (let i = 0; i < 15; i++) {
+        const particleCount = isMobile ? 6 : 12;
+        for (let i = 0; i < particleCount; i++) {
             touchParticles.push(new TouchParticle(e.clientX, e.clientY));
         }
     }, { passive: true });
 
-    // Rapid shooting star spawning (nhiều sao băng đi qua màn hình & profile card)
+    // Controlled shooting star spawn limits to maintain peak performance on mobile
+    const maxShootingStars = isMobile ? 3 : 8;
+    const spawnInterval = isMobile ? 1600 : 850;
+
     setInterval(() => {
-        if (shootingStars.length < 30) {
+        if (shootingStars.length < maxShootingStars && Math.random() > 0.25) {
             shootingStars.push(new ShootingStar());
         }
-    }, 320);
+    }, spawnInterval);
 
     function animateStars() {
         ctx.clearRect(0, 0, width, height);
@@ -395,7 +409,7 @@ let currentBassEnergy = 0;
             stars[i].draw();
         }
 
-        // 2. Draw foreground shooting stars (passing over profile card)
+        // 2. Draw foreground shooting stars
         for (let i = shootingStars.length - 1; i >= 0; i--) {
             shootingStars[i].update();
             shootingStars[i].draw(fgCtx || ctx);
@@ -581,12 +595,13 @@ function startBeatPulse() {
             const hue = (elapsed * 50) % 360;
 
             if (card) {
-                const glowSpread = 22 + bassIntensity * 45;
+                const isMobileScreen = window.innerWidth < 768;
+                const glowSpread = isMobileScreen ? 16 + bassIntensity * 22 : 22 + bassIntensity * 45;
                 const borderAlpha = 0.2 + bassIntensity * 0.5;
                 const borderColor = `hsla(${hue}, 85%, 65%, ${borderAlpha})`;
                 const glowColor = `hsla(${hue}, 85%, 60%, ${0.28 + bassIntensity * 0.45})`;
 
-                card.style.boxShadow = `0 25px 50px -12px rgba(0, 0, 0, 0.75), 0 0 0 ${1 + bassIntensity * 1.5}px ${borderColor}, 0 0 ${glowSpread}px ${glowColor}`;
+                card.style.boxShadow = `0 20px 40px -10px rgba(0, 0, 0, 0.75), 0 0 0 ${1 + bassIntensity * 1.5}px ${borderColor}, 0 0 ${glowSpread}px ${glowColor}`;
                 card.style.borderColor = borderColor;
             }
 
@@ -603,8 +618,10 @@ function startBeatPulse() {
     render(performance.now());
 }
 
-// 7b. Dynamic Audio Progress Border Engine (Tự động chạy quanh viền khung Profile theo % thời lượng nhạc)
-function updateAudioProgressBorder() {
+// 7b. Dynamic Audio Progress Border Engine (High Performance Cached geometry)
+let cachedProgressPathLength = 0;
+
+function updateAudioProgressGeometry() {
     const card = document.getElementById('card-element');
     const path = document.getElementById('card-audio-progress-bar');
     if (!card || !path) return;
@@ -617,7 +634,6 @@ function updateAudioProgressBorder() {
     const r = window.innerWidth < 640 ? 32 : 36;
     const inset = 1.75;
 
-    // Path starting from Top Center (w/2, inset) going clockwise around card
     const d = `
         M ${w / 2} ${inset}
         L ${w - r} ${inset}
@@ -632,14 +648,24 @@ function updateAudioProgressBorder() {
     `.replace(/\s+/g, ' ').trim();
 
     path.setAttribute('d', d);
-    const totalLength = path.getTotalLength();
-    path.style.strokeDasharray = totalLength;
+    cachedProgressPathLength = path.getTotalLength();
+    path.style.strokeDasharray = cachedProgressPathLength;
+}
+
+function updateAudioProgressBorder() {
+    const path = document.getElementById('card-audio-progress-bar');
+    if (!path) return;
+
+    if (!cachedProgressPathLength) {
+        updateAudioProgressGeometry();
+    }
+    if (!cachedProgressPathLength) return;
 
     if (bgAudio && bgAudio.duration && !bgAudio.paused) {
         const progress = bgAudio.currentTime / bgAudio.duration;
-        path.style.strokeDashoffset = totalLength * (1 - progress);
+        path.style.strokeDashoffset = cachedProgressPathLength * (1 - progress);
         path.style.opacity = '1';
-        path.style.strokeWidth = `${3 + currentBassEnergy * 2.5}px`;
+        path.style.strokeWidth = `${3 + currentBassEnergy * 2.0}px`;
     } else {
         path.style.opacity = '0';
     }
@@ -741,9 +767,14 @@ if (cardElem) {
     }, { passive: true });
 }
 
-// Initial draw of border SVG geometry
-document.addEventListener('DOMContentLoaded', updateAudioProgressBorder);
-setTimeout(updateAudioProgressBorder, 300);
+function refreshAudioProgress() {
+    updateAudioProgressGeometry();
+    updateAudioProgressBorder();
+}
+
+document.addEventListener('DOMContentLoaded', refreshAudioProgress);
+setTimeout(refreshAudioProgress, 300);
+window.addEventListener('resize', refreshAudioProgress);
 
 // 8. Realtime Greeting Engine
 function updateGreeting() {
@@ -948,3 +979,32 @@ function toggleLightDarkMode(e) {
         });
     }
 })();
+
+// 13. Realtime FPS Counter Engine
+(function initFPSCounter() {
+    let frameCount = 0;
+    let lastTime = performance.now();
+    const fpsEl = document.getElementById('fps-counter');
+
+    function calcFPS(now) {
+        frameCount++;
+        if (now - lastTime >= 1000) {
+            const fps = Math.round((frameCount * 1000) / (now - lastTime));
+            if (fpsEl) {
+                fpsEl.innerText = fps;
+                if (fps < 30) {
+                    fpsEl.className = 'font-semibold text-rose-400';
+                } else if (fps < 50) {
+                    fpsEl.className = 'font-semibold text-amber-400';
+                } else {
+                    fpsEl.className = 'font-semibold text-emerald-400';
+                }
+            }
+            frameCount = 0;
+            lastTime = now;
+        }
+        requestAnimationFrame(calcFPS);
+    }
+    requestAnimationFrame(calcFPS);
+})();
+
