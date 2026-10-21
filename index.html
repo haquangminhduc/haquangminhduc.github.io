@@ -3,6 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+    <!-- Smart Random 4-Seasons Dispatcher (Xuân - Hạ - Thu - Đông) -->
+    <script>
+        (function() {
+            if (window.location.search.indexOf('classic') !== -1) return;
+            var seasons = ['spring.html', 'summer.html', 'autumn.html', 'winter.html'];
+            var last = sessionStorage.getItem('last_visited_season');
+            var pool = seasons.filter(function(s) { return s !== last; });
+            var pick = pool[Math.floor(Math.random() * pool.length)];
+            sessionStorage.setItem('last_visited_season', pick);
+            window.location.replace(pick);
+        })();
+    </script>
     <!-- Primary & Open Graph Social Meta Tags -->
     <title>Hà Quang Minh Đức 🇻🇳</title>
     <meta name="title" content="Hà Quang Minh Đức 🇻🇳">
@@ -60,7 +73,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="min-h-screen min-h-[100dvh] w-full overflow-x-hidden overflow-y-auto flex items-center justify-center p-3 sm:p-5 text-slate-100 relative selection:bg-indigo-500 selection:text-white">
+<body class="min-h-screen min-h-[100dvh] w-full overflow-x-hidden overflow-y-auto flex items-center justify-center p-2.5 xs:p-3 sm:p-5 text-slate-100 relative selection:bg-indigo-500 selection:text-white">
 
     <!-- Aesthetic Liquid Glass Preloader Screen -->
     <div id="preloader" class="fixed inset-0 z-[100] bg-[#05070d] flex flex-col items-center justify-center transition-opacity duration-700 ease-out pointer-events-auto">
@@ -100,47 +113,61 @@
     <div class="rgb-orb-3" id="glow-3"></div>
 
     <!-- Background Audio Element -->
-    <audio id="bg-audio" loop preload="metadata" src="emtunglacathegioivoianh.mp3"></audio>
+    <audio id="bg-audio" loop preload="metadata" src="thế giới của anh.mp3"></audio>
 
-    <!-- Main Container: Guaranteed to fit in 100dvh without vertical scroll -->
-    <main class="relative z-10 w-full max-w-md mx-auto flex flex-col justify-center max-h-[100dvh] py-1">
+    <!-- Main Container -->
+    <main class="relative z-10 w-full max-w-md mx-auto flex flex-col justify-center min-h-[100dvh] py-2 sm:py-4">
 
         <!-- Top Bar: Live Clock & Realtime Weather Indicator -->
         <div class="flex items-center justify-between px-1 sm:px-2 mb-2 sm:mb-3">
-            <div class="flex items-center gap-1 sm:gap-1.5 text-[9px] sm:text-[11px] font-mono text-slate-400 shrink-0">
+            <div class="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-[11px] font-mono text-slate-400 shrink-0">
                 <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span>VIETNAM <span id="live-clock" class="text-slate-200 font-semibold tracking-wider">--:--:--</span></span>
+                <span class="inline-flex items-center gap-1">
+                    <span class="hidden xs:inline text-slate-400">VN</span>
+                    <span id="live-clock" class="text-slate-200 font-semibold tracking-wider">--:--:--</span>
+                </span>
                 <span class="text-slate-600 font-sans">•</span>
                 <span id="weather-display" class="inline-flex items-center gap-1 text-slate-300" title="Thời tiết thời gian thực tại Nghệ An">
                     <i id="weather-icon" class="fa-solid fa-cloud-sun text-amber-300 text-[10px]"></i>
                     <span id="weather-temp" class="font-semibold text-slate-200">--°C</span>
                 </span>
-                <span class="text-slate-600 font-sans">•</span>
-                <span id="fps-display" class="inline-flex items-center gap-1 text-slate-300" title="Tốc độ khung hình thực tế (FPS)">
+                <span class="hidden sm:inline text-slate-600 font-sans">•</span>
+                <span id="fps-display" class="hidden sm:inline-flex items-center gap-1 text-slate-300" title="Tốc độ khung hình thực tế (FPS)">
                     <i class="fa-solid fa-gauge-high text-emerald-400 text-[9px]"></i>
                     <span id="fps-counter" class="font-semibold text-emerald-400">60</span><span class="text-[8px] text-slate-400 font-mono">FPS</span>
                 </span>
             </div>
 
             <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
+                <!-- 4-Season Switcher Pill -->
+                <div class="flex items-center gap-0.5 py-0.5 px-1 rounded-full glass-pill border border-white/10">
+                    <a href="spring.html" class="season-nav-item px-1.5 py-0.5 rounded-full text-xs opacity-60 hover:opacity-100" title="Mùa Xuân 🌸">🌸</a>
+                    <a href="summer.html" class="season-nav-item px-1.5 py-0.5 rounded-full text-xs opacity-60 hover:opacity-100" title="Mùa Hạ ☀️">☀️</a>
+                    <a href="autumn.html" class="season-nav-item px-1.5 py-0.5 rounded-full text-xs opacity-60 hover:opacity-100" title="Mùa Thu 🍁">🍁</a>
+                    <a href="winter.html" class="season-nav-item px-1.5 py-0.5 rounded-full text-xs opacity-60 hover:opacity-100" title="Mùa Đông ❄️">❄️</a>
+                    <button onclick="goToRandomSeason()" class="px-1 py-0.5 text-[10px] text-slate-400 hover:text-white" title="Ngẫu nhiên mùa khác 🎲">
+                        <i class="fa-solid fa-dice"></i>
+                    </button>
+                </div>
+
                 <!-- Music Toggle Button -->
-                <button id="music-toggle-btn" onclick="toggleMusic(event)" class="flex items-center gap-1.5 py-1 px-2 sm:px-2.5 rounded-full glass-pill text-[10px] sm:text-[11px] text-slate-300 hover:text-white active:scale-95 transition group cursor-pointer" title="Bật / Tắt nhạc nền">
+                <button id="music-toggle-btn" onclick="toggleMusic(event)" class="flex items-center gap-1 py-1 px-2 rounded-full glass-pill text-[10px] text-slate-300 hover:text-white active:scale-95 transition cursor-pointer" title="Bật / Tắt nhạc nền">
                     <i id="music-icon" class="fa-solid fa-music text-indigo-400 text-[10px]"></i>
                     <i id="music-infinity-icon" class="fa-solid fa-infinity text-indigo-400 text-[11px]"></i>
                 </button>
 
                 <!-- Interactive Theme Switcher Button -->
-                <button onclick="cycleTheme()" class="flex items-center gap-1.5 py-1 px-2 sm:px-2.5 rounded-full glass-pill hover:scale-105 active:scale-95 transition cursor-pointer group" title="Bấm để Đổi Giao Diện Ambient Theme">
-                    <span class="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.6)] animate-pulse"></span>
-                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]"></span>
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"></span>
-                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
+                <button onclick="cycleTheme()" class="hidden xs:flex items-center gap-1 py-1 px-1.5 sm:px-2 rounded-full glass-pill hover:scale-105 active:scale-95 transition cursor-pointer group" title="Bấm để Đổi Giao Diện Ambient Theme">
+                    <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.6)] animate-pulse"></span>
+                    <span class="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.6)]"></span>
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.6)]"></span>
+                    <span class="w-2 h-2 rounded-full bg-indigo-500 shadow-[0_0_6px_rgba(99,102,241,0.6)]"></span>
                 </button>
             </div>
         </div>
 
         <!-- Sleek Profile Card -->
-        <div id="card-element" class="tilt-box glass-card rounded-[1.75rem] sm:rounded-[2.25rem] p-3.5 sm:p-7 relative overflow-hidden">
+        <div id="card-element" class="tilt-box glass-card rounded-[1.5rem] xs:rounded-[1.75rem] sm:rounded-[2.25rem] p-3 xs:p-4 sm:p-7 relative overflow-hidden">
 
             <!-- Subtle Card Top RGB Highlight -->
             <div class="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-[1.5px] bg-gradient-to-r from-transparent via-indigo-400/60 to-transparent"></div>
@@ -171,120 +198,131 @@
                       style="stroke-dasharray: 2000; stroke-dashoffset: 2000; transition: stroke-dashoffset 0.15s linear, opacity 0.4s ease; opacity: 0;" />
             </svg>
 
-            <!-- Header Profile Area -->
-            <div class="flex items-center gap-3.5 sm:gap-4 text-left">
+            <!-- Center Hero Profile Header -->
+            <div class="flex flex-col items-center text-center">
                 
-                <!-- Avatar with Blue Frame & Blue Verified Badge -->
-                <div class="relative shrink-0 group">
-                    <div class="relative avatar-container w-14 h-14 xs:w-16 xs:h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden p-[2.5px] bg-gradient-to-tr from-blue-600 via-blue-500 to-sky-400 shadow-xl shadow-blue-500/25">
-                        <img src="avtcatrose.jpg" alt="Hà Quang Minh Đức" class="w-full h-full object-cover rounded-[14px]">
+                <!-- Avatar with Glowing Neon Ring & Verified Badge -->
+                <div class="relative group cursor-pointer">
+                    <div class="relative w-18 h-18 xs:w-20 xs:h-20 sm:w-24 sm:h-24 rounded-2xl sm:rounded-3xl p-1 bg-gradient-to-tr from-blue-600 via-indigo-500 to-sky-400 shadow-[0_0_25px_rgba(56,189,248,0.35)] group-hover:scale-105 group-hover:shadow-[0_0_35px_rgba(56,189,248,0.5)] transition-all duration-300">
+                        <img src="avtcatrose.jpg" alt="Hà Quang Minh Đức" class="w-full h-full object-cover rounded-[1.1rem] sm:rounded-[1.35rem]">
                     </div>
-                    <!-- Verified Status Badge (Blue) -->
-                    <div class="absolute -bottom-1 -right-1 bg-[#06080e] p-0.5 rounded-full border border-white/10 shadow-lg flex items-center justify-center">
-                        <div class="w-4 h-4 rounded-full bg-gradient-to-tr from-blue-600 to-sky-400 flex items-center justify-center text-white text-[8px] shadow-[0_0_8px_rgba(56,189,248,0.7)]">
+                    <!-- Verified Status Badge -->
+                    <div class="absolute -bottom-1 -right-1 bg-[#06080e] p-1 rounded-full border border-white/10 shadow-lg flex items-center justify-center">
+                        <div class="w-4 h-4 xs:w-5 xs:h-5 rounded-full bg-gradient-to-tr from-blue-600 to-sky-400 flex items-center justify-center text-white text-[8px] xs:text-[9px] shadow-[0_0_10px_rgba(56,189,248,0.8)]">
                             <i class="fa-solid fa-check"></i>
                         </div>
                     </div>
+                    <!-- Active Status Dot -->
+                    <div class="absolute top-0 right-0 w-2.5 h-2.5 xs:w-3 xs:h-3 rounded-full bg-emerald-400 border-2 border-[#06080e] shadow-[0_0_8px_rgba(52,211,153,0.8)] animate-pulse"></div>
                 </div>
 
                 <!-- Name & Bio Title -->
-                <div class="flex-1 min-w-0">
-                    <h1 class="text-base xs:text-lg sm:text-2xl font-extrabold tracking-tight text-white truncate">
-                        Hà Quang Minh Đức
+                <div class="mt-2.5 xs:mt-3 w-full">
+                    <h1 class="text-lg xs:text-xl sm:text-2xl font-extrabold tracking-tight text-white flex items-center justify-center gap-1.5">
+                        <span>Hà Quang Minh Đức</span>
                     </h1>
 
-                    <p class="text-[10px] xs:text-[11px] sm:text-xs text-sky-400/90 font-mono">
-                        @haquangminhduc
-                    </p>
+                    <div class="mt-1 flex items-center justify-center gap-2">
+                        <span class="text-xs font-mono text-sky-400/90 font-medium">@haquangminhduc</span>
+                        <span class="text-slate-600">•</span>
+                        <span class="inline-flex items-center gap-1 text-[10px] font-mono text-emerald-300 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                            Online
+                        </span>
+                    </div>
 
-                    <!-- Realtime Greeting (Lời Chào Theo Thời Gian Thực) -->
-                    <div class="mt-0.5 flex items-center gap-1.5 text-[9.5px] xs:text-[10px] sm:text-[11px] font-semibold text-amber-300/90 tracking-tight">
-                        <i id="greeting-icon" class="fa-solid fa-sun text-amber-400 text-[9px] xs:text-[10px]"></i>
+                    <!-- Realtime Greeting -->
+                    <div class="mt-1 flex items-center justify-center gap-1.5 text-[10.5px] sm:text-xs font-semibold text-amber-300/90 tracking-tight">
+                        <i id="greeting-icon" class="fa-solid fa-sun text-amber-400 text-[10px]"></i>
                         <span id="greeting-text">--</span>
                     </div>
 
-                    <!-- Typewriter Text Quote (Fixed height single line, reserved space) -->
-                    <div class="mt-0.5 flex items-center gap-1.5 h-4 xs:h-4 sm:h-5 w-full overflow-hidden text-[8.5px] xs:text-[9.5px] sm:text-[10px] text-slate-300">
-                        <i class="fa-solid fa-quote-left text-[8px] text-indigo-400/70 shrink-0"></i>
-                        <div class="flex-1 min-w-0 overflow-hidden whitespace-nowrap text-ellipsis flex items-center gap-0.5">
-                            <span id="typewriter-text" class="italic tracking-tight text-slate-200 whitespace-nowrap overflow-hidden text-ellipsis inline-block max-w-full align-middle"></span>
-                            <span class="inline-block w-[1.5px] h-2.5 xs:h-3 bg-sky-400 animate-pulse shrink-0"></span>
+                    <!-- Typewriter Text Quote -->
+                    <div class="mt-2 mx-auto max-w-full xs:max-w-sm py-1.5 px-2.5 sm:px-3 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-slate-300">
+                        <i class="fa-solid fa-quote-left text-[9px] text-sky-400/80 shrink-0"></i>
+                        <div class="overflow-hidden whitespace-nowrap text-ellipsis flex items-center gap-0.5 max-w-[210px] xs:max-w-[270px]">
+                            <span id="typewriter-text" class="italic tracking-tight text-slate-200 whitespace-nowrap overflow-hidden text-ellipsis inline-block"></span>
+                            <span class="inline-block w-[1.5px] h-2.5 sm:h-3 bg-sky-400 animate-pulse shrink-0"></span>
                         </div>
                     </div>
                 </div>
 
             </div>
 
-            <!-- Essential Info Grid (Full Name, Date of Birth, Hometown) -->
-            <div class="mt-3 sm:mt-5 space-y-2 sm:space-y-3">
+            <!-- Essential Info 2x2 Grid -->
+            <div class="mt-3.5 sm:mt-5 grid grid-cols-2 gap-1.5 xs:gap-2 sm:gap-2.5">
 
                 <!-- 1. Full Name -->
-                <div class="glass-pill rounded-xl sm:rounded-2xl p-2 sm:p-3.5 flex items-center justify-between group">
-                    <div class="flex items-center gap-2.5 sm:gap-3">
-                        <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-white/5 flex items-center justify-center text-slate-300 group-hover:text-blue-400 group-hover:bg-white/10 transition shrink-0">
-                            <i class="fa-solid fa-user text-xs sm:text-sm"></i>
-                        </div>
-                        <div>
-                            <div class="text-[8.5px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400">Full Name</div>
-                            <div class="text-xs sm:text-sm font-semibold text-slate-100">Ha Quang Minh Duc</div>
-                        </div>
+                <div class="glass-pill rounded-xl sm:rounded-2xl p-2 xs:p-2.5 sm:p-3 flex items-center gap-2 xs:gap-2.5 group hover:border-sky-400/40">
+                    <div class="w-7 h-7 xs:w-8 xs:h-8 rounded-lg xs:rounded-xl bg-sky-500/15 border border-sky-500/20 flex items-center justify-center text-sky-400 group-hover:scale-110 transition shrink-0">
+                        <i class="fa-solid fa-user text-xs sm:text-sm"></i>
+                    </div>
+                    <div class="min-w-0 flex-1 text-left">
+                        <div class="text-[7.5px] xs:text-[8px] sm:text-[9px] font-mono uppercase tracking-wider text-slate-400 truncate">Full Name</div>
+                        <div class="text-[10.5px] xs:text-[11px] sm:text-xs font-bold text-slate-100 truncate">Ha Quang Minh Duc</div>
                     </div>
                 </div>
 
                 <!-- 2. Date of Birth -->
-                <div class="glass-pill rounded-xl sm:rounded-2xl p-2 sm:p-3.5 flex items-center justify-between group">
-                    <div class="flex items-center gap-2.5 sm:gap-3">
-                        <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-white/5 flex items-center justify-center text-slate-300 group-hover:text-amber-400 group-hover:bg-white/10 transition shrink-0">
-                            <i class="fa-solid fa-cake-candles text-xs sm:text-sm"></i>
-                        </div>
-                        <div>
-                            <div class="text-[8.5px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400">Date of Birth</div>
-                            <div class="text-xs sm:text-sm font-semibold text-slate-100">07/05/2004</div>
-                        </div>
+                <div class="glass-pill rounded-xl sm:rounded-2xl p-2 xs:p-2.5 sm:p-3 flex items-center gap-2 xs:gap-2.5 group hover:border-amber-400/40">
+                    <div class="w-7 h-7 xs:w-8 xs:h-8 rounded-lg xs:rounded-xl bg-amber-500/15 border border-amber-500/20 flex items-center justify-center text-amber-400 group-hover:scale-110 transition shrink-0">
+                        <i class="fa-solid fa-cake-candles text-xs sm:text-sm"></i>
+                    </div>
+                    <div class="min-w-0 flex-1 text-left">
+                        <div class="text-[7.5px] xs:text-[8px] sm:text-[9px] font-mono uppercase tracking-wider text-slate-400 truncate">Date of Birth</div>
+                        <div class="text-[10.5px] xs:text-[11px] sm:text-xs font-bold text-slate-100 font-mono truncate">07/05/2004</div>
                     </div>
                 </div>
 
                 <!-- 3. Hometown -->
-                <div class="glass-pill rounded-xl sm:rounded-2xl p-2 sm:p-3.5 flex items-center justify-between group">
-                    <div class="flex items-center gap-2.5 sm:gap-3">
-                        <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-white/5 flex items-center justify-center text-slate-300 group-hover:text-emerald-400 group-hover:bg-white/10 transition shrink-0">
-                            <i class="fa-solid fa-location-dot text-xs sm:text-sm"></i>
-                        </div>
-                        <div>
-                            <div class="text-[8.5px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400">Hometown / Location</div>
-                            <div class="text-xs sm:text-sm font-semibold text-slate-100">Nghe An, Vietnam 🇻🇳</div>
-                        </div>
+                <div class="glass-pill rounded-xl sm:rounded-2xl p-2 xs:p-2.5 sm:p-3 flex items-center gap-2 xs:gap-2.5 group hover:border-emerald-400/40">
+                    <div class="w-7 h-7 xs:w-8 xs:h-8 rounded-lg xs:rounded-xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition shrink-0">
+                        <i class="fa-solid fa-location-dot text-xs sm:text-sm"></i>
+                    </div>
+                    <div class="min-w-0 flex-1 text-left">
+                        <div class="text-[7.5px] xs:text-[8px] sm:text-[9px] font-mono uppercase tracking-wider text-slate-400 truncate">Location</div>
+                        <div class="text-[10.5px] xs:text-[11px] sm:text-xs font-bold text-slate-100 truncate">Nghe An, VN 🇻🇳</div>
                     </div>
                 </div>
 
+                <!-- 4. Zodiac & Origin -->
+                <div class="glass-pill rounded-xl sm:rounded-2xl p-2 xs:p-2.5 sm:p-3 flex items-center gap-2 xs:gap-2.5 group hover:border-indigo-400/40">
+                    <div class="w-7 h-7 xs:w-8 xs:h-8 rounded-lg xs:rounded-xl bg-indigo-500/15 border border-indigo-500/20 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition shrink-0">
+                        <i class="fa-solid fa-ring text-xs sm:text-sm"></i>
+                    </div>
+                    <div class="min-w-0 flex-1 text-left">
+                        <div class="text-[7.5px] xs:text-[8px] sm:text-[9px] font-mono uppercase tracking-wider text-slate-400 truncate">Zodiac</div>
+                        <div class="text-[10.5px] xs:text-[11px] sm:text-xs font-bold text-slate-100 truncate">Kim Ngưu ♉</div>
+                    </div>
+                </div>
 
             </div>
-            <div class="mt-3 sm:mt-5 pt-2.5 sm:pt-4 border-t border-white/10 grid grid-cols-2 gap-2 sm:gap-3">
+            <div class="mt-2.5 sm:mt-5 pt-2.5 sm:pt-4 border-t border-white/10 grid grid-cols-2 gap-1.5 xs:gap-2 sm:gap-3">
                 
                 <!-- Solar Date Card (Dương Lịch) -->
-                <div class="glass-pill py-2 px-2.5 sm:py-3 sm:px-4 rounded-xl sm:rounded-2xl flex flex-col justify-center items-start text-left relative overflow-hidden group">
-                    <div class="flex items-center gap-1 sm:gap-1.5 text-[8.5px] sm:text-[10px] font-mono uppercase tracking-wider text-sky-400 font-semibold mb-0.5">
-                        <i class="fa-solid fa-sun text-amber-400 text-[10px] sm:text-xs"></i>
+                <div class="glass-pill py-2 px-2 xs:px-2.5 sm:py-3 sm:px-4 rounded-xl sm:rounded-2xl flex flex-col justify-center items-start text-left relative overflow-hidden group">
+                    <div class="flex items-center gap-1 sm:gap-1.5 text-[8px] xs:text-[8.5px] sm:text-[10px] font-mono uppercase tracking-wider text-sky-400 font-semibold mb-0.5">
+                        <i class="fa-solid fa-sun text-amber-400 text-[9px] sm:text-[10px]"></i>
                         <span>Dương Lịch</span>
                     </div>
-                    <div id="solar-date-display" class="text-xs sm:text-sm font-bold text-slate-100 font-mono">
+                    <div id="solar-date-display" class="text-[11px] xs:text-xs sm:text-sm font-bold text-slate-100 font-mono">
                         --/--/----
                     </div>
-                    <div id="solar-day-display" class="text-[9.5px] sm:text-[11px] text-slate-400">
+                    <div id="solar-day-display" class="text-[9px] xs:text-[9.5px] sm:text-[11px] text-slate-400 truncate">
                         --
                     </div>
                 </div>
 
                 <!-- Lunar Date Card (Âm Lịch) -->
-                <div class="glass-pill py-2 px-2.5 sm:py-3 sm:px-4 rounded-xl sm:rounded-2xl flex flex-col justify-center items-start text-left relative overflow-hidden group">
-                    <div class="flex items-center gap-1 sm:gap-1.5 text-[8.5px] sm:text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-semibold mb-0.5">
-                        <i class="fa-solid fa-moon text-indigo-300 text-[10px] sm:text-xs"></i>
+                <div class="glass-pill py-2 px-2 xs:px-2.5 sm:py-3 sm:px-4 rounded-xl sm:rounded-2xl flex flex-col justify-center items-start text-left relative overflow-hidden group">
+                    <div class="flex items-center gap-1 sm:gap-1.5 text-[8px] xs:text-[8.5px] sm:text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-semibold mb-0.5">
+                        <i class="fa-solid fa-moon text-indigo-300 text-[9px] sm:text-[10px]"></i>
                         <span>Âm Lịch</span>
                     </div>
-                    <div id="lunar-date-display" class="text-xs sm:text-sm font-bold text-slate-100 font-mono">
+                    <div id="lunar-date-display" class="text-[11px] xs:text-xs sm:text-sm font-bold text-slate-100 font-mono">
                         --/--/----
                     </div>
-                    <div id="lunar-canchi-display" class="text-[9.5px] sm:text-[11px] text-slate-400">
+                    <div id="lunar-canchi-display" class="text-[9px] xs:text-[9.5px] sm:text-[11px] text-slate-400 truncate">
                         Năm --
                     </div>
                 </div>
@@ -302,5 +340,6 @@
 
     <!-- Custom Scripts -->
     <script src="script.js"></script>
+    <script src="seasons.js"></script>
 </body>
 </html>

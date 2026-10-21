@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <!-- Primary & Open Graph Meta Tags -->
+    <title>Hà Quang Minh Đức ❄️ | Mùa Đông</title>
+    <meta name="title" content="Hà Quang Minh Đức ❄️ | Mùa Đông">
+    <meta name="description" content="Trang thông tin cá nhân của Hà Quang Minh Đức - Tuyết Trắng & Sương Giá Mùa Đông. Nghệ An, Việt Nam.">
+    <meta name="keywords" content="Hà Quang Minh Đức, haquangminhduc, profile, mua dong, winter">
+    <meta name="author" content="Hà Quang Minh Đức">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://haquangminhduc.github.io/winter.html">
+    <meta property="og:title" content="Hà Quang Minh Đức ❄️ | Mùa Đông">
+    <meta property="og:description" content="Trang thông tin cá nhân của Hà Quang Minh Đức - Tuyết Trắng & Sương Giá Mùa Đông.">
+    <meta property="og:image" content="https://haquangminhduc.github.io/avtcatrose.jpg">
+
+    <link rel="icon" href="iconweb.jpeg" type="image/jpeg">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    screens: { 'xs': '375px' },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', '-apple-system', 'sans-serif'],
+                        mono: ['"Space Grotesk"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="season-winter min-h-screen min-h-[100dvh] w-full overflow-x-hidden overflow-y-auto flex items-center justify-center p-2.5 xs:p-3 sm:p-5 text-slate-100 relative selection:bg-cyan-500 selection:text-black">
+
+    <!-- Preloader -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#020610] flex flex-col items-center justify-center transition-opacity duration-700 ease-out pointer-events-auto">
+        <div class="relative flex items-center justify-center mb-4">
+            <div class="w-16 h-16 rounded-full border-2 border-cyan-500/20 border-t-cyan-400 border-r-indigo-400 animate-spin"></div>
+            <div class="absolute w-10 h-10 rounded-full overflow-hidden p-0.5 bg-gradient-to-tr from-cyan-500 via-sky-400 to-indigo-500 shadow-[0_0_15px_rgba(56,189,248,0.5)]">
+                <img src="avtcatrose.jpg" alt="Avatar" class="w-full h-full object-cover rounded-full">
+            </div>
+        </div>
+        <div class="text-xs font-mono font-bold tracking-widest text-slate-200 uppercase">
+            HÀ QUANG MINH ĐỨC • ĐÔNG ❄️
+        </div>
+        <div class="mt-3.5 w-48 xs:w-56 flex flex-col items-center gap-1.5">
+            <div class="w-full h-1.5 rounded-full bg-white/10 overflow-hidden relative border border-white/10 p-[0.5px]">
+                <div id="preloader-progress-bar" class="h-full w-0 rounded-full bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-400 transition-all duration-150 ease-out"></div>
+            </div>
+            <div class="flex items-center justify-between w-full text-[10px] font-mono text-slate-400 px-0.5">
+                <span>Tuyết trắng mùa đông...</span>
+                <span id="preloader-percent" class="font-bold text-cyan-400 font-mono">0%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Noise Texture & Dynamic RGB Orbs -->
+    <div class="noise-bg"></div>
+    <div class="rgb-orb-1" id="glow-1"></div>
+    <div class="rgb-orb-2" id="glow-2"></div>
+    <div class="rgb-orb-3" id="glow-3"></div>
+
+    <!-- Seasonal Falling Snowflakes Canvas -->
+    <canvas id="season-canvas" class="fixed inset-0 pointer-events-none z-[3]"></canvas>
+    
+    <!-- Stars Background Canvas -->
+    <canvas id="stars-canvas" class="fixed inset-0 pointer-events-none z-[1]"></canvas>
+    <canvas id="shooting-stars-canvas" class="fixed inset-0 pointer-events-none z-30"></canvas>
+
+    <!-- Audio Element -->
+    <audio id="bg-audio" loop preload="metadata" src="để dành cho em.mp3"></audio>
+
+    <!-- Main Container -->
+    <main class="relative z-10 w-full max-w-md mx-auto flex flex-col justify-center min-h-[100dvh] py-2 sm:py-4">
+
+        <!-- Top Bar -->
+        <div class="flex items-center justify-between px-1 sm:px-2 mb-2 sm:mb-3">
+            <div class="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-[11px] font-mono text-slate-400 shrink-0">
+                <span class="inline-block w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                <span class="inline-flex items-center gap-1">
+                    <span class="hidden xs:inline text-slate-400">VN</span>
+                    <span id="live-clock" class="text-slate-200 font-semibold tracking-wider">--:--:--</span>
+                </span>
+                <span class="text-slate-600 font-sans">•</span>
+                <span id="weather-display" class="inline-flex items-center gap-1 text-slate-300">
+                    <i id="weather-icon" class="fa-solid fa-snowflake text-cyan-200 text-[10px]"></i>
+                    <span id="weather-temp" class="font-semibold text-slate-200">--°C</span>
+                </span>
+                <span class="hidden sm:inline text-slate-600 font-sans">•</span>
+                <span id="fps-display" class="hidden sm:inline-flex items-center gap-1 text-slate-300">
+                    <i class="fa-solid fa-gauge-high text-emerald-400 text-[9px]"></i>
+                    <span id="fps-counter" class="font-semibold text-emerald-400">60</span><span class="text-[8px] text-slate-400 font-mono">FPS</span>
+                </span>
+            </div>
+
+            <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
+                <!-- 4-Season Switcher Pill -->
+                <div class="flex items-center gap-0.5 py-0.5 px-1 rounded-full glass-pill border border-cyan-500/30">
+                    <a href="spring.html" class="season-nav-item px-1.5 py-0.5 rounded-full text-xs opacity-60 hover:opacity-100" title="Mùa Xuân 🌸">🌸</a>
+                    <a href="summer.html" class="season-nav-item px-1.5 py-0.5 rounded-full text-xs opacity-60 hover:opacity-100" title="Mùa Hạ ☀️">☀️</a>
+                    <a href="autumn.html" class="season-nav-item px-1.5 py-0.5 rounded-full text-xs opacity-60 hover:opacity-100" title="Mùa Thu 🍁">🍁</a>
+                    <a href="winter.html" class="season-nav-item active px-1.5 py-0.5 rounded-full text-xs" title="Mùa Đông ❄️">❄️</a>
+                    <button onclick="goToRandomSeason('winter')" class="px-1 py-0.5 text-[10px] text-slate-400 hover:text-white" title="Ngẫu nhiên mùa khác 🎲">
+                        <i class="fa-solid fa-dice"></i>
+                    </button>
+                </div>
+
+                <!-- Music Button -->
+                <button id="music-toggle-btn" onclick="toggleMusic(event)" class="flex items-center gap-1 py-1 px-2 rounded-full glass-pill text-[10px] text-slate-300 hover:text-white active:scale-95 transition cursor-pointer" title="Bật / Tắt nhạc">
+                    <i id="music-icon" class="fa-solid fa-music text-cyan-400 text-[10px]"></i>
+                    <i id="music-infinity-icon" class="fa-solid fa-infinity text-cyan-400 text-[11px]"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Profile Card: Winter Frost & Snow Aesthetic -->
+        <div id="card-element" class="tilt-box glass-card rounded-[1.5rem] xs:rounded-[1.75rem] sm:rounded-[2.25rem] p-3 xs:p-4 sm:p-7 relative overflow-hidden border border-cyan-500/25 shadow-[0_20px_50px_rgba(56,189,248,0.15)]">
+
+            <!-- Card Top Winter Ice Cyan Gradient Line -->
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-[1.5px] bg-gradient-to-r from-transparent via-cyan-400/80 to-transparent"></div>
+
+            <!-- Center Hero Profile Header -->
+            <div class="flex flex-col items-center text-center">
+                
+                <!-- Avatar with Frost Glow Ring -->
+                <div class="relative group cursor-pointer">
+                    <div class="relative w-18 h-18 xs:w-20 xs:h-20 sm:w-24 sm:h-24 rounded-2xl sm:rounded-3xl p-1 bg-gradient-to-tr from-cyan-500 via-sky-400 to-indigo-500 shadow-[0_0_25px_rgba(56,189,248,0.35)] group-hover:scale-105 group-hover:shadow-[0_0_35px_rgba(56,189,248,0.55)] transition-all duration-300">
+                        <img src="avtcatrose.jpg" alt="Hà Quang Minh Đức" class="w-full h-full object-cover rounded-[1.1rem] sm:rounded-[1.35rem]">
+                    </div>
+                    <!-- Verified Status Badge -->
+                    <div class="absolute -bottom-1 -right-1 bg-[#06080e] p-1 rounded-full border border-white/10 shadow-lg flex items-center justify-center">
+                        <div class="w-4 h-4 xs:w-5 xs:h-5 rounded-full bg-gradient-to-tr from-cyan-500 to-sky-400 flex items-center justify-center text-white text-[8px] xs:text-[9px] shadow-[0_0_10px_rgba(56,189,248,0.8)]">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                    </div>
+                    <!-- Active Status Dot -->
+                    <div class="absolute top-0 right-0 w-2.5 h-2.5 xs:w-3 xs:h-3 rounded-full bg-cyan-300 border-2 border-[#06080e] shadow-[0_0_8px_rgba(56,189,248,0.8)] animate-pulse"></div>
+                </div>
+
+                <!-- Name & Bio Title -->
+                <div class="mt-2.5 xs:mt-3 w-full">
+                    <h1 class="text-lg xs:text-xl sm:text-2xl font-extrabold tracking-tight text-white flex items-center justify-center gap-1.5">
+                        <span>Hà Quang Minh Đức</span>
+                        <span class="text-sm">❄️</span>
+                    </h1>
+
+                    <div class="mt-1 flex items-center justify-center gap-2">
+                        <span class="text-xs font-mono text-cyan-300/90 font-medium">@haquangminhduc</span>
+                        <span class="text-slate-600">•</span>
+                        <span class="inline-flex items-center gap-1 text-[10px] font-mono text-cyan-300 px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/25">
+                            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                            Mùa Đông
+                        </span>
+                    </div>
+
+                    <!-- Realtime Greeting -->
+                    <div class="mt-1 flex items-center justify-center gap-1.5 text-[10.5px] sm:text-xs font-semibold text-cyan-200/90 tracking-tight">
+                        <i id="greeting-icon" class="fa-solid fa-moon text-indigo-300 text-[10px]"></i>
+                        <span id="greeting-text">--</span>
+                    </div>
+
+                    <!-- Typewriter Text Quote -->
+                    <div class="mt-2 mx-auto max-w-full xs:max-w-sm py-1.5 px-2.5 sm:px-3 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-slate-300">
+                        <i class="fa-solid fa-quote-left text-[9px] text-cyan-400/80 shrink-0"></i>
+                        <div class="overflow-hidden whitespace-nowrap text-ellipsis flex items-center gap-0.5 max-w-[210px] xs:max-w-[270px]">
+                            <span id="typewriter-text" class="italic tracking-tight text-slate-200 whitespace-nowrap overflow-hidden text-ellipsis inline-block"></span>
+                            <span class="inline-block w-[1.5px] h-2.5 sm:h-3 bg-cyan-400 animate-pulse shrink-0"></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Essential Info 2x2 Grid -->
+            <div class="mt-3.5 sm:mt-5 grid grid-cols-2 gap-1.5 xs:gap-2 sm:gap-2.5">
+
+                <!-- 1. Full Name -->
+                <div class="glass-pill rounded-xl sm:rounded-2xl p-2 xs:p-2.5 sm:p-3 flex items-center gap-2 xs:gap-2.5 group hover:border-cyan-400/40">
+                    <div class="w-7 h-7 xs:w-8 xs:h-8 rounded-lg xs:rounded-xl bg-cyan-500/15 border border-cyan-500/20 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition shrink-0">
+                        <i class="fa-solid fa-user text-xs sm:text-sm"></i>
+                    </div>
+                    <div class="min-w-0 flex-1 text-left">
+                        <div class="text-[7.5px] xs:text-[8px] sm:text-[9px] font-mono uppercase tracking-wider text-slate-400 truncate">Full Name</div>
+                        <div class="text-[10.5px] xs:text-[11px] sm:text-xs font-bold text-slate-100 truncate">Ha Quang Minh Duc</div>
+                    </div>
+                </div>
+
+                <!-- 2. Date of Birth -->
+                <div class="glass-pill rounded-xl sm:rounded-2xl p-2 xs:p-2.5 sm:p-3 flex items-center gap-2 xs:gap-2.5 group hover:border-sky-400/40">
+                    <div class="w-7 h-7 xs:w-8 xs:h-8 rounded-lg xs:rounded-xl bg-sky-500/15 border border-sky-500/20 flex items-center justify-center text-sky-400 group-hover:scale-110 transition shrink-0">
+                        <i class="fa-solid fa-cake-candles text-xs sm:text-sm"></i>
+                    </div>
+                    <div class="min-w-0 flex-1 text-left">
+                        <div class="text-[7.5px] xs:text-[8px] sm:text-[9px] font-mono uppercase tracking-wider text-slate-400 truncate">Date of Birth</div>
+                        <div class="text-[10.5px] xs:text-[11px] sm:text-xs font-bold text-slate-100 font-mono truncate">07/05/2004</div>
+                    </div>
+                </div>
+
+                <!-- 3. Hometown -->
+                <div class="glass-pill rounded-xl sm:rounded-2xl p-2 xs:p-2.5 sm:p-3 flex items-center gap-2 xs:gap-2.5 group hover:border-blue-400/40">
+                    <div class="w-7 h-7 xs:w-8 xs:h-8 rounded-lg xs:rounded-xl bg-blue-500/15 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:scale-110 transition shrink-0">
+                        <i class="fa-solid fa-location-dot text-xs sm:text-sm"></i>
+                    </div>
+                    <div class="min-w-0 flex-1 text-left">
+                        <div class="text-[7.5px] xs:text-[8px] sm:text-[9px] font-mono uppercase tracking-wider text-slate-400 truncate">Location</div>
+                        <div class="text-[10.5px] xs:text-[11px] sm:text-xs font-bold text-slate-100 truncate">Nghe An, VN 🇻🇳</div>
+                    </div>
+                </div>
+
+                <!-- 4. Zodiac & Origin -->
+                <div class="glass-pill rounded-xl sm:rounded-2xl p-2 xs:p-2.5 sm:p-3 flex items-center gap-2 xs:gap-2.5 group hover:border-indigo-400/40">
+                    <div class="w-7 h-7 xs:w-8 xs:h-8 rounded-lg xs:rounded-xl bg-indigo-500/15 border border-indigo-500/20 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition shrink-0">
+                        <i class="fa-solid fa-ring text-xs sm:text-sm"></i>
+                    </div>
+                    <div class="min-w-0 flex-1 text-left">
+                        <div class="text-[7.5px] xs:text-[8px] sm:text-[9px] font-mono uppercase tracking-wider text-slate-400 truncate">Zodiac</div>
+                        <div class="text-[10.5px] xs:text-[11px] sm:text-xs font-bold text-slate-100 truncate">Kim Ngưu ♉</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Calendar -->
+            <div class="mt-2.5 sm:mt-5 pt-2.5 sm:pt-4 border-t border-white/10 grid grid-cols-2 gap-1.5 xs:gap-2 sm:gap-3">
+                <div class="glass-pill py-2 px-2 xs:px-2.5 sm:py-3 sm:px-4 rounded-xl sm:rounded-2xl flex flex-col justify-center items-start text-left">
+                    <div class="flex items-center gap-1 sm:gap-1.5 text-[8px] xs:text-[8.5px] sm:text-[10px] font-mono uppercase tracking-wider text-cyan-300 font-semibold mb-0.5">
+                        <i class="fa-solid fa-sun text-amber-400 text-[9px] sm:text-[10px]"></i>
+                        <span>Dương Lịch</span>
+                    </div>
+                    <div id="solar-date-display" class="text-[11px] xs:text-xs sm:text-sm font-bold text-slate-100 font-mono">--/--/----</div>
+                    <div id="solar-day-display" class="text-[9px] xs:text-[9.5px] sm:text-[11px] text-slate-400 truncate">--</div>
+                </div>
+
+                <div class="glass-pill py-2 px-2 xs:px-2.5 sm:py-3 sm:px-4 rounded-xl sm:rounded-2xl flex flex-col justify-center items-start text-left">
+                    <div class="flex items-center gap-1 sm:gap-1.5 text-[8px] xs:text-[8.5px] sm:text-[10px] font-mono uppercase tracking-wider text-sky-300 font-semibold mb-0.5">
+                        <i class="fa-solid fa-moon text-indigo-300 text-[9px] sm:text-[10px]"></i>
+                        <span>Âm Lịch</span>
+                    </div>
+                    <div id="lunar-date-display" class="text-[11px] xs:text-xs sm:text-sm font-bold text-slate-100 font-mono">--/--/----</div>
+                    <div id="lunar-canchi-display" class="text-[9px] xs:text-[9.5px] sm:text-[11px] text-slate-400 truncate">Năm --</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mt-3 sm:mt-4 text-center text-[10px] sm:text-[11px] font-mono text-cyan-300/60 tracking-wider">
+            <span>Hà Quang Minh Đức ❄️</span>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+    <script src="seasons.js"></script>
+    <script>
+        initSeasonParticles('winter');
+        selectSeasonalTrack('winter');
+    </script>
+</body>
+</html>

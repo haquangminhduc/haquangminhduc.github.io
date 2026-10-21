@@ -513,24 +513,24 @@ let audioSourceNode = null;
 
 const playlist = [
     {
-        title: "Em Từng Là Cả Thế Giới Với Anh",
+        title: "Wrong Times (Remake)",
         artist: "Hà Quang Minh Đức",
-        src: "emtunglacathegioivoianh.mp3"
+        src: "Wrong Times (Remake).mp3"
     },
     {
-        title: "Anh Ghét Mình Vì Còn Nhớ Em",
-        artist: "Vinh Khuất",
-        src: "Anh ghét mình vì còn nhớ em của Vinh Khuất nhưng buồn hơn.mp3"
+        title: "Thế Giới Của Anh",
+        artist: "Hà Quang Minh Đức",
+        src: "thế giới của anh.mp3"
     },
     {
-        title: "Mùa Hè Năm Ấy",
-        artist: "hqhuy",
-        src: "hqhuy - mùa hè năm ấy (Official Lyric Video).mp3"
+        title: "Hãy Đến Đây Bên Anh Trong Một Chiều Mùa Thu",
+        artist: "Hà Quang Minh Đức",
+        src: "hãy đến đây bên anh trong một chiều mùa thu.mp3"
     },
     {
-        title: "Trân Trọng",
-        artist: "hqhuy",
-        src: "hqhuy - trân trọng (Official Lyric Video).mp3"
+        title: "Để Dành Cho Em",
+        artist: "Hà Quang Minh Đức",
+        src: "để dành cho em.mp3"
     }
 ];
 
@@ -547,6 +547,10 @@ function pickRandomSong() {
     if (bgAudio) {
         bgAudio.src = song.src;
     }
+    const songTitleEl = document.getElementById('music-song-title');
+    const songArtistEl = document.getElementById('music-song-artist');
+    if (songTitleEl && song) songTitleEl.innerText = song.title;
+    if (songArtistEl && song) songArtistEl.innerText = song.artist;
     return song;
 }
 
@@ -720,6 +724,25 @@ function updateMusicUI(isPlaying) {
     const infinityIcon = document.getElementById('music-infinity-icon');
     const musicBtn = document.getElementById('music-toggle-btn');
     const song = playlist[currentSongIndex];
+    const songTitleEl = document.getElementById('music-song-title');
+    const songArtistEl = document.getElementById('music-song-artist');
+    const musicPlayPauseBtn = document.getElementById('music-play-pause-btn');
+    const eqBars = document.getElementById('music-equalizer');
+
+    if (songTitleEl && song) songTitleEl.innerText = song.title;
+    if (songArtistEl && song) songArtistEl.innerText = song.artist;
+    if (musicPlayPauseBtn) {
+        musicPlayPauseBtn.innerHTML = isPlaying 
+            ? '<i class="fa-solid fa-pause text-xs text-sky-400"></i>' 
+            : '<i class="fa-solid fa-play text-xs text-sky-400"></i>';
+    }
+    if (eqBars) {
+        if (isPlaying) {
+            eqBars.classList.add('eq-playing');
+        } else {
+            eqBars.classList.remove('eq-playing');
+        }
+    }
 
     if (isPlaying) {
         if (musicIcon) musicIcon.className = 'fa-solid fa-compact-disc text-indigo-400 animate-spin text-[10px]';
