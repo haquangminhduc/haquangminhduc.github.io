@@ -565,6 +565,11 @@ function playRandomSong(e) {
 
 function initAudioAnalyser() {
     if (audioCtx) return;
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+    if (isMobileDevice) {
+        // Mobile optimization: direct native audio routing prevents WebKit silence & autoplay policy bugs
+        return;
+    }
     try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         audioCtx = new AudioContext();
@@ -756,7 +761,10 @@ function updateMusicUI(isPlaying) {
 }
 
 function toggleMusic(e) {
-    if (e) e.stopPropagation();
+    if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
     if (!bgAudio) return;
 
     if (!bgAudio.paused && !bgAudio.muted) {
@@ -764,22 +772,15 @@ function toggleMusic(e) {
         isMusicPlaying = false;
         updateMusicUI(false);
     } else {
-        playMusic();
+        playMusic(false);
     }
 }
 
-function removeInteractionListeners() {
-    interactionEvents.forEach(evt => {
-        window.removeEventListener(evt, handleUserInteraction);
-        document.removeEventListener(evt, handleUserInteraction);
-    });
-}
-
-function playMusic() {
+function playMusic(isAutoAttempt = false) {
     if (!bgAudio) return;
     initAudioAnalyser();
     if (audioCtx && audioCtx.state === 'suspended') {
-        audioCtx.resume();
+        audioCtx.resume().catch(() => {});
     }
     bgAudio.muted = false;
     bgAudio.volume = 1.0;
@@ -791,32 +792,70 @@ function playMusic() {
             startBeatPulse();
             removeInteractionListeners();
         }).catch(err => {
-            console.log("Audio waiting for user click/tap:", err);
-            updateMusicUI(false);
+            console.log("Audio waiting for user gesture:", err);
+            // Only update UI to paused if this was an explicit user toggle, NOT a passive auto-attempt
+            if (!isAutoAttempt) {
+                updateMusicUI(false);
+            }
         });
     }
 }
 
-// Trigger audio playback reliably on any interaction once
-let userHasInteracted = false;
+// Trigger audio playback reliably on first user tap/click on mobile & desktop
+let interactionListenersBound = false;
+const interactionEvents = ['touchend', 'click', 'pointerup', 'keydown'];
 
-function handleUserInteraction() {
-    if (userHasInteracted || (bgAudio && !bgAudio.paused)) return;
-    userHasInteracted = true;
-    playMusic();
+function handleUserInteraction(e) {
+    // If user clicked the music button directly, let toggleMusic handle it
+    if (e && e.target && e.target.closest && e.target.closest('#music-toggle-btn, #music-play-pause-btn, #music-next-btn')) {
+        return;
+    }
+
+    if (isMusicPlaying || (bgAudio && !bgAudio.paused)) {
+        removeInteractionListeners();
+        return;
+    }
+
+    playMusic(true);
 }
 
-const interactionEvents = ['click', 'touchstart', 'pointerdown', 'keydown'];
+function removeInteractionListeners() {
+    if (!interactionListenersBound) return;
+    interactionListenersBound = false;
 
-interactionEvents.forEach(evt => {
-    window.addEventListener(evt, handleUserInteraction, { passive: true, once: true });
-});
+    interactionEvents.forEach(evt => {
+        window.removeEventListener(evt, handleUserInteraction, { capture: true });
+        document.removeEventListener(evt, handleUserInteraction, { capture: true });
+    });
+}
+
+function setupInteractionListeners() {
+    if (interactionListenersBound) return;
+    interactionListenersBound = true;
+
+    // Pre-warm audio stream on initial touch contact
+    const onFirstTouchStart = () => {
+        if (bgAudio && bgAudio.paused) {
+            bgAudio.load();
+        }
+        window.removeEventListener('touchstart', onFirstTouchStart, { passive: true });
+    };
+    window.addEventListener('touchstart', onFirstTouchStart, { passive: true, once: true });
+
+    // Catch valid gesture release events across both document & window in capture mode
+    interactionEvents.forEach(evt => {
+        window.addEventListener(evt, handleUserInteraction, { capture: true, passive: true });
+        document.addEventListener(evt, handleUserInteraction, { capture: true, passive: true });
+    });
+}
+
+setupInteractionListeners();
 
 const cardElem = document.getElementById('card-element');
 if (cardElem) {
     cardElem.addEventListener('click', () => {
         if (bgAudio && bgAudio.paused) {
-            playMusic();
+            playMusic(true);
         }
     });
 }

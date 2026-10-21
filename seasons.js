@@ -21,12 +21,53 @@ function initSeasonParticles(season) {
     let width = canvas.width = window.innerWidth;
     let height = canvas.height = window.innerHeight;
 
-    const isMobile = width < 768;
+    let isMobile = width < 768;
     const particles = [];
+
+    // Natural Dynamic Wind Breeze Engine
+    let breeze = 0;
+    let targetBreeze = 0;
+    function scheduleNextBreeze() {
+        // Cứ mỗi 4 - 8 giây có 1 đợt gió nhẹ thoảng qua
+        const delay = Math.random() * 4000 + 4500;
+        setTimeout(() => {
+            targetBreeze = Math.random() * 2.4 + 1.2; // Tốc độ gió tự nhiên
+            // Cơn gió kéo dài 2 - 4 giây rồi êm ả trở lại
+            setTimeout(() => {
+                targetBreeze = 0;
+                scheduleNextBreeze();
+            }, Math.random() * 2000 + 2200);
+        }, delay);
+    }
+    scheduleNextBreeze();
+
+    // Interactive Touch & Mouse Flutter (Chạm ngón tay hoặc rê chuột để làm xao động cánh hoa / lá)
+    const handlePointerWind = (e) => {
+        const px = e.touches ? e.touches[0].clientX : e.clientX;
+        const py = e.touches ? e.touches[0].clientY : e.clientY;
+        if (!px || !py) return;
+
+        const maxRadius = isMobile ? 85 : 120;
+        for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            const dx = p.x - px;
+            const dy = p.y - py;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < maxRadius && dist > 0) {
+                const force = ((maxRadius - dist) / maxRadius) * (isMobile ? 3.5 : 5);
+                p.x += (dx / dist) * force;
+                p.y += (dy / dist) * force;
+                if (p.angle !== undefined) p.angle += force * 8;
+            }
+        }
+    };
+    window.addEventListener('mousemove', handlePointerWind, { passive: true });
+    window.addEventListener('touchmove', handlePointerWind, { passive: true });
 
     window.addEventListener('resize', () => {
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
+        isMobile = width < 768;
     });
 
     // Particle Classes
@@ -70,12 +111,14 @@ function initSeasonParticles(season) {
 
         function animateSakura() {
             ctx.clearRect(0, 0, width, height);
+            breeze += (targetBreeze - breeze) * 0.035;
+
             for (let i = 0; i < particles.length; i++) {
                 const p = particles[i];
-                p.x += p.speedX + Math.sin(p.angle * 0.03) * 0.8;
-                p.y += p.speedY;
-                p.angle += p.angularSpeed;
-                p.flip += p.flipSpeed;
+                p.x += p.speedX + Math.sin(p.angle * 0.03) * 0.8 + breeze * 1.6;
+                p.y += p.speedY + (breeze > 0.6 ? -0.25 : 0);
+                p.angle += p.angularSpeed + breeze * 0.8;
+                p.flip += p.flipSpeed + breeze * 0.015;
 
                 if (p.y > height + 20) {
                     p.y = -20;
@@ -111,10 +154,11 @@ function initSeasonParticles(season) {
         function animateSummer() {
             ctx.clearRect(0, 0, width, height);
             time += 0.02;
+            breeze += (targetBreeze - breeze) * 0.035;
 
             for (let i = 0; i < particles.length; i++) {
                 const p = particles[i];
-                p.x += p.speedX + Math.sin(time + p.pulseOffset) * 0.4;
+                p.x += p.speedX + Math.sin(time + p.pulseOffset) * 0.4 + breeze * 0.7;
                 p.y += p.speedY + Math.cos(time + p.pulseOffset) * 0.3;
 
                 if (p.x < -10) p.x = width + 10;
@@ -200,12 +244,14 @@ function initSeasonParticles(season) {
 
         function animateAutumn() {
             ctx.clearRect(0, 0, width, height);
+            breeze += (targetBreeze - breeze) * 0.035;
+
             for (let i = 0; i < particles.length; i++) {
                 const p = particles[i];
-                p.swing += p.swingSpeed;
-                p.x += p.speedX + Math.sin(p.swing) * 1.5;
-                p.y += p.speedY;
-                p.angle += p.angularSpeed;
+                p.swing += p.swingSpeed + breeze * 0.02;
+                p.x += p.speedX + Math.sin(p.swing) * 1.5 + breeze * 2.2;
+                p.y += p.speedY + (breeze > 0.8 ? -0.3 : 0);
+                p.angle += p.angularSpeed + breeze * 1.2;
 
                 if (p.y > height + 25) {
                     p.y = -25;
@@ -239,10 +285,12 @@ function initSeasonParticles(season) {
 
         function animateWinter() {
             ctx.clearRect(0, 0, width, height);
+            breeze += (targetBreeze - breeze) * 0.035;
+
             for (let i = 0; i < particles.length; i++) {
                 const p = particles[i];
-                p.drift += p.driftSpeed;
-                p.x += p.speedX + Math.sin(p.drift) * 0.6;
+                p.drift += p.driftSpeed + breeze * 0.01;
+                p.x += p.speedX + Math.sin(p.drift) * 0.6 + breeze * 1.2;
                 p.y += p.speedY;
 
                 if (p.y > height + 10) {
@@ -294,6 +342,7 @@ function selectSeasonalTrack(season) {
         const audio = document.getElementById('bg-audio');
         if (audio && song) {
             audio.src = song.src;
+            audio.load();
         }
         const songTitleEl = document.getElementById('music-song-title');
         const songArtistEl = document.getElementById('music-song-artist');
