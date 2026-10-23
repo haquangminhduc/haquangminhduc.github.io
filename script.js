@@ -49,22 +49,8 @@ async function fetchWeather() {
 fetchWeather();
 setInterval(fetchWeather, 15 * 60 * 1000); // Tự động cập nhật mỗi 15 phút
 
-// 3. Interactive 3D Card Tilt (Desktop only)
-const card = document.getElementById('card-element');
-if (card && window.matchMedia('(min-width: 768px)').matches) {
-    window.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        const rotX = -(y / (rect.height / 2)) * 5;
-        const rotY = (x / (rect.width / 2)) * 5;
-        card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-    });
+// 3. Profile Card Box - Cố định đứng yên (không nghiêng/lắc theo chuột)
 
-    window.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
-    });
-}
 
 // 4. Realtime Solar & Lunar Calendar Converter (Âm Dương Lịch Việt Nam)
 function updateCalendarDisplay() {
