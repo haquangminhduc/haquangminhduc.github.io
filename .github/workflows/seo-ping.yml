@@ -1,0 +1,27 @@
+name: SEO Sitemap Ping
+
+# Lưu ý: Workflow này chỉ dùng để ping thông báo cập nhật sitemap tới các công cụ tìm kiếm.
+# KHÔNG thay thế việc người dùng phải khai báo và xác minh quyền sở hữu ban đầu trên Google Search Console & Bing Webmaster Tools.
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  seo-ping:
+    name: Ping Search Engines
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Google Sitemap
+        continue-on-error: true
+        run: |
+          echo "Pinging Google with sitemap URL..."
+          curl -s -i "https://www.google.com/ping?sitemap=https://haquangminhduc.github.io/sitemap.xml" || true
+
+      - name: Ping Bing Sitemap
+        continue-on-error: true
+        run: |
+          echo "Pinging Bing with sitemap URL..."
+          curl -s -i "https://www.bing.com/ping?sitemap=https://haquangminhduc.github.io/sitemap.xml" || true
